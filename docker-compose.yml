@@ -1,34 +1,31 @@
-version: '3'
+version: '3.7'
 
 networks:
   laravel:
 
-
+# for local development
 services:
-  app:
+  quasar:
     build:
-      context: ./dockerfiles
-      dockerfile: nginx.dockerfile
-      args:
-        - UID=${UID:-1000}
-        - GID=${GID:-1000}
+      context: dockerfiles
+      target: 'develop-stage'
     ports:
-      - "80:80"
+    - '9000:9000'
     volumes:
-      - ./src:/var/www/html:delegated
+    - './src:/app'
+    command: /bin/sh -c "npm i && npm run dev"
     networks:
       - laravel
-
+      
   npm:
     image: node:current-alpine
     volumes:
-      - ./src:/var/www/html
+      - ./src:/app
     ports:
       - "3000:3000"
       - "3001:3001"
       - "5173:5173"
-    working_dir: /var/www/html
-    entrypoint: [ 'npm' ]
+    working_dir: /app
     networks:
       - laravel
 

@@ -27,7 +27,7 @@ function confirm(){
 # ./commands.sh start
 function startProject(){
 	failed=1
-	docker-compose up -d --build app && echo docker app started && failed=0
+	docker-compose up -d --build quasar && echo docker app started && failed=0
 	if [ $failed -eq 1 ]
 	then
 		echo "docker app failed to start"
@@ -46,17 +46,14 @@ function stopProject(){
 
 # ./commands.sh run new
 function createNewProject(){
-	# rm -rf ./src/* && rm -f ./src/.* && docker-compose run --rm composer create-project laravel/laravel .
-	echo "createNewProject NOT IMPLEMENTED"
+	rm -rf ./src/* && rm -f ./src/.* && docker-compose run --rm npm yarn create quasar
+	echo "Project created"
 }
 
 # ./commands.sh run setup
 function setupProject(){
-	# docker-compose run --rm composer install
-	# docker-compose run --rm npm run dev
-	# docker-compose run --rm artisan migrate:fresh --seed
-	# echo "docker app setup"
-	echo "docker app setup NOT IMPLEMENTED"
+	docker-compose run --rm npm npm install
+	echo "docker app setup"
 }
 
 # Main
