@@ -27,7 +27,7 @@ function confirm(){
 # ./commands.sh start
 function startProject(){
 	failed=1
-	docker-compose up -d --build quasar && echo docker app started && failed=0
+	docker-compose up -d --build quasar && echo "docker app started" && echo "Ctrl + Click: http://localhost:9000" && failed=0
 	if [ $failed -eq 1 ]
 	then
 		echo "docker app failed to start"
