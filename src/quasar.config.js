@@ -89,7 +89,7 @@ module.exports = configure(function (/* ctx */) {
     devServer: {
       open: false,
       host: true,
-      port: 9000,
+      port: 80,
       watch: {
         usePolling: true
       }

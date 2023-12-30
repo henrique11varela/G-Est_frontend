@@ -27,7 +27,7 @@ function confirm(){
 # ./commands.sh start
 function startProject(){
 	failed=1
-	docker-compose up -d --build quasar && echo "docker app started" && echo "Ctrl + Click: http://localhost:9000" && failed=0
+	docker-compose up -d --build quasar && echo "docker app started" && echo "Ctrl + Click: http://localhost:80" && failed=0
 	if [ $failed -eq 1 ]
 	then
 		echo "docker app failed to start"
@@ -46,13 +46,13 @@ function stopProject(){
 
 # ./commands.sh run new
 function createNewProject(){
-	rm -rf ./src/* && rm -f ./src/.* && docker-compose run --rm npm yarn create quasar
+	rm -rf ./src/* && rm -f ./src/.* && docker-compose run --rm npmfrontend yarn create quasar
 	echo "Project created"
 }
 
 # ./commands.sh run setup
 function setupProject(){
-	docker-compose run --rm npm npm install
+	docker-compose run --rm npmfrontend npm install
 	echo "docker app setup"
 }
 
