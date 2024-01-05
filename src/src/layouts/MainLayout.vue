@@ -34,6 +34,11 @@ import EssentialLink from 'components/EssentialLink.vue'
 
 const linksList = [
   {
+    title: 'Login',
+    icon: 'person',
+    link: '/login'
+  },
+  {
     title: 'Solicitações',
     icon: 'school',
     link: '/applications'
