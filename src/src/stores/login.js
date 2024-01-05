@@ -10,7 +10,10 @@ export const useLoginStore = defineStore('login', {
   },
   actions: {
     async login(email, password) {
-      this.token = await tokenAPI.login(email, password).token
+      tokenAPI.get().then(async () => {
+        const tempToken = await tokenAPI.login(email, password)
+        this.token = tempToken.token
+      })
     },
   },
 });
