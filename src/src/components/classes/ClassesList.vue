@@ -15,7 +15,7 @@
       :loading="loading"
       :filter="filter"
       @request="onRequest"
-      @update:selected="$emit('classSelected', selected[0] ? selected[0] : null)"
+      @update:selected="$emit('classSelected', selected[0] ? selected[0] : {})"
       hide-header
     >
       <template v-slot:loading>

@@ -7,7 +7,6 @@
       :columns="columns"
       row-key="id"
       :filter="filter"
-      :loading="loading"
       :pagination="{ rowsPerPage: 0 }"
     >
       <template v-slot:loading>
@@ -37,7 +36,7 @@ import { ref } from 'vue'
 import { matVisibility } from '@quasar/extras/material-icons'
 import { matEdit } from '@quasar/extras/material-icons'
 
-const filter = ref("");
+const filter = ref("")
 
 defineProps({
   selectedClass: Object
