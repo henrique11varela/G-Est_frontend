@@ -2,10 +2,12 @@
   <router-view />
 </template>
 
-<script>
-import { defineComponent } from 'vue'
+<script setup>
+import { onMounted } from 'vue';
+import { useLoginStore } from './stores/login';
+const loginStore = useLoginStore();
 
-export default defineComponent({
-  name: 'App'
-})
+onMounted(() =>
+  loginStore.setToken()
+)
 </script>
