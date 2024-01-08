@@ -56,6 +56,11 @@ function setupProject(){
 	echo "docker app setup"
 }
 
+function envDevFill(){
+    cp ./src/.env.example ./src/.env
+	echo ".env file updated for development"
+}
+
 # Main
 case $1 in
 	# start
@@ -74,6 +79,7 @@ case $1 in
 				;;
 			# run setup
 			setup)
+				envDevFill
 				setupProject
 				;;
 			# run ____
