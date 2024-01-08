@@ -10,8 +10,10 @@
 <script setup>
 import { reactive } from 'vue'
 import { useLoginStore } from "../stores/login.js";
+import Router from "../router"
 
 const loginStore = useLoginStore()
+const router = Router()
 
 const data = reactive({
   credentials: {
@@ -21,11 +23,12 @@ const data = reactive({
 })
 
 
-function login() {
+async function login() {
   //validate client side
   //send login to api
-  loginStore.login(data.credentials.email, data.credentials.password)
+  await loginStore.login(data.credentials.email, data.credentials.password)
+  router.push({path: '/'})
+  router.go()
 }
-
 
 </script>

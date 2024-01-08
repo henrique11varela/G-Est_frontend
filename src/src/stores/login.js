@@ -19,7 +19,7 @@ export const useLoginStore = defineStore('login', () => {
   }
 
   async function login(email, password) {
-    tokenAPI.get()
+    await tokenAPI.get()
     .then(async () => {
       const tempToken = await tokenAPI.login(email, password)
       token.value = tempToken.token
@@ -28,9 +28,17 @@ export const useLoginStore = defineStore('login', () => {
       })
   }
 
+  function logout() {
+    token.value = ''
+    localStorage.setItem('token', '')
+    api.defaults.headers.common['Authorization'] = ''
+    //fazer pedido a backend para logout
+  }
+
   return {
     token,
     login,
+    logout,
     bearerToken,
     setToken
   }

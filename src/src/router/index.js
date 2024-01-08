@@ -30,6 +30,9 @@ export default route(function (/* { store, ssrContext } */) {
     if (!localStorage.getItem('token') && to.fullPath != '/login') {
       return 'login'
     }
+    if (to.fullPath == '/login' && localStorage.getItem('token')) {
+      return ''
+    }
   })
 
   return Router
