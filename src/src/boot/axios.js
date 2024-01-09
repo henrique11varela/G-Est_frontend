@@ -3,6 +3,7 @@ import axios from 'axios'
 
 axios.defaults.withCredentials = true
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+axios.defaults.headers.common['Accept'] = 'application/json';
 
 // Be careful when using SSR for cross-request state pollution
 // due to creating a Singleton instance here;

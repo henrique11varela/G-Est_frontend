@@ -33,6 +33,7 @@ async function getCompany(id) {
     console.log(error);
   }
 }
+
 async function post(company) {
   try {
     const payload = company
@@ -42,6 +43,7 @@ async function post(company) {
     console.log(error);
   }
 }
+
 async function put(id, company) {
   try {
     const payload = company
@@ -51,7 +53,6 @@ async function put(id, company) {
     console.log(error);
   }
 }
-
 
 async function deleteCompany(id) {
   try {
