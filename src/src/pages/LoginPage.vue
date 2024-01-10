@@ -1,5 +1,5 @@
 <template>
-  <q-page class="">
+  <q-page class="column q-pa-xl">
     <h1>Login</h1>
     <q-input outlined v-model="data.credentials.email" label="Email" />
     <q-input outlined v-model="data.credentials.password" label="Password" />

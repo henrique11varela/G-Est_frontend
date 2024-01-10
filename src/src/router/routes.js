@@ -1,11 +1,21 @@
 
 const routes = [
+  // Login
+  {
+    path: '/login',
+    component: () => import('layouts/CleanLayout.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('pages/LoginPage.vue'),
+      },
+    ]
+  },
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/IndexPage.vue') },
-      { path: 'login', component: () => import('pages/LoginPage.vue') },
       { path: 'applications', component: () => import('pages/ApplicationsPage.vue') },
       { path: 'classes', component: () => import('pages/ClassesPage.vue') }, {
         path: 'companies',
@@ -47,7 +57,7 @@ const routes = [
             path: 'edit/:id',
           },
         ]
-      }
+      },
     ]
   },
 
