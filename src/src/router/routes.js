@@ -19,7 +19,7 @@ const routes = [
             component: () => import('pages/Companies/CompaniesAdd.vue'),
           },
           {
-            path: 'edit/:id',
+            path: ':id',
             component: () => import('pages/Companies/CompaniesEdit.vue'),
           },
         ]
@@ -40,11 +40,8 @@ const routes = [
             component: () => import('pages/Users/CompaniesAdd.vue'),
           },
           {
-            path: 'edit/:id',
+            path: ':id',
             component: () => import('pages/Users/UserEdit.vue'),
-          },
-          {
-            path: 'edit/:id',
           },
         ]
       }

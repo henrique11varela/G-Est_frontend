@@ -8,6 +8,7 @@ import { put, getCompany } from "src/services/fetches/companies.js";
 const router = Router();
 const route = useRoute();
 const id = route.params.id;
+const edit = ref(false);
 async function EditCompany(obj) {
   try {
     await put(id, obj);
@@ -17,10 +18,10 @@ async function EditCompany(obj) {
     //   icon: 'cloud_done',
     //   message: 'Submitted'
     // // })
-    router.push({
-      path:"companies"
+    await router.push({
+      path: "companies"
     });
-    router.go();
+    await router.go();
   } catch (e) {
     console.log(e)
   }
@@ -28,13 +29,15 @@ async function EditCompany(obj) {
 const company = ref(false)
 console.log(company.value)
 onMounted(async () => {
-  company.value = await getCompany(id);
+  try {
+    company.value = await getCompany(id);
+  } catch ($e) {
+    await router.push({ path: 'companies' });
+    await router.go();
+  }
 })
 </script>
 <template>
-  <h1>Editar Companhia</h1>
-  <CompanyFrom v-if="company" @submit-Company="EditCompany"
-  :-company="company"
-
-  />
+  <span class="text-h5">Editar Companhia</span>
+  <CompanyFrom v-if="company" @submit-Company="EditCompany" :-company="company" :edit="edit" />
 </template>
