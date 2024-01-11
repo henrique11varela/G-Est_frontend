@@ -4,11 +4,20 @@ import { PaginationDTO } from "src/dto/PaginationDTO.js"
 export {
   get,
   post,
-  put
+  put,
+  getUser,
+  deleteUser
 }
-async function get(page = 1) {
+async function get(
+  page = 1,
+  filter = {
+    name: "",
+    email: "",
+  },
+  quantity = 15
+) {
   try {
-    const { data } = await api.get('/api/v1/users?page=' + page)
+    const { data } = await api.get(`/api/v1/users?page=${page}&name=${filter.name}&email=${filter.email}&quantity=${quantity}`)
     const users = []
     for (const user of data.data) {
       users.push(new UserDTO(user));
@@ -22,13 +31,9 @@ async function get(page = 1) {
   }
 }
 async function getUser(id) {
-  try {
-    const { data } = await api.get('/api/v1/users/' + id)
-    const company = new CompanyDTO(data);
-    return company
-  } catch (error) {
-    console.log(error);
-  }
+  const { data } = await api.get('/api/v1/users/' + id)
+  const company = new UserDTO(data);
+  return company
 }
 async function post(name, email, password) {
   try {
@@ -43,11 +48,24 @@ async function post(name, email, password) {
     console.log(error);
   }
 }
+async function getCompany(id) {
+  const { data } = await api.get('/api/v1/companies/' + id)
+  const company = new UserDTO(data);
+  return company
+}
 
 async function put(id, user) {
   try {
     const payload = user
     const { data } = await api.put('api/v1/users/' + id, payload)
+    return data
+  } catch (error) {
+    console.log(error);
+  }
+}
+async function deleteUser(id) {
+  try {
+    const { data } = await api.delete('api/v1/users/' + id)
     return data
   } catch (error) {
     console.log(error);
