@@ -39,3 +39,4 @@ const rules = {
   //classes: [val => isArray(val) && val.length > 0 || 'Associe uma turma ao aluno'],
 }
 
+export { StudentIn, StudentOut, rules }
