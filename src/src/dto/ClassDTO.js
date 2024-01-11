@@ -14,7 +14,7 @@ class ClassIn {
 class ClassOut {
   constructor(data) {
     try {
-      this.id = data.id;
+      if (data.id) this.id = data.id;
       this.name = data.name;
       this.start_date = data.startDate;
       this.course_id = data.course;
