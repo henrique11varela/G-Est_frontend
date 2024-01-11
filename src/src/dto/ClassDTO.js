@@ -30,3 +30,5 @@ const rules = {
   course: [ val => val || 'Selecione um curso'],
 }
 
+export { ClassIn, ClassOut, rules }
+
