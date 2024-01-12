@@ -1,6 +1,7 @@
 import { route } from 'quasar/wrappers'
 import { createRouter, createMemoryHistory, createWebHistory, createWebHashHistory } from 'vue-router'
 import routes from './routes'
+import tokenAPI from "../services/fetches/token.js";
 
 /*
  * If not building with SSR mode, you can
@@ -26,11 +27,12 @@ export default route(function (/* { store, ssrContext } */) {
     history: createHistory(process.env.VUE_ROUTER_BASE)
   })
 
-  Router.beforeEach((to, from)=>{
-    if (!localStorage.getItem('token') && to.fullPath != '/login') {
+  Router.beforeEach(async (to, from) => {
+    const { role } = await tokenAPI.checkRole();
+    if (!role && to.fullPath != '/login') {
       return 'login'
     }
-    if (to.fullPath == '/login' && localStorage.getItem('token')) {
+    if (to.fullPath == '/login' && role) {
       return ''
     }
   })
