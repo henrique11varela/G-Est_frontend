@@ -1,12 +1,13 @@
 class ClassIn {
   constructor(data) {
     try {
-      this.id = data.id;
-      this.name = data.name;
-      this.startDate = data.start_date;
-      this.course = data.course;
+      this.id = data.id
+      this.name = data.name
+      this.startDate = data.start_date
+      this.course = data.course
+      this.students = data.students
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error:", error)
     }
   }
 }
@@ -14,12 +15,12 @@ class ClassIn {
 class ClassOut {
   constructor(data) {
     try {
-      if (data.id) this.id = data.id;
-      this.name = data.name;
-      this.start_date = data.startDate;
-      this.course_id = data.course;
+      this.name = data.name
+      this.start_date = data.startDate
+      this.course_id = data.course
+      this.students = data.students
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error:", error)
     }
   }
 }

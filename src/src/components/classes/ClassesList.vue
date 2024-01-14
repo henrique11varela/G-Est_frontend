@@ -6,7 +6,7 @@
       card-class="bg-grey-1"
       flat bordered
       ref="tableRef"
-      :rows="rows"
+      :rows="rowsApi"
       :columns="columns"
       row-key="id"
       selection="single"
@@ -48,6 +48,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { matEdit } from '@quasar/extras/material-icons'
+import { get } from 'src/services/fetches/studentcollections';
 
 const columns = [
   {
@@ -89,8 +90,9 @@ const originalRows = [
 const selected = ref([])
 const tableRef = ref()
 const rows = ref([])
+const rowsApi = ref([])
 const filter = ref('')
-const loading = ref(false)
+const loading = ref(true)
 const pagination = ref({
   sortBy: '',
   descending: false,
@@ -137,41 +139,40 @@ function getRowsNumberCount (filter) {
   return count
 }
 
-function onRequest (props) {
+async function onRequest (props) {
   const { page, rowsPerPage, sortBy, descending } = props.pagination
   const filter = props.filter
 
-  loading.value = true
+  console.log("emulate")
+    // // update rowsCount with appropriate value
+    // pagination.value.rowsNumber = getRowsNumberCount(filter)
 
-  // emulate server
-  setTimeout(() => {
-    // update rowsCount with appropriate value
-    pagination.value.rowsNumber = getRowsNumberCount(filter)
+    // // get all rows if "All" (0) is selected
+    // const fetchCount = rowsPerPage === 0 ? pagination.value.rowsNumber : rowsPerPage
 
-    // get all rows if "All" (0) is selected
-    const fetchCount = rowsPerPage === 0 ? pagination.value.rowsNumber : rowsPerPage
+    // // calculate starting row of data
+    // const startRow = (page - 1) * rowsPerPage
 
-    // calculate starting row of data
-    const startRow = (page - 1) * rowsPerPage
+    // // fetch data from "server"
+    // const returnedData = fetchFromServer(startRow, fetchCount, filter, sortBy, descending)
 
-    // fetch data from "server"
-    const returnedData = fetchFromServer(startRow, fetchCount, filter, sortBy, descending)
+    // // clear out existing data and add new
+    // rows.value.splice(0, rows.value.length, ...returnedData)
 
-    // clear out existing data and add new
-    rows.value.splice(0, rows.value.length, ...returnedData)
+    // // don't forget to update local pagination object
+    // pagination.value.page = page
+    // pagination.value.rowsPerPage = rowsPerPage
+    // pagination.value.sortBy = sortBy
+    // pagination.value.descending = descending
 
-    // don't forget to update local pagination object
-    pagination.value.page = page
-    pagination.value.rowsPerPage = rowsPerPage
-    pagination.value.sortBy = sortBy
-    pagination.value.descending = descending
-
-    // ...and turn of loading indicator
+    rowsApi.value = await get()
     loading.value = false
-  }, 1500)
+    console.log(rowsApi)
+
 }
 
-onMounted(() => {
+onMounted(async () => {
+
   // get initial data from server (1st page)
   tableRef.value.requestServerInteraction()
 })

@@ -17,7 +17,6 @@ class StudentIn {
 class StudentOut {
   constructor(data) {
     try {
-      if (data.id) this.id = data.id;
       this.name = data.name;
       this.personal_email = data.personalEmail;
       this.atec_email = data.atecEmail;
