@@ -6,7 +6,7 @@
       card-class="bg-grey-1"
       flat bordered
       ref="tableRef"
-      :rows="rowsApi"
+      :rows="rows"
       :columns="columns"
       row-key="id"
       selection="single"
@@ -76,21 +76,9 @@ const students = [
   {name: 'Maria Manuela Marmelada Melão', personalEmail: "email123@email.com", atecEmail: "maria.manuelat0123123@edu.atec.pt", phoneNumber: '999999999'},
 ]
 
-
-const originalRows = [
-  { id: 1, name: 'TPSI0622', startDate: '30-06-2022' , course: 'Tecnico Programacao Sistemas Informacao', students},
-  { id: 2, name: 'TPSI0522', startDate: '30-05-2022' , course: 'Tecnico Programacao Sistemas Informacao', students},
-  { id: 3, name: 'TPSI0623', startDate: '30-06-2023' , course: 'Tecnico Programacao Sistemas Informacao', students},
-  { id: 4, name: 'TPSI0620', startDate: '30-06-2020' , course: 'Tecnico Programacao Sistemas Informacao', students},
-  { id: 5, name: 'TPSI0222', startDate: '30-02-2022' , course: 'Tecnico Programacao Sistemas Informacao', students},
-  { id: 6, name: 'TPSI0322', startDate: '30-03-2022' , course: 'Tecnico Programacao Sistemas Informacao', students},
-  { id: 7, name: 'TPSI0624', startDate: '30-06-2024' , course: 'Tecnico Programacao Sistemas Informacao', students},
-]
-
 const selected = ref([])
 const tableRef = ref()
 const rows = ref([])
-const rowsApi = ref([])
 const filter = ref('')
 const loading = ref(true)
 const pagination = ref({
@@ -165,14 +153,13 @@ async function onRequest (props) {
     // pagination.value.sortBy = sortBy
     // pagination.value.descending = descending
 
-    rowsApi.value = await get()
+    rows.value = await get()
     loading.value = false
-    console.log(rowsApi)
+    console.log(rows)
 
 }
 
-onMounted(async () => {
-
+onMounted(() => {
   // get initial data from server (1st page)
   tableRef.value.requestServerInteraction()
 })
