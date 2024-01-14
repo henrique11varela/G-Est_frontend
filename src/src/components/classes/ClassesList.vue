@@ -48,6 +48,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { matEdit } from '@quasar/extras/material-icons'
+import { get } from 'src/services/fetches/studentcollections';
 
 const columns = [
   {
@@ -75,22 +76,11 @@ const students = [
   {name: 'Maria Manuela Marmelada Melão', personalEmail: "email123@email.com", atecEmail: "maria.manuelat0123123@edu.atec.pt", phoneNumber: '999999999'},
 ]
 
-
-const originalRows = [
-  { id: 1, name: 'TPSI0622', startDate: '30-06-2022' , course: 'Tecnico Programacao Sistemas Informacao', students},
-  { id: 2, name: 'TPSI0522', startDate: '30-05-2022' , course: 'Tecnico Programacao Sistemas Informacao', students},
-  { id: 3, name: 'TPSI0623', startDate: '30-06-2023' , course: 'Tecnico Programacao Sistemas Informacao', students},
-  { id: 4, name: 'TPSI0620', startDate: '30-06-2020' , course: 'Tecnico Programacao Sistemas Informacao', students},
-  { id: 5, name: 'TPSI0222', startDate: '30-02-2022' , course: 'Tecnico Programacao Sistemas Informacao', students},
-  { id: 6, name: 'TPSI0322', startDate: '30-03-2022' , course: 'Tecnico Programacao Sistemas Informacao', students},
-  { id: 7, name: 'TPSI0624', startDate: '30-06-2024' , course: 'Tecnico Programacao Sistemas Informacao', students},
-]
-
 const selected = ref([])
 const tableRef = ref()
 const rows = ref([])
 const filter = ref('')
-const loading = ref(false)
+const loading = ref(true)
 const pagination = ref({
   sortBy: '',
   descending: false,
@@ -137,38 +127,36 @@ function getRowsNumberCount (filter) {
   return count
 }
 
-function onRequest (props) {
+async function onRequest (props) {
   const { page, rowsPerPage, sortBy, descending } = props.pagination
   const filter = props.filter
 
-  loading.value = true
+  console.log("emulate")
+    // // update rowsCount with appropriate value
+    // pagination.value.rowsNumber = getRowsNumberCount(filter)
 
-  // emulate server
-  setTimeout(() => {
-    // update rowsCount with appropriate value
-    pagination.value.rowsNumber = getRowsNumberCount(filter)
+    // // get all rows if "All" (0) is selected
+    // const fetchCount = rowsPerPage === 0 ? pagination.value.rowsNumber : rowsPerPage
 
-    // get all rows if "All" (0) is selected
-    const fetchCount = rowsPerPage === 0 ? pagination.value.rowsNumber : rowsPerPage
+    // // calculate starting row of data
+    // const startRow = (page - 1) * rowsPerPage
 
-    // calculate starting row of data
-    const startRow = (page - 1) * rowsPerPage
+    // // fetch data from "server"
+    // const returnedData = fetchFromServer(startRow, fetchCount, filter, sortBy, descending)
 
-    // fetch data from "server"
-    const returnedData = fetchFromServer(startRow, fetchCount, filter, sortBy, descending)
+    // // clear out existing data and add new
+    // rows.value.splice(0, rows.value.length, ...returnedData)
 
-    // clear out existing data and add new
-    rows.value.splice(0, rows.value.length, ...returnedData)
+    // // don't forget to update local pagination object
+    // pagination.value.page = page
+    // pagination.value.rowsPerPage = rowsPerPage
+    // pagination.value.sortBy = sortBy
+    // pagination.value.descending = descending
 
-    // don't forget to update local pagination object
-    pagination.value.page = page
-    pagination.value.rowsPerPage = rowsPerPage
-    pagination.value.sortBy = sortBy
-    pagination.value.descending = descending
-
-    // ...and turn of loading indicator
+    rows.value = await get()
     loading.value = false
-  }, 1500)
+    console.log(rows)
+
 }
 
 onMounted(() => {
