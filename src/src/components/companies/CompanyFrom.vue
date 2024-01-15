@@ -1,7 +1,7 @@
 <script setup>
 import { defineProps, ref, defineEmits, reactive, onMounted } from 'vue'
 import { matEdit, matDelete } from '@quasar/extras/material-icons'
-import { deleteCompany } from "src/services/fetches/companies.js";
+import CompanyFrom from '../../components/companies/CompanyFrom.vue'
 const emit = defineEmits(['submit-Company'])
 import { useQuasar } from 'quasar'
 import Router from 'src/router'
@@ -42,7 +42,7 @@ function showDeleteModal() {
     cancel: true,
     persistent: true
   }).onOk(async () => {
-    await deleteCompany(CompanyData.value.id)
+    await CompanyFrom.destroy(CompanyData.value.id)
     await router.push({ path: 'companies' });
     await router.go();
 

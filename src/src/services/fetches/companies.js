@@ -1,47 +1,40 @@
 import { api } from "src/boot/axios"
-import { CompanyDTO } from "src/dto/CompanyDTO.js"
-import { PaginationDTO } from "src/dto/PaginationDTO.js"
-export {
-  get,
-  post,
-  put,
-  getCompany,
-  deleteCompany
+import CompanyDTO from "src/dto/CompanyDTO.js"
+import PaginationDTO from "src/dto/PaginationDTO.js"
+export default{
+  index,
+  store,
+  show,
+  destroy,
+  update
 }
-async function get(
-  page = 1,
-  filter = {
-    name: "",
-    address: "",
-    postcode: "",
-    nipc: "",
-    niss:"",
-  },
-
-  quantity= 15
-) {
+async function index(params = null) {
   try {
-    const { data } = await api.get(`/api/v1/companies?page=${page}&name=${filter.name}&address=${filter.address}&postcode=${filter.postcode}&niss=${filter.niss}&nipc=${filter.nipc}&quantity=${quantity}` )
+    const { data } = await api.get(`/api/v1/companies`, { params })
     const companies = []
     for (const company of data.data) {
-      companies.push(new CompanyDTO(company));
+      companies.push(CompanyDTO.input(company));
     }
     return {
-      "Data": companies,
-      "Pagination": new PaginationDTO(data.total, data.current_page, data.per_page)
+      data: companies,
+      pagination: PaginationDTO.input(data)
     }
   } catch (error) {
     console.log(error);
   }
 }
 
-async function getCompany(id) {
+async function show(id) {
+  try{
     const { data } = await api.get('/api/v1/companies/' + id)
-    const company = new CompanyDTO(data);
+    const company = CompanyDTO.input(data);
     return company
+  } catch(e) {
+    return {}
+  }
 }
 
-async function post(company) {
+async function store(company) {
   try {
     const payload = company
     const { data } = await api.post('api/v1/companies', payload)
@@ -51,7 +44,7 @@ async function post(company) {
   }
 }
 
-async function put(id, company) {
+async function update(id, company) {
   try {
     const payload = company
     const { data } = await api.put('api/v1/companies/' + id, payload);
@@ -62,7 +55,7 @@ async function put(id, company) {
   }
 }
 
-async function deleteCompany(id) {
+async function destroy(id) {
   try {
     const { data } = await api.delete('api/v1/companies/' + id)
     return data

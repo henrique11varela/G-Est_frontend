@@ -46,8 +46,12 @@ const routes = [
             component: () => import('pages/Companies/CompaniesAdd.vue'),
           },
           {
-            path: ':id',
+            path: 'edit/:id',
             component: () => import('pages/Companies/CompaniesEdit.vue'),
+          },
+          {
+            path: 'show/:id',
+            component: () => import('pages/Companies/CompaniesShow.vue'),
           },
         ]
       },

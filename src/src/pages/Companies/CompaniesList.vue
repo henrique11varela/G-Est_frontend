@@ -2,18 +2,13 @@
 import { computed, onMounted, ref, defineEmits } from 'vue';
 
 
-import { matEdit, matDelete } from '@quasar/extras/material-icons'
-
-import { get } from "src/services/fetches/companies.js";
+import companiesAPI from "src/services/fetches/companies.js";
 
 const emit = defineEmits(['request'])
 const columns = [
-  { name: 'Id', align: 'center', label: 'Id', field: 'id', },
   { name: 'Name', label: 'Name', field: 'name', },
-  { name: 'Address', label: 'Address', field: 'address', },
-  { name: 'PostCode', label: 'PostCode', field: 'postcode', },
+  { name: 'numberOfContact', label: 'Numero de Contatos', field: 'numberOfContact', },
   { name: 'NISS', label: 'NISS', field: 'niss', },
-  { name: 'NIPC', label: 'NIPC', field: 'nipc', },
   { name: 'Action', label: 'Action', field: 'action', }
 ];
 
@@ -26,7 +21,6 @@ const filters = ref({
   address: '',
   postcode: '',
   niss: '',
-  nipc: '',
 })
 const pagination = ref({
   sortBy: 'desc',
@@ -39,12 +33,14 @@ const pagination = ref({
 async function onRequest(props) {
   const { page, rowsPerPage, sortBy, descending } = props.pagination;
   loading.value = true
-  const companiesRequest = await get(page, props.filter, rowsPerPage);
-  rows.value.splice(0, rows.value.length, ...companiesRequest.Data);
+  const companiesRequest = await companiesAPI.index({
+    ...filters.value,
+    quantity: rowsPerPage,
+    page: page,
+  });
+  rows.value.splice(0, rows.value.length, ...companiesRequest.data);
 
-  pagination.value.page = page;
-  pagination.value.rowsNumber = companiesRequest.Pagination.total;
-  pagination.value.rowsPerPage = rowsPerPage
+  pagination.value = companiesRequest.pagination;
   loading.value = false
 }
 
@@ -56,26 +52,18 @@ onMounted(() => {
 <template>
   <q-page padding>
     <!-- content -->
-    <h1>Companhias</h1>
-    <q-table
-    flat bordered
-      ref="tableRef"
-      title="Treats"
-      :rows="rows"
-      :columns="columns"
-      row-key="id"
-      v-model:pagination="pagination"
-      :loading="loading"
-      :filter="filters"
-      binary-state-sort
-      @request="onRequest">
+    <h1>Empresas</h1>
+    <div>
+      <q-btn color="primary" :disable="loading" label="Adicionar" :to="`companies/add`" />
+    </div>
+    <q-table flat bordered ref="tableRef" title="Treats" :rows="rows" :columns="columns" row-key="id"
+      v-model:pagination="pagination" :loading="loading" :filter="filters" binary-state-sort @request="onRequest">
       <template v-slot:loading>
         <q-inner-loading showing color="primary" />
       </template>
 
 
       <template v-slot:top>
-        <q-btn color="primary" :disable="loading" label="Adicionar" :to="`companies/add`" />
         <q-space />
         <q-input label="Name" borderless dense debounce="300" v-model="filters.name" placeholder="Search">
           <template v-slot:append>
@@ -124,7 +112,12 @@ onMounted(() => {
 
       <template v-slot:body-cell-Action="props">
         <q-td :props="props">
-          <q-btn :to="`companies/${props.row.id}`" unelevated :icon="matEdit" text-color="secondary"></q-btn>
+          <q-btn :to="`companies/show/${props.row.id}`" unelevated text-color="primary">
+            <q-icon name="visibility"></q-icon>
+          </q-btn>
+          <q-btn :to="`companies/edit/${props.row.id}`" unelevated text-color="secondary">
+            <q-icon name="edit"></q-icon>
+          </q-btn>
         </q-td>
       </template>
 

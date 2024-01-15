@@ -1,16 +1,33 @@
-export class CompanyDTO {
-  // id;
-  // name;
-  // address;
-  // postCode;
-  // niss;
-  // nipc;
-  constructor(data) {
-    this.id = data.id;
-    this.name = data.name;
-    this.address = data.address;
-    this.postcode = data.postcode;
-    this.niss = data.niss;
-    this.nipc = data.nipc;
+export default {
+  input,
+  output,
+  rules
+}
+function input(data) {
+  return {
+    id: data.id,
+    name: data.name,
+    address: data.address,
+    postcode: data.postcode,
+    niss: data.niss,
+    nipc: data.nipc,
+  }
+}
+function output(data) {
+  return {
+    id: data.id,
+    name: data.name,
+    address: data.address,
+    postcode: data.postcode,
+    niss: data.niss,
+    nipc: data.nipc,
+  }
+}
+function rules() {
+  return {
+    name: [
+      val => val && val.length > 0 || "Introduza um nome",
+
+    ],
   }
 }
