@@ -8,9 +8,20 @@ export {
   getCompany,
   deleteCompany
 }
-async function get(page = 1) {
+async function get(
+  page = 1,
+  filter = {
+    name: "",
+    address: "",
+    postcode: "",
+    nipc: "",
+    niss:"",
+  },
+
+  quantity= 15
+) {
   try {
-    const { data } = await api.get('/api/v1/companies?page=' + page)
+    const { data } = await api.get(`/api/v1/companies?page=${page}&name=${filter.name}&address=${filter.address}&postcode=${filter.postcode}&niss=${filter.niss}&nipc=${filter.nipc}&quantity=${quantity}` )
     const companies = []
     for (const company of data.data) {
       companies.push(new CompanyDTO(company));
@@ -25,13 +36,9 @@ async function get(page = 1) {
 }
 
 async function getCompany(id) {
-  try {
     const { data } = await api.get('/api/v1/companies/' + id)
     const company = new CompanyDTO(data);
     return company
-  } catch (error) {
-    console.log(error);
-  }
 }
 
 async function post(company) {
@@ -47,7 +54,8 @@ async function post(company) {
 async function put(id, company) {
   try {
     const payload = company
-    const { data } = await api.put('api/v1/companies/' + id, payload)
+    const { data } = await api.put('api/v1/companies/' + id, payload);
+
     return data
   } catch (error) {
     console.log(error);
