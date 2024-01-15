@@ -16,8 +16,11 @@
 
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
-          <q-btn unelevated text-color="primary" @click="console.log(props.key)">
+          <q-btn unelevated text-color="primary" @click="console.log('show' + props.key)">
             <q-icon name="visibility"></q-icon>
+          </q-btn>
+          <q-btn unelevated text-color="secondary" @click="console.log('edit' + props.key)">
+            <q-icon name="edit"></q-icon>
           </q-btn>
         </q-td>
       </template>
@@ -42,9 +45,7 @@ async function request(params) {
   loading.value = true
   const output = await internshipsAPI.index(params)
   internships.value = output.data
-  pagination.value.page = output.pagination.current_page
-  pagination.value.rowsPerPage = output.pagination.per_page
-  pagination.value.rowsNumber = output.pagination.total
+  pagination.value = output.pagination
   loading.value = false
 }
 
