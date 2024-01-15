@@ -3,11 +3,9 @@ export  class PaginationDTO {
   lastPage;
   total;
   current_page;*/
-  constructor(from, last_page, total, current_page, per_page) {
-    this.from = from
-    this.lastPage = last_page
+  constructor(total, currentPage, perPage) {
     this.total = total
-    this.current_page = current_page
-    this.per_page = per_page
+    this.currentPage = currentPage
+    this.perPage = perPage
   }
 }

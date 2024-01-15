@@ -1,18 +1,19 @@
 <template>
-  <q-page class="">
+  <q-page class="column q-pa-xl">
     <h1>Login</h1>
-    <q-input outlined v-model="data.credentials.email" label="Email" />
-    <q-input outlined v-model="data.credentials.password" label="Password" />
-    <q-btn color="primary" label="Login" @click="login" />
+    <q-form @submit="login">
+      <q-input outlined v-model="data.credentials.email" label="Email" />
+      <q-input outlined v-model="data.credentials.password" label="Password" />
+      <q-btn color="primary" type="submit" label="Login" />
+    </q-form>
   </q-page>
 </template>
 
 <script setup>
 import { reactive } from 'vue'
-import { useLoginStore } from "../stores/login.js";
+import tokenAPI from "../services/fetches/token.js";
 import Router from "../router"
 
-const loginStore = useLoginStore()
 const router = Router()
 
 const data = reactive({
@@ -22,12 +23,12 @@ const data = reactive({
   }
 })
 
-
-async function login() {
+async function login(e) {
+  e.preventDefault()
   //validate client side
-  //send login to api
-  await loginStore.login(data.credentials.email, data.credentials.password)
-  router.push({path: '/'})
+  await tokenAPI.get()
+  await tokenAPI.login(data.credentials.email, data.credentials.password)
+  await router.push({path: '/'})
   router.go()
 }
 

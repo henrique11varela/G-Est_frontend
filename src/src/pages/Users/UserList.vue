@@ -38,9 +38,9 @@ async function onRequest(props) {
   pagination.value.rowsPerPage = rowsPerPage
   loading.value = false
 }
+
 onMounted(() => {
   tableRef.value.requestServerInteraction()
-
 })
 </script>
 
