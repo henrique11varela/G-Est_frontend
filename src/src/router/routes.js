@@ -64,7 +64,7 @@ const routes = [
           },
           {
             path: 'add',
-            component: () => import('pages/Users/CompaniesAdd.vue'),
+            component: () => import('pages/Users/UserAdd.vue'),
           },
           {
             path: ':id',
