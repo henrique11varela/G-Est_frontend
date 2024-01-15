@@ -1,5 +1,4 @@
 import { api } from "src/boot/axios"
-import { useLoginStore } from "../../stores/login.js";
 
 export default {
   index,

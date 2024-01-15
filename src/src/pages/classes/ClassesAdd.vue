@@ -8,10 +8,12 @@
 
 <script setup>
 import ClassesForm from 'src/components/classes/ClassesForm.vue'
-import { post } from 'src/services/fetches/studentcollections';
+import classesAPI from 'src/services/fetches/classes'
 
 async function createClass(studentClass) {
-  const response = await post(studentClass)
+  const response = await classesAPI.store(studentClass)
+  console.log(response)
 }
 
 </script>
+src/services/fetches/classes

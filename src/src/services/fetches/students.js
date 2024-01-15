@@ -1,20 +1,20 @@
 import { api } from "src/boot/axios"
-import { StudentIn, StudentOut } from "src/dto/StudentDTO"
+import studentDTO from "src/dto/StudentDTO"
 
-export {
-  get,
-  post,
-  getStudent,
-  put,
-  deleteStudent
+export default {
+  index,
+  store,
+  show,
+  update,
+  destroy
 }
 
-async function get() {
+async function index() {
   try {
     const { data } = await api.get('api/v1/students')
     const students = []
     for (const student of data.data) {
-      students.push(new StudentIn(student))
+      students.push(new studentDTO.input(student))
     }
     return students
   } catch (error) {
@@ -22,34 +22,34 @@ async function get() {
   }
 }
 
-async function post(student) {
+async function store(payload) {
   try {
-    const { data } = await api.post('api/v1/students', new StudentOut(student))
+    const { data } = await api.post('api/v1/students', new studentDTO.output(payload))
     return data
   } catch (error) {
     console.log(error);
   }
 }
 
-async function getStudent(id) {
+async function show(id) {
   try {
     const { data } = await api.get(`api/v1/students/${id}`)
-    return new StudentIn(data)
+    return new studentDTO.input(data)
   } catch (error) {
     console.log(error);
   }
 }
 
-async function put(id, student) {
+async function update(payload) {
   try {
-    const { data } = await api.put(`api/v1/students/${id}`, new StudentOut(student))
+    const { data } = await api.put(`api/v1/students/${payload.id}`, new studentDTO.output(payload))
     return data
   } catch (error) {
     console.log(error);
   }
 }
 
-async function deleteStudent(id) {
+async function destroy(id) {
   try {
     const { data } = await api.delete(`api/v1/students/${id}`)
     return data

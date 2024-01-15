@@ -20,10 +20,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
 import { matVisibility, matRemove } from '@quasar/extras/material-icons'
-
-const filter = ref("")
 
 defineProps({
   selectedClass: Object,

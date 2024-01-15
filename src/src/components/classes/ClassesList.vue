@@ -51,7 +51,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { get } from 'src/services/fetches/studentcollections'
+import classesAPI from 'src/services/fetches/classes'
 import { matEdit } from '@quasar/extras/material-icons'
 
 const columns = [
@@ -82,23 +82,24 @@ const pagination = ref({
 async function onRequest (props) {
   const { page, rowsPerPage } = props.pagination
   const filter = props.filter
+  tableRef.value.clearSelection()
 
   loading.value = true
 
-  const response = await get(page, rowsPerPage, filter)
-  rows.value = response.Data
-  pagination.value.page = response.Pagination.currentPage
-  pagination.value.rowsPerPage = response.Pagination.perPage
-  pagination.value.rowsNumber = response.Pagination.total
+  const response = await classesAPI.index({page, rowsPerPage, filter})
+  rows.value = response.data
+  pagination.value.page = response.pagination.currentPage
+  pagination.value.rowsPerPage = response.pagination.perPage
+  pagination.value.rowsNumber = response.pagination.total
 
   loading.value = false
 }
 
 onMounted(() => {
-  // get initial data from server (1st page)
   tableRef.value.requestServerInteraction()
 })
 </script>
 
 
 
+src/services/fetches/classes

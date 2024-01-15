@@ -1,31 +1,34 @@
-class ClassIn {
-  constructor(data) {
-    try {
-      this.id = data.id
-      this.name = data.name
-      this.startDate = data.start_date
-      this.course = data.course
-      const students = []
-      for (const student of data.students) {
-        students.push(new StudentIn(student))
-      }
-      this.students = students
-    } catch (error) {
-      console.error("Error:", error)
+import studentDTO from "./StudentDTO"
+export default { input, output, rules }
+
+function input(data) {
+  try {
+    const students = []
+    for (const student of data.students) {
+      students.push(new studentDTO.input(student))
     }
+    return {
+      id: data.id,
+      name: data.name,
+      startDate: data.start_date,
+      course: data.course,
+      students: students,
+    }
+  } catch (error) {
+    return null
   }
 }
 
-class ClassOut {
-  constructor(data) {
-    try {
-      this.name = data.name
-      this.start_date = data.startDate
-      this.course_id = data.course
-      this.students = data.students
-    } catch (error) {
-      console.error("Error:", error)
+function output(data) {
+  try {
+    return {
+      name: data.name,
+      startDate: data.data.start_date,
+      course: data.course,
+      students: data.students
     }
+  } catch (error) {
+    return null
   }
 }
 
@@ -34,7 +37,3 @@ const rules = {
   startDate: [ (val, rules) => rules.date(val)  || 'Introduza uma data válida' ],
   course: [ val => val || 'Selecione um curso'],
 }
-
-import { StudentIn } from "./StudentDTO"
-export { ClassIn, ClassOut, rules }
-

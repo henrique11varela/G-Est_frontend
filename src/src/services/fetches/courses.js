@@ -1,20 +1,20 @@
 import { api } from "src/boot/axios"
-import { CourseIn, CourseOut } from "src/dto/CourseDTO"
+import courseDTO from "src/dto/CourseDTO"
 
-export {
-  get,
-  post,
-  getCourse,
-  put,
-  deleteCourse
+export default {
+  index,
+  store,
+  show,
+  update,
+  destroy
 }
 
-async function get() {
+async function index() {
   try {
     const { data } = await api.get('api/v1/courses')
     const courses = []
     for (const course of data.data) {
-      courses.push(new CourseIn(course))
+      courses.push(new courseDTO.input(course))
     }
     return courses
   } catch (error) {
@@ -22,34 +22,34 @@ async function get() {
   }
 }
 
-async function post(course) {
+async function store(payload) {
   try {
-    const { data } = await api.post('api/v1/courses', new CourseOut(course))
+    const { data } = await api.post('api/v1/courses', new courseDTO.output(payload))
     return data
   } catch (error) {
     console.log(error);
   }
 }
 
-async function getCourse(id) {
+async function show(id) {
   try {
     const { data } = await api.get(`api/v1/courses/${id}`)
-    return new CourseIn(data)
+    return new courseDTO.input(data)
   } catch (error) {
     console.log(error);
   }
 }
 
-async function put(id, course) {
+async function update(payload) {
   try {
-    const { data } = await api.put(`api/v1/courses/${id}`, new CourseOut(course))
+    const { data } = await api.put(`api/v1/courses/${payload.id}`, new courseDTO.output(payload))
     return data
   } catch (error) {
     console.log(error);
   }
 }
 
-async function deleteCourse(id) {
+async function destroy(id) {
   try {
     const { data } = await api.delete(`api/v1/courses/${id}`)
     return data
