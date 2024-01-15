@@ -40,8 +40,8 @@ async function onRequest(props) {
   const companiesRequest = await get(page);
   rows.value = companiesRequest.Data;
 
-  pagination.value.page = companiesRequest.Pagination.from;
-  pagination.value.rowsPerPage = companiesRequest.Pagination.per_page;
+  pagination.value.page = companiesRequest.Pagination.currentPage;
+  pagination.value.rowsPerPage = companiesRequest.Pagination.perPage;
   pagination.value.rowsNumber = companiesRequest.Pagination.total;
   console.log(pagination)
   loading.value = false
@@ -49,8 +49,8 @@ async function onRequest(props) {
 onMounted(async () => {
   const companiesRequest = await get();
   rows.value = companiesRequest.Data;
-  pagination.value.page = companiesRequest.Pagination.from;
-  pagination.value.rowsPerPage = companiesRequest.Pagination.per_page;
+  pagination.value.page = companiesRequest.Pagination.currentPage;
+  pagination.value.rowsPerPage = companiesRequest.Pagination.perPage;
   pagination.value.rowsNumber = companiesRequest.Pagination.total;
 
 

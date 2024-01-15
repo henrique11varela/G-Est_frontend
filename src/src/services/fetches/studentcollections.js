@@ -1,5 +1,6 @@
 import { api } from "src/boot/axios"
 import { ClassIn, ClassOut } from "src/dto/ClassDTO"
+import { PaginationDTO } from "src/dto/PaginationDTO"
 
 export {
   get,
@@ -9,14 +10,17 @@ export {
   deleteClass
 }
 
-async function get() {
+async function get(page=1, quantity=15, name) {
   try {
-    const { data } = await api.get('api/v1/studentcollections')
+    const { data } = await api.get(`api/v1/studentcollections?page=${page}&quantity=${quantity}&name=${name}`)
     const studentClasses = []
     for (const studentClass of data.data) {
       studentClasses.push(new ClassIn(studentClass))
     }
-    return studentClasses
+    return {
+      "Data": studentClasses,
+      "Pagination": new PaginationDTO(data.total, data.current_page, data.per_page)
+    }
   } catch (error) {
     console.log(error);
   }

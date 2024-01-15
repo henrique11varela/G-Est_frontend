@@ -11,8 +11,8 @@
 
 <script setup>
 import { ref } from 'vue'
-import ClassesList from '../components/classes/ClassesList.vue'
-import StudentsList from '../components/students/StudentsList.vue'
+import ClassesList from '../../components/classes/ClassesList.vue'
+import StudentsList from '../../components/classes/StudentsList.vue'
 
 const selectedClass = ref({})
 </script>
