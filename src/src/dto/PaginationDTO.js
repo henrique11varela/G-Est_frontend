@@ -5,9 +5,9 @@ export default {
 function input(data) {
   try {
     return {
-      total: data.total,
-      currentPage: data.current_page,
-      perPage: data.per_page,
+      rowsNumber: data.total,
+      page: data.current_page,
+      rowsPerPage: data.per_page,
     }
   } catch (error) {
     console.error("Error:", error);
