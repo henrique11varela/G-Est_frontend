@@ -11,7 +11,7 @@
         v-model="name"
         label="Turma"
         lazy-rules
-        :rules="rules.name"
+        :rules="classDTO.rules.name"
       />
 
       <q-select
@@ -20,7 +20,7 @@
         :options="courses"
         label="Curso"
         lazy-rules
-        :rules="rules.course"
+        :rules="classDTO.rules.course"
         :option-label="(course) => course.name"
         :display-value="course ? course.name : 'Escolha o curso'"
         :loading="loading"
@@ -30,7 +30,7 @@
         v-model="startDate"
         minimal
         lazy-rules
-        :rules="rules.startDate"
+        :rules="classDTO.rules.startDate"
       />
 
       <div>Name: {{ name }}</div>
@@ -47,15 +47,9 @@
 </template>
 
 <script setup>
-import { rules } from '../../dto/ClassDTO'
+import classDTO from '../../dto/ClassDTO'
 import { ref, onMounted } from 'vue'
-import { get } from '../../services/fetches/courses'
-
-const name = ref()
-const course = ref()
-const startDate = ref()
-const courses = ref()
-const loading = ref(false)
+import coursesAPI from '../../services/fetches/courses'
 
 const props = defineProps({
   defaultName: {
@@ -72,17 +66,22 @@ const props = defineProps({
   },
 })
 
+const name = ref("")
+const course = ref(null)
+const startDate = ref("")
+const courses = ref(null)
+const loading = ref(false)
+
+
 onMounted(async () => {
   try {
-    setDefaults()
     loading.value = true
-    courses.value = await get()
+    courses.value = await coursesAPI.index()
     loading.value = false
   } catch (error) {
     console.error(error)
   }
 })
-
 
 function onReset() {
   setDefaults()

@@ -1,26 +1,27 @@
-class CourseIn {
-  constructor(data) {
-    try {
-      this.id = data.id
-      this.name = data.name
-      this.courseType = data.course_type
-      this.area = data.area
-    } catch (error) {
-      console.error("Error:", error)
+export default { input, output, rules }
+
+function input(data) {
+  try {
+    return {
+      id: data.id,
+      name: data.name,
+      courseType: data.course_type,
+      area: data.area
     }
+  } catch (error) {
+    return null
   }
 }
 
-class CourseOut {
-  constructor(data) {
-    try {
-      this.id = data.id
-      this.name = data.name
-      this.course_type_id = data.course.id
-      this.area_id = data.area.id
-    } catch (error) {
-      console.error("Error:", error)
+function output(data) {
+  try {
+    return {
+      name: data.name,
+      course_type_id: data.course.id,
+      area_id: data.area.id
     }
+  } catch (error) {
+    return null
   }
 }
 
@@ -29,6 +30,3 @@ const rules = {
   courseTypeId: [ val => val  || 'Selecione o tipo de curso' ],
   areaId: [ val => val || 'Selecione a área de formação'],
 }
-
-export { CourseIn, CourseOut, rules }
-

@@ -1,7 +1,7 @@
 <template>
   <q-page padding>
     <!-- content -->
-    <h1>Turmas</h1>
+    <h1 class="text-h6">Turmas</h1>
     <div class="row">
       <ClassesList @classSelected="selected => selectedClass = selected"></ClassesList>
       <StudentsList :selected-class="selectedClass" class="col-grow"></StudentsList>
