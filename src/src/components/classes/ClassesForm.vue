@@ -2,7 +2,7 @@
   <q-page padding>
     <div class="q-pa-md" style="max-width: 400px">
     <q-form
-      @submit="onSubmit"
+      @submit="$emit('classSubmit', {name, course, startDate})"
       @reset="onReset"
       class="q-gutter-md"
     >
@@ -21,7 +21,9 @@
         label="Curso"
         lazy-rules
         :rules="rules.course"
+        :option-label="(course) => course.name"
         :display-value="course ? course.name : 'Escolha o curso'"
+        :loading="loading"
       />
 
       <q-date
@@ -47,50 +49,48 @@
 <script setup>
 import { rules } from '../../dto/ClassDTO'
 import { ref, onMounted } from 'vue'
+import { get } from '../../services/fetches/courses'
 
 const name = ref()
 const course = ref()
 const startDate = ref()
+const courses = ref()
+const loading = ref(false)
 
-defineProps({
-  classProp: {
+const props = defineProps({
+  defaultName: {
+    type: String,
+    default: ""
+  },
+  defaultCourse: {
     type: Object,
-    default: {
-      id: null,
-      name: "",
-      course: null,
-      startDate: ""
-    }
+    default: null
+  },
+  defaultStartDate: {
+    type: String,
+    default: ""
+  },
+})
+
+onMounted(async () => {
+  try {
+    setDefaults()
+    loading.value = true
+    courses.value = await get()
+    loading.value = false
+  } catch (error) {
+    console.error(error)
   }
 })
 
 
-let isCreate = true
-onMounted(() => {
-  if (classProp.id) isCreate = false
-  name.value = classProp.name
-  course.value = classProp.course
-  startDate.value = classProp.startDate
-
-  //Implement course fetch and possibly other stuff
-  //...
-})
-
-function onSubmit(){
-
-}
-
 function onReset() {
-  name.value = classProp.name
-  course.value = classProp.course
-  startDate.value = classProp.startDate
+  setDefaults()
 }
 
-const courses = [
-  {id: 1, name: 'TPSI'},
-  {id: 2, name: 'GRSIP'},
-  {id: 3, name: 'MPCP'},
-  {id: 4, name: 'CIBER'},
-  {id: 5, name: 'GCE'},
-]
+function setDefaults() {
+  name.value = props.defaultName
+  course.value = props.defaultCourse
+  startDate.value = props.defaultStartDate
+}
 </script>

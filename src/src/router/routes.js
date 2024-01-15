@@ -17,7 +17,24 @@ const routes = [
     children: [
       { path: '', component: () => import('pages/IndexPage.vue') },
       { path: 'applications', component: () => import('pages/ApplicationsPage.vue') },
-      { path: 'classes', component: () => import('pages/ClassesPage.vue') }, {
+      {
+        path: 'classes',
+        children: [
+          {
+            path: '',
+            component: () => import('pages/classes/ClassesPage.vue'),
+          },
+          {
+            path: 'add',
+            component: () => import('pages/classes/ClassesAdd.vue'),
+          },
+          {
+            path: 'edit/:id',
+            component: () => import('pages/classes/ClassesEdit.vue'),
+          },
+        ]
+      },
+      {
         path: 'companies',
         children: [
           {

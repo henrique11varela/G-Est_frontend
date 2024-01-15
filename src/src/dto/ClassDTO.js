@@ -5,7 +5,11 @@ class ClassIn {
       this.name = data.name
       this.startDate = data.start_date
       this.course = data.course
-      this.students = data.students
+      const students = []
+      for (const student of data.students) {
+        students.push(new StudentIn(student))
+      }
+      this.students = students
     } catch (error) {
       console.error("Error:", error)
     }
@@ -31,5 +35,6 @@ const rules = {
   course: [ val => val || 'Selecione um curso'],
 }
 
+import { StudentIn } from "./StudentDTO"
 export { ClassIn, ClassOut, rules }
 
