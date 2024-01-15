@@ -15,7 +15,7 @@ async function get(page = 1) {
     }
     return {
       "Data": users,
-      "Pagination": new PaginationDTO(data.from, data.last_page, data.total, data.current_page, data.per_page)
+      "Pagination": new PaginationDTO(data.total, data.current_page, data.per_page)
     }
   } catch (error) {
     console.log(error);

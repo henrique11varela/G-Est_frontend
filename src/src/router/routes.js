@@ -1,13 +1,40 @@
 
 const routes = [
+  // Login
+  {
+    path: '/login',
+    component: () => import('layouts/CleanLayout.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('pages/LoginPage.vue'),
+      },
+    ]
+  },
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/IndexPage.vue') },
-      { path: 'login', component: () => import('pages/LoginPage.vue') },
       { path: 'applications', component: () => import('pages/ApplicationsPage.vue') },
-      { path: 'classes', component: () => import('pages/ClassesPage.vue') }, {
+      {
+        path: 'classes',
+        children: [
+          {
+            path: '',
+            component: () => import('pages/classes/ClassesPage.vue'),
+          },
+          {
+            path: 'add',
+            component: () => import('pages/classes/ClassesAdd.vue'),
+          },
+          {
+            path: 'edit/:id',
+            component: () => import('pages/classes/ClassesEdit.vue'),
+          },
+        ]
+      },
+      {
         path: 'companies',
         children: [
           {
@@ -44,7 +71,7 @@ const routes = [
             component: () => import('pages/Users/UserEdit.vue'),
           },
         ]
-      }
+      },
     ]
   },
 

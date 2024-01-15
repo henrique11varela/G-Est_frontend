@@ -1,5 +1,6 @@
 import { api } from "src/boot/axios"
-import { useLoginStore } from "../../stores/login.js";
+import { InternshipIn } from "../../dto/InternshipDTO.js";
+import { PaginationDTO } from "../../dto/PaginationDTO.js";
 
 export default {
   index,
@@ -8,10 +9,17 @@ export default {
   destroy
 }
 
-async function index() {
+async function index(params = null) {
   try {
-    const { data } = await api.get('api/v1/internships')
-    return data
+    const { data } = await api.get('api/v1/internships', { params: params })
+    const internships = []
+    data.data.forEach(internship => {
+      internships.push(new InternshipIn(internship))
+    });
+    return {
+      data: internships,
+      pagination: new PaginationDTO(data.from, data.last_page, data.total, data.current_page, data.per_page)
+    }
   } catch (error) {
     console.log(error);
   }

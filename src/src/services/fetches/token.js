@@ -3,6 +3,8 @@ import { api } from "src/boot/axios"
 export default {
   get,
   login,
+  logout,
+  checkRole,
 }
 
 async function get() {
@@ -24,5 +26,24 @@ async function login(email, password) {
     return data
   } catch (error) {
     console.log(error);
+  }
+}
+
+async function logout() {
+  try {
+    const { data } = await api.post('api/v1/logout')
+    return data
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function checkRole() {
+  try {
+    const { data } = await api.get('api/v1/checkrole')
+    return data
+  } catch (error) {
+    return {}
+    // console.log(error);
   }
 }

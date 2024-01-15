@@ -28,7 +28,7 @@ async function get(
     }
     return {
       "Data": companies,
-      "Pagination": new PaginationDTO(data.from, data.last_page, data.total, data.current_page, data.per_page)
+      "Pagination": new PaginationDTO(data.total, data.current_page, data.per_page)
     }
   } catch (error) {
     console.log(error);

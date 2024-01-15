@@ -9,8 +9,7 @@
         </q-toolbar-title>
 
         <div>Data</div>
-        <q-btn v-if="loginStore.token == ''" :to="{path: 'login'}">Login</q-btn>
-        <q-btn v-else @click="logout">Logout</q-btn>
+        <q-btn @click="logout">Logout</q-btn>
       </q-toolbar>
     </q-header>
 
@@ -33,7 +32,7 @@
 <script>
 import { defineComponent, ref } from 'vue'
 import EssentialLink from 'components/EssentialLink.vue'
-import { useLoginStore } from '../stores/login.js'
+import tokenAPI from "../services/fetches/token.js";
 import Router from '../router'
 
 const linksList = [
@@ -78,19 +77,17 @@ export default defineComponent({
 
   setup() {
     const leftDrawerOpen = ref(false)
-    const loginStore = useLoginStore()
     const router = Router()
 
-    function logout() {
-      loginStore.logout()
-      router.push({path: 'login'})
+    async function logout() {
+      await tokenAPI.logout()
+      await router.push({path: 'login'})
       router.go()
     }
 
     return {
       essentialLinks: linksList,
       leftDrawerOpen,
-      loginStore,
       logout,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value
