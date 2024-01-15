@@ -1,6 +1,6 @@
 <script setup>
 import CompanyFrom from '../../components/companies/CompanyFrom.vue'
-import { computed, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import Router from 'src/router';
 import companiesAPI from "src/services/fetches/companies.js";
@@ -36,6 +36,6 @@ onMounted(async () => {
 })
 </script>
 <template>
-  <span class="text-h5">Editar Companhia</span>
+  <span class="text-h5">Ver Companhia</span>
   <CompanyFrom v-if="company" @submit-Company="EditCompany" :-company="company" :edit="edit" />
 </template>
