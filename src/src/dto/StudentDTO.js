@@ -31,11 +31,13 @@ function output(data) {
   }
 }
 
-const rules = {
-  name: [ val => val && val.length > 0 || 'Introduza um nome' ],
-  email: [ (val, rules) => rules.email(val)  || 'Introduza um email válido' ],
-  phoneNumber: [ val => /^\d{9}$/.test(val) || 'Introduza um telefone válido'],
+function rules() {
+  return {
+    name: [ val => val && val.length > 0 || 'Introduza um nome' ],
+    email: [ (val, rules) => rules.email(val)  || 'Introduza um email válido' ],
+    phoneNumber: [ val => /^\d{9}$/.test(val) || 'Introduza um telefone válido'],
 
-  // Será necessário validação de turma a partir da criação/update de um aluno?
-  //classes: [val => isArray(val) && val.length > 0 || 'Associe uma turma ao aluno'],
+    // Será necessário validação de turma a partir da criação/update de um aluno?
+    //classes: [val => isArray(val) && val.length > 0 || 'Associe uma turma ao aluno'],
+  }
 }

@@ -32,8 +32,10 @@ function output(data) {
   }
 }
 
-const rules = {
-  name: [ val => val && val.length > 0 || 'Introduza um nome' ],
-  startDate: [ (val, rules) => rules.date(val)  || 'Introduza uma data válida' ],
-  course: [ val => val || 'Selecione um curso'],
+function rules() {
+  return {
+    name: [ val => val && val.length > 0 || 'Introduza um nome' ],
+    startDate: [ (val, rules) => rules.date(val)  || 'Introduza uma data válida' ],
+    course: [ val => val || 'Selecione um curso'],
+  }
 }

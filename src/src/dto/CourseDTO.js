@@ -25,8 +25,10 @@ function output(data) {
   }
 }
 
-const rules = {
-  name: [ val => val && val.length > 0 || 'Introduza um nome' ],
-  courseTypeId: [ val => val  || 'Selecione o tipo de curso' ],
-  areaId: [ val => val || 'Selecione a área de formação'],
+function rules() {
+  return {
+    name: [ val => val && val.length > 0 || 'Introduza um nome' ],
+    courseTypeId: [ val => val  || 'Selecione o tipo de curso' ],
+    areaId: [ val => val || 'Selecione a área de formação'],
+  }
 }
