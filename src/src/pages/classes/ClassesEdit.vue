@@ -29,8 +29,10 @@ onMounted(async () => {
   studentClass.value = await classesAPI.show(route.params.id);
 })
 
-async function editClass(studentClass) {
-  const response = await classesAPI.update(studentClass)
+async function editClass(editedClass) {
+  editedClass.id = studentClass.value.id
+  console.log(editedClass)
+  const response = await classesAPI.update(editedClass)
   console.log(response)
 }
 

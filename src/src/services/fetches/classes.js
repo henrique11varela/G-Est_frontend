@@ -12,15 +12,14 @@ export default {
 
 async function index(params = null) {
   try {
-    const { data } = await api.get('api/v1/studentcollections', params)
+    const { data } = await api.get('api/v1/studentcollections', { params: params })
     const studentClasses = []
     for (const studentClass of data.data) {
-      studentClasses.push(new ClassIn(studentClass))
+      studentClasses.push(classDTO.input(studentClass))
     }
-    const paginationData = {...data.total, ...data.current_page, ...data.per_page}
     return {
       data: studentClasses,
-      pagination: new paginationDTO(paginationData)
+      pagination: paginationDTO.input(data)
     }
   } catch (error) {
     console.log(error);
@@ -47,7 +46,10 @@ async function show(id) {
 
 async function update(payload) {
   try {
-    const { data } = await api.put(`api/v1/studentcollections/${id}`, new classDTO.output(payload))
+    console.log(payload)
+    const out = new classDTO.output(payload)
+    console.log(out)
+    const { data } = await api.put(`api/v1/studentcollections/${payload.id}`, out)
     return data
   } catch (error) {
     console.log(error);
