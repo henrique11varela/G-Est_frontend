@@ -23,8 +23,8 @@ function output(data) {
   try {
     return {
       name: data.name,
-      startDate: data.data.start_date,
-      course: data.course,
+      start_date: data.startDate,
+      course_id: data.course.id,
       students: data.students
     }
   } catch (error) {

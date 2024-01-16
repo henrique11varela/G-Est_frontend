@@ -11,7 +11,7 @@
         v-model="name"
         label="Turma"
         lazy-rules
-        :rules="classDTO.rules.name"
+        :rules="rules.name"
       />
 
       <q-select
@@ -20,8 +20,8 @@
         :options="courses"
         label="Curso"
         lazy-rules
-        :rules="classDTO.rules.course"
-        :option-label="(course) => course.name"
+        :rules="rules.course"
+        :option-label="course => course.name"
         :display-value="course ? course.name : 'Escolha o curso'"
         :loading="loading"
       />
@@ -30,7 +30,7 @@
         v-model="startDate"
         minimal
         lazy-rules
-        :rules="classDTO.rules.startDate"
+        :rules="rules.startDate"
       />
 
       <div>Name: {{ name }}</div>
@@ -71,6 +71,7 @@ const course = ref(null)
 const startDate = ref("")
 const courses = ref(null)
 const loading = ref(false)
+const rules = classDTO.rules()
 
 
 onMounted(async () => {

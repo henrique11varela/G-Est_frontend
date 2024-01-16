@@ -36,7 +36,9 @@
 
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
-          <q-btn unelevated :icon="matEdit" text-color="secondary"></q-btn>
+          <q-btn unelevated text-color="secondary" @click="console.log('edit' + props.key)">
+            <q-icon name="edit"></q-icon>
+          </q-btn>
         </q-td>
       </template>
     </q-table>
@@ -52,7 +54,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import classesAPI from 'src/services/fetches/classes'
-import { matEdit } from '@quasar/extras/material-icons'
 
 const columns = [
   {
@@ -86,11 +87,10 @@ async function onRequest (props) {
 
   loading.value = true
 
-  const response = await classesAPI.index({page, rowsPerPage, filter})
+  const params = { page, quantity: rowsPerPage, name: filter }
+  const response = await classesAPI.index(params)
   rows.value = response.data
-  pagination.value.page = response.pagination.currentPage
-  pagination.value.rowsPerPage = response.pagination.perPage
-  pagination.value.rowsNumber = response.pagination.total
+  pagination.value = response.pagination
 
   loading.value = false
 }
