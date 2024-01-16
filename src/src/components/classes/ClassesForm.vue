@@ -10,7 +10,6 @@
         outlined
         v-model="name"
         label="Turma"
-        lazy-rules
         :rules="rules.name"
       />
 
@@ -19,26 +18,34 @@
         v-model="course"
         :options="courses"
         label="Curso"
-        lazy-rules
         :rules="rules.course"
         :option-label="course => course.name"
         :display-value="course ? course.name : 'Escolha o curso'"
         :loading="loading"
       />
 
-      <q-date
-        v-model="startDate"
-        minimal
-        lazy-rules
-        :rules="rules.startDate"
-      />
+      <q-input outlined v-model="startDate" mask="date" :rules="rules.startDate">
+        <template v-slot:append>
+          <q-icon name="event" class="cursor-pointer">
+            <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+              <q-date
+                v-model="startDate"
+                :locale="qDateLocale">
+                <div class="row items-center justify-end">
+                  <q-btn v-close-popup label="Close" color="primary" flat />
+                </div>
+              </q-date>
+            </q-popup-proxy>
+          </q-icon>
+        </template>
+      </q-input>
 
       <div>Name: {{ name }}</div>
       <div>Course: {{ course }}</div>
       <div>Start Date: {{ startDate }}</div>
 
       <div>
-        <q-btn label="Criar" type="submit" color="primary"/>
+        <q-btn label="Guardar" type="submit" color="primary"/>
         <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
       </div>
     </q-form>
@@ -47,6 +54,7 @@
 </template>
 
 <script setup>
+import { qDateLocale } from 'src/config/config'
 import classDTO from '../../dto/ClassDTO'
 import { ref, onMounted } from 'vue'
 import coursesAPI from '../../services/fetches/courses'
@@ -78,6 +86,7 @@ onMounted(async () => {
   try {
     loading.value = true
     courses.value = await coursesAPI.index()
+    console.log(courses.value)
     loading.value = false
   } catch (error) {
     console.error(error)

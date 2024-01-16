@@ -18,6 +18,7 @@
       @update:selected="$emit('classSelected', selected[0] ? selected[0] : {})"
       hide-header
       hide-no-data
+      :rows-per-page-options="[5, 10, 15, 20, 25, 30, 50, 100]"
     >
       <template v-slot:loading>
         <q-inner-loading showing color="primary" />
@@ -99,7 +100,3 @@ onMounted(() => {
   tableRef.value.requestServerInteraction()
 })
 </script>
-
-
-
-src/services/fetches/classes
