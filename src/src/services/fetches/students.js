@@ -34,7 +34,7 @@ async function store(payload) {
 async function show(id) {
   try {
     const { data } = await api.get(`api/v1/students/${id}`)
-    return new studentDTO.input(data)
+    return studentDTO.input(data)
   } catch (error) {
     console.log(error);
   }

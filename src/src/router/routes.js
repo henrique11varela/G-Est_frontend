@@ -55,9 +55,29 @@ const routes = [
           },
         ]
       },
-      { path: 'internships', component: () => import('pages/InternshipsPage.vue') },
       { path: 'students', component: () => import('pages/StudentsPage.vue') },
+      {
+        path: 'internships',
+        children: [
+          {
 
+            path: '',
+            component: () => import('pages/InternshipsPage.vue'),
+          },
+          {
+            path: 'add/:id',
+            component: () => import('pages/Internships/InternshipsAddPage.vue'),
+          },
+          {
+            path: 'edit/:id',
+            component: () => import('pages/Internships/InternshipsAddPage.vue'),
+          },
+          {
+            path: 'show/:id',
+            component: () => import('pages/Internships/InternshipsAddPage.vue'),
+          },
+        ]
+      },
       {
         path: 'users',
         children: [
