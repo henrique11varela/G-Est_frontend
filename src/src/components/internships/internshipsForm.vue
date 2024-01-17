@@ -4,10 +4,14 @@
 
       <q-input class="q-mb-lg" outlined v-model="student.name" :loading="loading.student" label="Aluno" readonly />
 
-      <q-input outlined v-model="internshipData.tutor_id" :rules="InternshipDTO.rules().tutor_id" lazy-rules="ondemand"
-        label="Tutor" :disable="true" />
+      <q-select outlined v-model="selectedTutor" :options="tutorOptions" option-label="name"
+        :rules="InternshipDTO.rules().tutor_id" lazy-rules="ondemand" label="Tutor" :disable="!selectedCompany">
+        <template v-slot:append>
+          <q-btn round dense flat icon="add" @click.stop.prevent />
+        </template>
+      </q-select>
 
-      <q-input filled v-model="internshipData.start_date" mask="date" :rules="InternshipDTO.rules().start_date"
+      <q-input outlined v-model="internshipData.start_date" mask="date" :rules="InternshipDTO.rules().start_date"
         lazy-rules="ondemand" label="Data de inicio">
         <template v-slot:append>
           <q-icon name="event" class="cursor-pointer">
@@ -28,21 +32,21 @@
       <q-input outlined v-model="internshipData.postcode" mask="####-###" fill-mask
         :rules="InternshipDTO.rules().postcode" lazy-rules="ondemand" label="Codigo postal" />
 
-      <q-checkbox outlined v-model="internshipData.meal_allowance" label="Refeição" />
+      <q-checkbox class="q-mb-lg" outlined v-model="internshipData.meal_allowance" label="Refeição" />
 
       <q-input outlined v-model="internshipData.observations" :rules="InternshipDTO.rules().observations"
         lazy-rules="ondemand" label="Observações" />
 
-      <q-table flat bordered title="Empresas" ref="tableRef" :rows="companies" :columns="companiesColumns" row-key="id"
-        selection="single" v-model:pagination="companiesPagination" :loading="loading.companies"
-        v-model:selected="selectedCompany" @request="onRequest" :rows-per-page-options="[5, 10, 15, 20, 25, 30, 50, 100]">
+      <q-table class="q-mb-lg" card-class="bg-grey-1" flat bordered title="Empresas" ref="tableRef" :rows="companies"
+        :columns="companiesColumns" row-key="id" selection="single" v-model:pagination="companiesPagination"
+        :loading="loading.companies" v-model:selected="selectedCompany" @request="onRequest"
+        :rows-per-page-options="[5, 10, 15, 20, 25, 30, 50, 100]">
         <template v-slot:loading>
           <q-inner-loading showing color="primary" />
         </template>
       </q-table>
 
       <q-btn color="primary" type="submit">Submit</q-btn>
-      <q-btn>Reset</q-btn>
       {{ internshipData }}
     </q-form>
   </div>
@@ -56,6 +60,10 @@ import studentsAPI from "../../services/fetches/students.js";
 import companiesAPI from "../../services/fetches/companies.js";
 import internshipsAPI from "../../services/fetches/internships.js";
 
+const props = defineProps({
+  edit: Boolean,
+});
+
 const route = useRoute();
 const tableRef = ref();
 const loading = ref({
@@ -66,6 +74,8 @@ const loading = ref({
 const student = ref({});
 const companies = ref([]);
 const selectedCompany = ref();
+const selectedTutor = ref();
+const tutorOptions = ref([]);
 
 const companiesColumns = [
   {
@@ -95,7 +105,8 @@ const companiesPagination = ref({
 });
 
 const internshipData = ref({
-  student_id: route.params.id,
+  id: "",
+  student_id: "",
   company_id: "",
   tutor_id: "",
   start_date: "",
@@ -105,10 +116,22 @@ const internshipData = ref({
   observations: "",
 });
 
-watch(selectedCompany, (newValue) => {
-  console.log(newValue)
-  internshipData.value.company_id = newValue[0].id
-  internshipData.value.tutor_id = ""
+let firstTimeRunningWatch = true
+
+watch(selectedCompany, (newValue, oldValue) => {
+  internshipData.value.company_id = newValue[0]?.id
+  tutorOptions.value = newValue[0]?.tutor_people
+  if (firstTimeRunningWatch && props.edit) {
+    firstTimeRunningWatch = false
+  }
+  else {
+    internshipData.value.tutor_id = ""
+    selectedTutor.value = null
+  }
+})
+
+watch(selectedTutor, (newValue) => {
+  internshipData.value.tutor_id = newValue?.id
 })
 
 async function fetchStudent() {
@@ -119,7 +142,6 @@ async function fetchStudent() {
 }
 
 async function onRequest(props) {
-
   const { page, rowsPerPage } = props.pagination
   // const filter = props.filter
   const params = {
@@ -133,14 +155,38 @@ async function onRequest(props) {
   loading.value.companies = false;
 }
 
-onMounted(() => {
-  fetchStudent()
-  tableRef.value.requestServerInteraction()
+onMounted(async () => {
+  if (!props.edit) {
+    internshipData.value.student_id = route.params.id
+    fetchStudent()
+    tableRef.value.requestServerInteraction()
+  }
+  else {
+    tableRef.value.requestServerInteraction()
+    const output = await internshipsAPI.show(route.params.id)
+    student.value = output.student
+    selectedCompany.value = [output.company]
+    selectedTutor.value = output.tutor
+    internshipData.value.id = output.id
+    internshipData.value.student_id = output.student.id
+    internshipData.value.company_id = output.company.id
+    internshipData.value.tutor_id = output.tutor.id
+    internshipData.value.start_date = output.start_date
+    internshipData.value.address = output.address
+    internshipData.value.postcode = output.postcode
+    internshipData.value.meal_allowance = output.meal_allowance
+    internshipData.value.observations = output.observations
+  }
 })
 
 function onSubmit() {
   console.log(internshipData.value)
-  internshipsAPI.store(internshipData.value)
+  if (!props.edit) {
+    internshipsAPI.store(internshipData.value)
+  }
+  else {
+    internshipsAPI.update(internshipData.value)
+  }
 }
 
 </script>
