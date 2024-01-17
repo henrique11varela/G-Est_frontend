@@ -1,0 +1,105 @@
+<template>
+  <div class="q-pa-md">
+    <q-table
+      color="primary"
+      card-class="bg-grey-1"
+      flat bordered
+      ref="tableRef"
+      :rows="rows"
+      :columns="columns"
+      row-key="id"
+      v-model:pagination="pagination"
+      :loading="loading"
+      :filter="filter"
+      @request="onRequest"
+      hide-no-data
+      :rows-per-page-options="[5, 10, 15, 20, 25, 30, 50, 100]"
+    >
+      <template v-slot:loading>
+        <q-inner-loading showing color="primary" />
+      </template>
+
+      <template v-slot:top-right>
+        <div>
+          <q-input outlined bg-color="white" borderless dense debounce="300" v-model="filter" placeholder="Search">
+            <template v-slot:append>
+              <q-icon name="search" />
+            </template>
+          </q-input>
+        </div>
+      </template>
+
+      <template v-slot:body-cell-actions="props">
+        <q-td :props="props">
+          <q-btn unelevated text-color="primary" :to="`classes/show/${props.row.id}`">
+            <q-icon name="visibility"></q-icon>
+          </q-btn>
+          <q-btn unelevated text-color="secondary" :to="`classes/edit/${props.row.id}`">
+            <q-icon name="edit"></q-icon>
+          </q-btn>
+        </q-td>
+      </template>
+    </q-table>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted } from 'vue'
+import classesAPI from 'src/services/fetches/classes'
+
+const columns = [
+  {
+    name: 'name',
+    required: true,
+    label: 'Turmas',
+    align: 'left',
+    field: row => row.name,
+  },
+  {
+    name: 'course',
+    required: true,
+    label: 'Curso',
+    align: 'left',
+    field: row => row.course.name,
+  },
+  {
+    name: 'startDate',
+    required: true,
+    label: 'Data de início',
+    align: 'left',
+    field: row => row.startDate,
+  },
+  {
+    name: 'actions',
+    align: 'center',
+  }
+]
+
+const tableRef = ref()
+const rows = ref([])
+const filter = ref('')
+const loading = ref(false)
+const pagination = ref({
+  page: 1,
+  rowsPerPage: 15,
+  rowsNumber: 0
+})
+
+async function onRequest (props) {
+  const { page, rowsPerPage } = props.pagination
+  const filter = props.filter
+
+  loading.value = true
+
+  const params = { page, quantity: rowsPerPage, name: filter }
+  const response = await classesAPI.index(params)
+  rows.value = response.data
+  pagination.value = response.pagination
+
+  loading.value = false
+}
+
+onMounted(() => {
+  tableRef.value.requestServerInteraction()
+})
+</script>
