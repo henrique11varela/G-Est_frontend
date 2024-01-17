@@ -34,7 +34,7 @@ function output(data) {
       address: data.address,
       postcode: data.postcode,
       observations: data.observations,
-      tutor_id: data.tutor_id,
+      company_person_id: data.tutor_id,
       company_id: data.company_id,
     }
   } catch (error) {
@@ -52,6 +52,6 @@ function rules() {
     postcode: [val => val && val.length > 0 || 'Introduza um codigo postal'],
     observations: [val => val && val.length > 0 || 'Introduza uma observação'],
     tutor_id: [val => val || 'Selecione um tutor'],
-    company_id: [val => val || 'Selecione uma empresa'],
+    company_id: [val => val != "" || 'Selecione uma empresa'],
   }
 }

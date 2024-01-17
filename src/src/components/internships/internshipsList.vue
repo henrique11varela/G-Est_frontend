@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-md">
-    <q-table card-class="bg-grey-1" flat bordered :rows="internships" :columns="columns" row-key="id"
+    <q-table card-class="bg-grey-1" ref="tableRef" flat bordered :rows="internships" :columns="columns" row-key="id"
       v-model:pagination="pagination" :loading="loading" @request="onRequest" :rows-per-page-options="[5, 10, 15, 20, 25, 30, 50, 100]">
       <template v-slot:loading>
         <q-inner-loading showing color="primary" />
@@ -32,6 +32,7 @@
 import { onMounted, ref } from "vue";
 import internshipsAPI from "../../services/fetches/internships.js";
 
+const tableRef = ref();
 const internships = ref([]);
 const pagination = ref({
   page: 1,
@@ -41,16 +42,8 @@ const pagination = ref({
 const loading = ref(false);
 const filter = ref("")
 
-async function request(params) {
-  loading.value = true
-  const output = await internshipsAPI.index(params)
-  internships.value = output.data
-  pagination.value = output.pagination
-  loading.value = false
-}
-
-onMounted(async () => {
-  await request()
+onMounted(() => {
+  tableRef.value.requestServerInteraction()
 });
 
 const columns = [
@@ -97,7 +90,9 @@ async function onRequest(props) {
     quantity: rowsPerPage,
   }
   loading.value = true
-  await request(params)
+  const output = await internshipsAPI.index(params)
+  internships.value = output.data
+  pagination.value = output.pagination
   loading.value = false
 }
 
