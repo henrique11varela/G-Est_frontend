@@ -1,5 +1,6 @@
 import { api } from "src/boot/axios"
 import studentDTO from "src/dto/StudentDTO"
+import paginationDTO from "src/dto/PaginationDTO"
 
 export default {
   index,
@@ -9,14 +10,17 @@ export default {
   destroy
 }
 
-async function index() {
+async function index(params) {
   try {
-    const { data } = await api.get('api/v1/students')
+    const { data } = await api.get('api/v1/students', { params: params })
     const students = []
     for (const student of data.data) {
       students.push(new studentDTO.input(student))
     }
-    return students
+    return {
+      data: students,
+      pagination: paginationDTO.input(data)
+    }
   } catch (error) {
     console.log(error);
   }
