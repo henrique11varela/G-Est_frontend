@@ -3,12 +3,12 @@
     <q-table
       card-class="bg-grey-1"
       flat bordered
-      :rows="selectedClass.students"
+      :rows="students"
       :columns="columns"
       row-key="id"
       hide-no-data
       hide-pagination
-      :pagination="{rowsPerPage:0}"
+      :pagination="{ rowsPerPage:0 }"
     >
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
@@ -29,7 +29,7 @@
 
 <script setup>
 defineProps({
-  selectedClass: Object,
+  students: Object,
   isEdit: Boolean
 })
 

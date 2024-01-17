@@ -1,7 +1,7 @@
 <template>
   <q-page padding>
     <!-- content -->
-    <h1>Criar turma</h1>
+    <h1 class="text-h6">Criar turma</h1>
     <ClassesForm @class-submit="createClass"></ClassesForm>
   </q-page>
 </template>
@@ -16,4 +16,3 @@ async function createClass(studentClass) {
 }
 
 </script>
-src/services/fetches/classes

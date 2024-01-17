@@ -22,15 +22,19 @@ const routes = [
         children: [
           {
             path: '',
-            component: () => import('pages/classes/ClassesPage.vue'),
+            component: () => import('pages/Classes/ClassesPage.vue'),
           },
           {
             path: 'add',
-            component: () => import('pages/classes/ClassesAdd.vue'),
+            component: () => import('pages/Classes/ClassesAdd.vue'),
           },
           {
             path: 'edit/:id',
-            component: () => import('pages/classes/ClassesEdit.vue'),
+            component: () => import('pages/Classes/ClassesEdit.vue'),
+          },
+          {
+            path: 'show/:id',
+            component: () => import('pages/Classes/ClassesShow.vue'),
           },
         ]
       },

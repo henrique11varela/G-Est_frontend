@@ -1,22 +1,17 @@
 <template>
-  <div class="q-pa-md fit-content">
+  <div class="q-pa-md">
     <q-table
       color="primary"
-      :selected-rows-label="()=>''"
       card-class="bg-grey-1"
       flat bordered
       ref="tableRef"
       :rows="rows"
       :columns="columns"
       row-key="id"
-      selection="single"
-      v-model:selected="selected"
       v-model:pagination="pagination"
       :loading="loading"
       :filter="filter"
       @request="onRequest"
-      @update:selected="$emit('classSelected', selected[0] ? selected[0] : {})"
-      hide-header
       hide-no-data
       :rows-per-page-options="[5, 10, 15, 20, 25, 30, 50, 100]"
     >
@@ -24,9 +19,8 @@
         <q-inner-loading showing color="primary" />
       </template>
 
-      <template v-slot:top>
+      <template v-slot:top-right>
         <div>
-          <q-btn color="primary" :disable="loading" label="Adicionar" :to="'classes/add'" />
           <q-input outlined bg-color="white" borderless dense debounce="300" v-model="filter" placeholder="Search">
             <template v-slot:append>
               <q-icon name="search" />
@@ -37,7 +31,10 @@
 
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
-          <q-btn unelevated text-color="secondary" @click="console.log('edit' + props.key)">
+          <q-btn unelevated text-color="primary" :to="`classes/show/${props.row.id}`">
+            <q-icon name="visibility"></q-icon>
+          </q-btn>
+          <q-btn unelevated text-color="secondary" :to="`classes/edit/${props.row.id}`">
             <q-icon name="edit"></q-icon>
           </q-btn>
         </q-td>
@@ -45,12 +42,6 @@
     </q-table>
   </div>
 </template>
-
-<style scoped>
-.fit-content {
-  width: fit-content;
-}
-</style>
 
 <script setup>
 import { ref, onMounted } from 'vue'
@@ -65,12 +56,25 @@ const columns = [
     field: row => row.name,
   },
   {
+    name: 'course',
+    required: true,
+    label: 'Curso',
+    align: 'left',
+    field: row => row.course.name,
+  },
+  {
+    name: 'startDate',
+    required: true,
+    label: 'Data de início',
+    align: 'left',
+    field: row => row.startDate,
+  },
+  {
     name: 'actions',
     align: 'center',
   }
 ]
 
-const selected = ref([])
 const tableRef = ref()
 const rows = ref([])
 const filter = ref('')
@@ -84,7 +88,6 @@ const pagination = ref({
 async function onRequest (props) {
   const { page, rowsPerPage } = props.pagination
   const filter = props.filter
-  tableRef.value.clearSelection()
 
   loading.value = true
 
