@@ -31,7 +31,7 @@ function output(data) {
       name: data.name,
       start_date: data.startDate,
       course_id: data.course.id,
-      students: data.students
+      ...(data.hasOwnProperty('students') && { students: data.students }),
     }
   } catch (error) {
     console.error("Error:", error)
