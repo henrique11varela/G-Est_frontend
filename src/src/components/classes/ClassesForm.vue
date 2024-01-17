@@ -1,6 +1,5 @@
 <template>
-  <q-page padding>
-    <div class="q-pa-md" style="max-width: 400px">
+    <div class="q-pa-md">
     <q-form
       @submit="$emit('classSubmit', {name, course, startDate})"
       @reset="onReset"
@@ -10,6 +9,7 @@
         outlined
         v-model="name"
         label="Turma"
+        lazy-rules="ondemand"
         :rules="rules.name"
       />
 
@@ -18,13 +18,14 @@
         v-model="course"
         :options="courses"
         label="Curso"
+        lazy-rules="ondemand"
         :rules="rules.course"
         :option-label="course => course.name"
         :display-value="course ? course.name : 'Escolha o curso'"
         :loading="loading"
       />
 
-      <q-input outlined v-model="startDate" mask="date" :rules="rules.startDate">
+      <q-input outlined v-model="startDate" mask="date" lazy-rules="ondemand" :rules="rules.startDate">
         <template v-slot:append>
           <q-icon name="event" class="cursor-pointer">
             <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -50,7 +51,6 @@
       </div>
     </q-form>
     </div>
-  </q-page>
 </template>
 
 <script setup>
