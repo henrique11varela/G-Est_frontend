@@ -19,7 +19,7 @@
           <q-btn unelevated text-color="primary" @click="console.log('show' + props.key)">
             <q-icon name="visibility"></q-icon>
           </q-btn>
-          <q-btn unelevated text-color="secondary" @click="console.log('edit' + props.key)">
+          <q-btn unelevated text-color="secondary" :to="`internships/edit/${props.key}`">
             <q-icon name="edit"></q-icon>
           </q-btn>
         </q-td>

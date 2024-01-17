@@ -9,6 +9,8 @@ function input(data) {
     name: data.name,
     address: data.address,
     postcode: data.postcode,
+    tutor_people: data.tutor_people,
+    // tutor_people: CompanyPeopleDTO.input(data.tutor_people),
     niss: data.niss,
     nipc: data.nipc,
   }

@@ -6,6 +6,7 @@ export default {
   index,
   store,
   show,
+  update,
   destroy
 }
 
@@ -54,7 +55,7 @@ async function update(payload) {
 
 async function destroy(id) {
   try {
-    const { data } = await api.delee(`api/v1/internships/${id}`)
+    const { data } = await api.delete(`api/v1/internships/${id}`)
     return data
   } catch (error) {
     console.log(error);
