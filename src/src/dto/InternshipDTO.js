@@ -7,8 +7,8 @@ function input(data) {
   try {
     return {
       id: data.id,
-      // student: data.student,
-      student: StudentDTO.input(data.student),
+      student: data.student,
+      // student: StudentDTO.input(data.student),
       meal_allowance: data.meal_allowance == 1,
       start_date: data.start_date,
       address: data.address,
@@ -16,8 +16,8 @@ function input(data) {
       observations: data.observations,
       tutor: data.company_person,
       // tutor: CompanyPersonDTO.input(data.company_person),
-      // company: data.company,
-      company: CompanyDTO.input(data.company),
+      company: data.company,
+      // company: CompanyDTO.input(data.company),
     }
   } catch (error) {
     console.error("Error:", error);
