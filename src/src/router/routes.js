@@ -78,7 +78,7 @@ const routes = [
           },
           {
             path: 'show/:id',
-            component: () => import('pages/Internships/InternshipsAddPage.vue'),
+            component: () => import('pages/Internships/InternshipsShowPage.vue'),
           },
         ]
       },
