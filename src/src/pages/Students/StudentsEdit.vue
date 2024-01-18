@@ -9,29 +9,30 @@
     </div>
     <div class="q-pa-md" v-else>
       <div class="flex justify-between items-center">
-        <h1 class="text-h6">Editar turma</h1>
+        <h1 class="text-h6">Editar formando</h1>
         <div v-if="isAdmin">
           <q-btn unelevated color="negative" icon="delete" label="Apagar" @click="confirmDelete"/>
         </div>
       </div>
-      <ClassesForm @class-submit="editClass"
-      :default-name="classInfo.name"
-      :default-start-date="classInfo.startDate"
-      :default-course="classInfo.course"
-    ></ClassesForm>
+      <StudentsForm @student-submit="editStudent"
+        :default-name="student.name"
+        :default-atec-email="student.atecEmail"
+        :default-personal-email="student.personalEmail"
+        :default-phone-number="student.phoneNumber"
+      ></StudentsForm>
     </div>
   </q-page>
 </template>
 
 <script setup>
-import ClassesForm from 'src/components/classes/ClassesForm.vue'
-import classesAPI from 'src/services/fetches/classes'
+import StudentsForm from 'src/components/students/StudentsForm.vue'
+import studentsAPI from 'src/services/fetches/students'
 import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
 
 
-const classInfo = ref({})
+const student = ref({})
 const loading = ref(true)
 const router = useRouter()
 const route = useRoute()
@@ -42,37 +43,36 @@ const isAdmin = true
 watch(
   () => route.params.id,
   async newId => {
-    getClass(newId)
+    getStudent(newId)
   }
 )
 
 onMounted(() => {
-  getClass(route.params.id)
+  getStudent(route.params.id)
 })
 
-async function getClass(id) {
+async function getStudent(id) {
   loading.value = true
-  const response = await classesAPI.show(id)
-  const { name, course, startDate } = response
-  classInfo.value = { name, course, startDate }
+  const response = await studentsAPI.show(id)
+  student.value = response
   loading.value = false
 }
 
-async function editClass(editedClass) {
+async function editStudent(editedStudent) {
   const id = route.params.id
-  editedClass.id = id
-  const response = await classesAPI.update(editedClass)
+  editedStudent.id = id
+  const response = await studentsAPI.update(editedStudent)
   $q.notify({
       color: 'green-4',
       textColor: 'white',
       icon: 'cloud_done',
       message: 'Editado'
   })
-  router.push(`/classes/show/${id}`)
+  router.push(`/students/show/${id}`)
 }
 
-async function deleteClass() {
-  const response = await classesAPI.destroy(route.params.id)
+async function deleteStudent() {
+  const response = await studentsAPI.destroy(route.params.id)
   console.log(response)
   $q.notify({
       color: 'red-4',
@@ -80,16 +80,16 @@ async function deleteClass() {
       icon: 'cloud_done',
       message: 'Apagado'
   })
-  router.push('/classes')
+  router.push('/students')
 }
 
 function confirmDelete () {
   $q.dialog({
     title: 'Apagar',
-    message: 'Tem a certeza que pretende apagar a turma?',
+    message: 'Tem a certeza que pretende apagar o formando?',
     cancel: true
   }).onOk(() => {
-    deleteClass()
+    deleteStudent()
   })
 }
 </script>

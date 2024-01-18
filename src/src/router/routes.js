@@ -68,7 +68,36 @@ const routes = [
           },
         ]
       },
-      { path: 'students', component: () => import('pages/StudentsPage.vue') },
+      {
+        path: 'students',
+        children: [
+          {
+            path: '',
+            component: () => import('pages/Students/StudentsPage.vue'),
+          },
+          {
+            path: 'add',
+            component: () => import('pages/Students/StudentsAdd.vue'),
+          },
+          {
+            path: 'edit/:id',
+            children: [
+              {
+                path: '',
+                component: () => import('pages/Students/StudentsEdit.vue'),
+              },
+              {
+                path: 'classes',
+                component: () => import('pages/Students/StudentsClassesEdit.vue'),
+              },
+            ]
+          },
+          {
+            path: 'show/:id',
+            component: () => import('pages/Students/StudentsShow.vue'),
+          },
+        ]
+      },
       {
         path: 'internships',
         children: [
