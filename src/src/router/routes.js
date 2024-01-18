@@ -30,7 +30,16 @@ const routes = [
           },
           {
             path: 'edit/:id',
-            component: () => import('pages/Classes/ClassesEdit.vue'),
+            children: [
+              {
+                path: '',
+                component: () => import('pages/Classes/ClassesEdit.vue'),
+              },
+              {
+                path: 'students',
+                component: () => import('pages/Classes/ClassesStudentsEdit.vue'),
+              },
+            ]
           },
           {
             path: 'show/:id',

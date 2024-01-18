@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-md">
+  <div class="q-py-md">
     <q-table
       color="primary"
       card-class="bg-grey-1"
@@ -33,9 +33,6 @@
         <q-td :props="props">
           <q-btn unelevated text-color="primary" :to="`classes/show/${props.row.id}`">
             <q-icon name="visibility"></q-icon>
-          </q-btn>
-          <q-btn unelevated text-color="secondary" :to="`classes/edit/${props.row.id}`">
-            <q-icon name="edit"></q-icon>
           </q-btn>
         </q-td>
       </template>

@@ -1,9 +1,10 @@
 <template>
   <q-page padding>
-    <!-- content -->
-    <h1 class="text-h6">Turmas</h1>
-    <q-btn color="primary" label="Adicionar" :to="'classes/add'" />
-    <ClassesList></ClassesList>
+    <div class="q-pa-md">
+      <h1 class="text-h6">Turmas</h1>
+      <q-btn unelevated color="primary" icon="add" label="Adicionar" :to="'classes/add'" />
+      <ClassesList></ClassesList>
+    </div>
   </q-page>
 </template>
 

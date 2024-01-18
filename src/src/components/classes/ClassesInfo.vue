@@ -1,6 +1,28 @@
 <template>
-  <div class="q-pa-md">
+  <div class="q-py-md">
+    <q-list bordered class="row">
 
+      <q-item class="col-12 col-sm-3">
+        <q-item-section>
+          <q-item-label overline>Turma</q-item-label>
+          <q-item-label >{{ classInfo.name }}</q-item-label>
+        </q-item-section>
+      </q-item>
+
+      <q-item class="col-12 col-sm-6">
+        <q-item-section>
+          <q-item-label overline>Curso</q-item-label>
+          <q-item-label>{{ classInfo.course }}</q-item-label>
+        </q-item-section>
+      </q-item>
+
+      <q-item class="col-12 col-sm-3">
+        <q-item-section>
+          <q-item-label overline>Data de início</q-item-label>
+          <q-item-label>{{ classInfo.startDate }}</q-item-label>
+        </q-item-section>
+      </q-item>
+    </q-list>
   </div>
 </template>
 

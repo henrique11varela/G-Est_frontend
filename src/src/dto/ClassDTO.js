@@ -11,13 +11,13 @@ function input(data) {
         students.push(new studentDTO.input(student))
       }
     }
-    const hasCoursesKey = data.hasOwnProperty('course')
+    const hasCourseKey = data.hasOwnProperty('course')
     return {
       id: data.id,
       name: data.name,
       startDate: data.start_date,
       ...(hasStudentsKey && { students }),
-      ...(hasCoursesKey && { course: data.course }),
+      ...(hasCourseKey && { course: data.course }),
     }
   } catch (error) {
     console.error("Error:", error)
@@ -27,11 +27,19 @@ function input(data) {
 
 function output(data) {
   try {
+    const students = []
+    let hasStudentsKey = false
+    if (data.hasOwnProperty('students')) {
+      hasStudentsKey = true
+      for (const student of data.students) {
+        students.push(student.id)
+      }
+    }
     return {
       name: data.name,
       start_date: data.startDate,
       course_id: data.course.id,
-      ...(data.hasOwnProperty('students') && { students: data.students }),
+      ...(hasStudentsKey && { students }),
     }
   } catch (error) {
     console.error("Error:", error)
