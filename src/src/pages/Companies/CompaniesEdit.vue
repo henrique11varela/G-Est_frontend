@@ -7,7 +7,7 @@ import companiesAPI from "src/services/fetches/companies.js";
 const router = Router();
 const route = useRoute();
 const id = route.params.id;
-const edit = ref(false);
+const edit = ref(true);
 async function EditCompany(obj) {
   try {
     await companiesAPI.update(id, obj);
@@ -28,7 +28,9 @@ async function EditCompany(obj) {
 const company = ref(false)
 onMounted(async () => {
   try {
-    company.value = await companiesAPI.show(id);
+    const data = await companiesAPI.show(id);
+    company.value = data.company;
+    people.value = data.contactPeople;
   } catch ($e) {
     await router.push({ path: 'companies' });
     await router.go();
@@ -36,6 +38,6 @@ onMounted(async () => {
 })
 </script>
 <template>
-  <span class="text-h5">Editar Companhia</span>
-  <CompanyFrom v-if="company" @submit-Company="EditCompany" :-company="company" :edit="edit" />
+  <span class="text-h5">Editar empresa</span>
+  <CompanyFrom v-if="company" @submit-Company="EditCompany" :company="company" :edit="edit" />
 </template>

@@ -51,13 +51,30 @@ const routes = [
           },
           {
             path: 'show/:id',
-            component: () => import('pages/Companies/CompaniesShow.vue'),
+            children: [
+              {
+                path: '',
+                component: () => import('pages/Companies/CompaniesShow.vue'),
+              },
+              {
+                path: 'contactperson',
+                children: [
+                  {
+                    path: 'add',
+                    component: () => import('pages/CompaniesPerson/CompaniesPersonAdd.vue'),
+                  },
+                  {
+                    path: 'edit/:personId',
+                    component: () => import('pages/CompaniesPerson/CompaniesPersonEdit.vue'),
+                  },
+                ]
+              },
+            ]
           },
         ]
       },
       { path: 'internships', component: () => import('pages/InternshipsPage.vue') },
       { path: 'students', component: () => import('pages/StudentsPage.vue') },
-
       {
         path: 'users',
         children: [

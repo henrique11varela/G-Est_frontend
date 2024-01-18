@@ -1,15 +1,16 @@
 <script setup>
 import UserFrom from '../../components/users/UserFrom.vue'
 
+import UserDTO from "src/dto/UserDTO"
 import { useQuasar } from 'quasar'
 import { computed, onMounted, ref } from 'vue';
 import Router from 'src/router';
-import { post } from "src/services/fetches/users.js";
+import userAPI from "src/services/fetches/users.js";
 const router = Router();
 const $q = useQuasar()
 async function addUser(obj) {
   try {
-    await post(obj.name, obj.email, obj.password)
+    await userAPI.create(UserDTO.output(obj))
     $q.notify({
       color: 'green-4',
       textColor: 'white',

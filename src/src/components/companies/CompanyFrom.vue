@@ -8,7 +8,7 @@ import Router from 'src/router'
 
 const router = Router()
 const props = defineProps({
-  Company: null,
+  company: null,
   edit: Boolean
 })
 const $q = useQuasar()
@@ -29,8 +29,8 @@ function editButton() {
   reactiveEdit.value = !reactiveEdit.value;
 }
 onMounted(() => {
-  if (props.Company) {
-    CompanyData.value = props.Company
+  if (props.company) {
+    CompanyData.value = props.company
   }
   reactiveEdit.value = props.edit
 })
@@ -50,10 +50,9 @@ function showDeleteModal() {
 }
 </script>
 <template>
-  <q-page padding>
     <!-- content -->
     <div v-if="CompanyData.id">
-      <q-btn @click="editButton" :icon="matEdit" label="Edit" />
+      <q-btn :to="`/companies/edit/${CompanyData.id}`" :icon="matEdit" label="Edit" />
 
       <q-btn v-if="reactiveEdit" @click="showDeleteModal" color="red" :icon="matDelete" label="Delete" />
     </div>
@@ -90,5 +89,4 @@ function showDeleteModal() {
 
 
 
-  </q-page>
 </template>

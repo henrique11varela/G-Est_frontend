@@ -25,6 +25,6 @@ async function addCompany(obj) {
 }
 </script>
 <template>
-  <span class="text-h5">Adicionar Companhia</span>
+  <span class="text-h5">Adicionar empresa</span>
   <CompanyFrom  :edit="edit" @submit-Company="addCompany" />
 </template>

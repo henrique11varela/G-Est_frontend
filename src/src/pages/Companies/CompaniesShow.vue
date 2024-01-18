@@ -1,5 +1,6 @@
 <script setup>
 import CompanyFrom from '../../components/companies/CompanyFrom.vue'
+import CompanyPeopleList from '../../components/companiesPeople/CompanyPeopleList.vue'
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import Router from 'src/router';
@@ -26,16 +27,22 @@ async function EditCompany(obj) {
   }
 }
 const company = ref(false)
+const people = ref(false)
 onMounted(async () => {
   try {
-    company.value = await companiesAPI.show(id);
+    const data = await companiesAPI.show(id);
+    company.value = data.company;
+    people.value = data.contactPeople;
   } catch ($e) {
-    await router.push({ path: 'companies' });
-    await router.go();
+    // await router.push({ path: 'companies' });
+    // await router.go();
   }
 })
 </script>
 <template>
-  <span class="text-h5">Ver Companhia</span>
-  <CompanyFrom v-if="company" @submit-Company="EditCompany" :-company="company" :edit="edit" />
+  <q-page>
+    <span class="text-h5">Ver Empresa</span>
+    <CompanyFrom v-if="company" @submit-Company="EditCompany" :company="company" :edit="edit" />
+    <CompanyPeopleList v-if="people" :people="people" />
+  </q-page>
 </template>
