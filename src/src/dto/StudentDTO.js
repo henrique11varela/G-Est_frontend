@@ -55,6 +55,7 @@ function rules() {
   return {
     name: [ val => val && val.length > 0 || 'Introduza um nome' ],
     email: [ (val, rules) => rules.email(val)  || 'Introduza um email válido' ],
+    phoneNumber: [ val => val && val.length > 0 || 'Introduza um telefone'],
 
     //phoneNumber: [ val => /^\d{9}$/.test(val) || 'Introduza um telefone válido'],
 
