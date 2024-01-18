@@ -1,23 +1,23 @@
 <template>
   <q-page padding>
     <div class="q-pa-md">
-      <h1 class="text-h6">Criar turma</h1>
-      <ClassesForm @class-submit="createClass"></ClassesForm>
+      <h1 class="text-h6">Criar formando</h1>
+      <StudentsForm @student-submit="createStudent"></StudentsForm>
     </div>
   </q-page>
 </template>
 
 <script setup>
-import ClassesForm from 'src/components/classes/ClassesForm.vue'
-import classesAPI from 'src/services/fetches/classes'
+import StudentsForm from 'src/components/students/StudentsForm.vue'
+import studentsAPI from 'src/services/fetches/students'
 import { useQuasar } from 'quasar'
 import { useRouter } from 'vue-router'
 
 const $q = useQuasar()
 const router = useRouter()
 
-async function createClass(studentClass) {
-  const response = await classesAPI.store(studentClass)
+async function createStudent(student) {
+  const response = await studentsAPI.store(student)
   console.log(response)
   $q.notify({
     color: 'green-4',
@@ -25,7 +25,7 @@ async function createClass(studentClass) {
     icon: 'cloud_done',
     message: 'Criado'
   })
-  router.push('/classes')
+  router.push('/students')
 }
 
 </script>

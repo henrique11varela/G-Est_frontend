@@ -22,7 +22,7 @@ async function index(params = null) {
       pagination: paginationDTO.input(data)
     }
   } catch (error) {
-    console.log(error);
+    console.log(error)
   }
 }
 
@@ -31,7 +31,7 @@ async function store(payload) {
     const { data } = await api.post('api/v1/studentcollections', new classDTO.output(payload))
     return data
   } catch (error) {
-    console.log(error);
+    console.log(error)
   }
 }
 
@@ -40,19 +40,16 @@ async function show(id) {
     const { data } = await api.get(`api/v1/studentcollections/${id}`)
     return new classDTO.input(data)
   } catch (error) {
-    console.log(error);
+    console.log(error)
   }
 }
 
 async function update(payload) {
   try {
-    console.log(payload)
-    const out = new classDTO.output(payload)
-    console.log(out)
-    const { data } = await api.put(`api/v1/studentcollections/${payload.id}`, out)
+    const { data } = await api.put(`api/v1/studentcollections/${payload.id}`, new classDTO.output(payload))
     return data
   } catch (error) {
-    console.log(error);
+    console.log(error)
   }
 }
 
@@ -61,6 +58,6 @@ async function destroy(id) {
     const { data } = await api.delete(`api/v1/studentcollections/${id}`)
     return data
   } catch (error) {
-    console.log(error);
+    console.log(error)
   }
 }

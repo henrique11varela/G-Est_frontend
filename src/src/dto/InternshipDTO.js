@@ -1,6 +1,6 @@
 export default { input, output, rules }
-// import StudentDTO from "./StudentDTO.js";
-// import CompanyDTO from "./CompanyDTO.js";
+import StudentDTO from "./StudentDTO.js";
+import CompanyDTO from "./CompanyDTO.js";
 // import CompanyPersonDTO from "./CompanyPersonDTO.js";
 
 function input(data) {
@@ -9,7 +9,7 @@ function input(data) {
       id: data.id,
       student: data.student,
       // student: StudentDTO.input(data.student),
-      meal_allowance: data.meal_allowance,
+      meal_allowance: data.meal_allowance == 1,
       start_date: data.start_date,
       address: data.address,
       postcode: data.postcode,
@@ -34,7 +34,7 @@ function output(data) {
       address: data.address,
       postcode: data.postcode,
       observations: data.observations,
-      tutor_id: data.tutor_id,
+      company_person_id: data.tutor_id,
       company_id: data.company_id,
     }
   } catch (error) {
@@ -52,6 +52,6 @@ function rules() {
     postcode: [val => val && val.length > 0 || 'Introduza um codigo postal'],
     observations: [val => val && val.length > 0 || 'Introduza uma observação'],
     tutor_id: [val => val || 'Selecione um tutor'],
-    company_id: [val => val || 'Selecione uma empresa'],
+    company_id: [val => val != "" || 'Selecione uma empresa'],
   }
 }

@@ -16,21 +16,34 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/IndexPage.vue') },
-      { path: 'applications', component: () => import('pages/ApplicationsPage.vue') },
+      { path: 'applications', component: () => import('pages/ApplicationsPage/ApplicationsPage.vue') },
       {
         path: 'classes',
         children: [
           {
             path: '',
-            component: () => import('pages/classes/ClassesPage.vue'),
+            component: () => import('pages/Classes/ClassesPage.vue'),
           },
           {
             path: 'add',
-            component: () => import('pages/classes/ClassesAdd.vue'),
+            component: () => import('pages/Classes/ClassesAdd.vue'),
           },
           {
             path: 'edit/:id',
-            component: () => import('pages/classes/ClassesEdit.vue'),
+            children: [
+              {
+                path: '',
+                component: () => import('pages/Classes/ClassesEdit.vue'),
+              },
+              {
+                path: 'students',
+                component: () => import('pages/Classes/ClassesStudentsEdit.vue'),
+              },
+            ]
+          },
+          {
+            path: 'show/:id',
+            component: () => import('pages/Classes/ClassesShow.vue'),
           },
         ]
       },
@@ -73,8 +86,58 @@ const routes = [
           },
         ]
       },
-      { path: 'internships', component: () => import('pages/InternshipsPage.vue') },
-      { path: 'students', component: () => import('pages/StudentsPage.vue') },
+      {
+        path: 'students',
+        children: [
+          {
+            path: '',
+            component: () => import('pages/Students/StudentsPage.vue'),
+          },
+          {
+            path: 'add',
+            component: () => import('pages/Students/StudentsAdd.vue'),
+          },
+          {
+            path: 'edit/:id',
+            children: [
+              {
+                path: '',
+                component: () => import('pages/Students/StudentsEdit.vue'),
+              },
+              {
+                path: 'classes',
+                component: () => import('pages/Students/StudentsClassesEdit.vue'),
+              },
+            ]
+          },
+          {
+            path: 'show/:id',
+            component: () => import('pages/Students/StudentsShow.vue'),
+          },
+        ]
+      },
+      {
+        path: 'internships',
+        children: [
+          {
+
+            path: '',
+            component: () => import('pages/Internships/InternshipsPage.vue'),
+          },
+          {
+            path: 'add/:id',
+            component: () => import('pages/Internships/InternshipsAddPage.vue'),
+          },
+          {
+            path: 'edit/:id',
+            component: () => import('pages/Internships/InternshipsEditPage.vue'),
+          },
+          {
+            path: 'show/:id',
+            component: () => import('pages/Internships/InternshipsShowPage.vue'),
+          },
+        ]
+      },
       {
         path: 'users',
         children: [

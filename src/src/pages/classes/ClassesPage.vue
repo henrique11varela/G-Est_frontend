@@ -1,18 +1,13 @@
 <template>
   <q-page padding>
-    <!-- content -->
-    <h1 class="text-h6">Turmas</h1>
-    <div class="row">
-      <ClassesList @classSelected="selected => selectedClass = selected"></ClassesList>
-      <StudentsList :selected-class="selectedClass" class="col-grow"></StudentsList>
+    <div class="q-pa-md">
+      <h1 class="text-h6">Turmas</h1>
+      <q-btn unelevated color="primary" icon="add" label="Adicionar" :to="'classes/add'" />
+      <ClassesList></ClassesList>
     </div>
   </q-page>
 </template>
 
 <script setup>
-import { ref } from 'vue'
 import ClassesList from '../../components/classes/ClassesList.vue'
-import StudentsList from '../../components/classes/StudentsList.vue'
-
-const selectedClass = ref({})
 </script>

@@ -31,7 +31,7 @@
 
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
-          <q-btn unelevated text-color="primary" :to="`classes/show/${props.row.id}`">
+          <q-btn unelevated text-color="primary" :to="`students/show/${props.row.id}`">
             <q-icon name="visibility"></q-icon>
           </q-btn>
         </q-td>
@@ -42,29 +42,36 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import classesAPI from 'src/services/fetches/classes'
+import studentsAPI from 'src/services/fetches/students'
 
 const columns = [
   {
     name: 'name',
     required: true,
-    label: 'Turmas',
+    label: 'Nome',
     align: 'left',
     field: row => row.name,
   },
   {
-    name: 'course',
+    name: 'atecEmail',
     required: true,
-    label: 'Curso',
+    label: 'Email institucional',
     align: 'left',
-    field: row => row.course.name,
+    field: row => row.atecEmail,
   },
   {
-    name: 'startDate',
+    name: 'personalEmail',
     required: true,
-    label: 'Data de início',
+    label: 'Email pessoal',
     align: 'left',
-    field: row => row.startDate,
+    field: row => row.personalEmail,
+  },
+  {
+    name: 'phoneNumber',
+    required: true,
+    label: 'Telefone',
+    align: 'left',
+    field: row => row.phoneNumber,
   },
   {
     name: 'actions',
@@ -89,7 +96,7 @@ async function onRequest (props) {
   loading.value = true
 
   const params = { page, quantity: rowsPerPage, name: filter }
-  const response = await classesAPI.index(params)
+  const response = await studentsAPI.index(params)
   rows.value = response.data
   pagination.value = response.pagination
 

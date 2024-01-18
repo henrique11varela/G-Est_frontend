@@ -1,17 +1,17 @@
 <template>
-  <q-page padding>
-    <div class="q-pa-md" style="max-width: 400px">
+    <div class="q-py-md">
     <q-form
       @submit="$emit('classSubmit', {name, course, startDate})"
       @reset="onReset"
-      class="q-gutter-md"
+      class="q-gutter-md row"
     >
       <q-input
         outlined
         v-model="name"
         label="Turma"
-        lazy-rules
+        lazy-rules="ondemand"
         :rules="rules.name"
+        class="col-12 col-sm-auto"
       />
 
       <q-select
@@ -19,34 +19,54 @@
         v-model="course"
         :options="courses"
         label="Curso"
-        lazy-rules
+        lazy-rules="ondemand"
         :rules="rules.course"
         :option-label="course => course.name"
         :display-value="course ? course.name : 'Escolha o curso'"
         :loading="loading"
+        class="col-12 col-sm-auto"
       />
 
-      <q-date
+      <q-input
+        outlined
+        label="Data de início"
         v-model="startDate"
-        minimal
-        lazy-rules
+        mask="date"
+        lazy-rules="ondemand"
         :rules="rules.startDate"
-      />
+        class="col-12 col-sm-auto"
+      >
+        <template v-slot:append>
+          <q-icon name="event" class="cursor-pointer">
+            <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+              <q-date
+                v-model="startDate"
+                :locale="qDateLocale">
+                <div class="row items-center justify-end">
+                  <q-btn v-close-popup label="Close" color="primary" flat />
+                </div>
+              </q-date>
+            </q-popup-proxy>
+          </q-icon>
+        </template>
+      </q-input>
 
-      <div>Name: {{ name }}</div>
-      <div>Course: {{ course }}</div>
-      <div>Start Date: {{ startDate }}</div>
+      <div class="col-12" v-if="false">
+        <div>Name: {{ name }}</div>
+        <div>Course: {{ course }}</div>
+        <div>Start Date: {{ startDate }}</div>
+      </div>
 
-      <div>
-        <q-btn label="Criar" type="submit" color="primary"/>
-        <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
+      <div class="col-12">
+        <q-btn unelevated label="Guardar" type="submit" color="primary"/>
+        <q-btn unelevated label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
       </div>
     </q-form>
     </div>
-  </q-page>
 </template>
 
 <script setup>
+import { qDateLocale } from 'src/config/config'
 import classDTO from '../../dto/ClassDTO'
 import { ref, onMounted } from 'vue'
 import coursesAPI from '../../services/fetches/courses'
@@ -76,6 +96,7 @@ const rules = classDTO.rules()
 
 onMounted(async () => {
   try {
+    setDefaults()
     loading.value = true
     courses.value = await coursesAPI.index()
     loading.value = false

@@ -1,18 +1,25 @@
 <template>
-  <div class="q-pa-md">
+  <div class="q-py-md">
     <q-table
       card-class="bg-grey-1"
       flat bordered
-      :rows="selectedClass.students"
+      :rows="students"
       :columns="columns"
       row-key="id"
       hide-no-data
       hide-pagination
-      :pagination="{rowsPerPage:0}"
+      :pagination="{ rowsPerPage:0 }"
     >
       <template v-slot:body-cell-actions="props">
-        <q-td :props="props">
-          <q-btn unelevated :icon="isEdit ? matRemove: matVisibility" :text-color="isEdit ? 'negative': 'primary'"></q-btn>
+        <q-td :props="props" v-if="isEdit && isAdmin">
+          <q-btn unelevated text-color="negative" @click="$emit('removeStudent', props.row.id)">
+              <q-icon name="remove"></q-icon>
+          </q-btn>
+        </q-td>
+        <q-td :props="props" v-else>
+          <q-btn unelevated text-color="primary" :to="`/students/show/${props.row.id}`">
+              <q-icon name="visibility"></q-icon>
+          </q-btn>
         </q-td>
       </template>
     </q-table>
@@ -20,12 +27,12 @@
 </template>
 
 <script setup>
-import { matVisibility, matRemove } from '@quasar/extras/material-icons'
-
 defineProps({
-  selectedClass: Object,
+  students: Object,
   isEdit: Boolean
 })
+
+const isAdmin = true
 
 const columns = [
   {

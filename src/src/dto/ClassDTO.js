@@ -4,30 +4,45 @@ export default { input, output, rules }
 function input(data) {
   try {
     const students = []
-    for (const student of data.students) {
-      students.push(new studentDTO.input(student))
+    let hasStudentsKey = false
+    if (data.hasOwnProperty('students')) {
+      hasStudentsKey = true
+      for (const student of data.students) {
+        students.push(new studentDTO.input(student))
+      }
     }
+    const hasCourseKey = data.hasOwnProperty('course')
     return {
       id: data.id,
       name: data.name,
       startDate: data.start_date,
-      course: data.course,
-      students: students,
+      ...(hasStudentsKey && { students }),
+      ...(hasCourseKey && { course: data.course }),
     }
   } catch (error) {
+    console.error("Error:", error)
     return null
   }
 }
 
 function output(data) {
   try {
+    const students = []
+    let hasStudentsKey = false
+    if (data.hasOwnProperty('students')) {
+      hasStudentsKey = true
+      for (const student of data.students) {
+        students.push(student.id)
+      }
+    }
     return {
       name: data.name,
       start_date: data.startDate,
       course_id: data.course.id,
-      students: data.students
+      ...(hasStudentsKey && { students }),
     }
   } catch (error) {
+    console.error("Error:", error)
     return null
   }
 }

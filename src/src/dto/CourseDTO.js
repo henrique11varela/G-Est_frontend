@@ -17,7 +17,7 @@ function output(data) {
   try {
     return {
       name: data.name,
-      course_type_id: data.course.id,
+      course_type_id: data.courseType.id,
       area_id: data.area.id
     }
   } catch (error) {
