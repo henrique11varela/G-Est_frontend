@@ -42,8 +42,8 @@ function output(data) {
       personal_email: data.personalEmail,
       atec_email: data.atecEmail,
       phone_number: data.phoneNumber,
-      student_collections: data.classes,
-      internships: data.internships
+      ...(data.hasOwnProperty('classes') && { student_collections: data.classes }),
+      ...(data.hasOwnProperty('internships') && { internships: data.internships }),
     }
   } catch (error) {
     console.error("Error:", error)

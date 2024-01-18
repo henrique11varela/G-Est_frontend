@@ -1,9 +1,9 @@
 <template>
-    <div class="q-pa-md">
+    <div class="q-py-md">
     <q-form
       @submit="$emit('classSubmit', {name, course, startDate})"
       @reset="onReset"
-      class="q-gutter-md"
+      class="q-gutter-md row"
     >
       <q-input
         outlined
@@ -11,6 +11,7 @@
         label="Turma"
         lazy-rules="ondemand"
         :rules="rules.name"
+        class="col-12 col-sm-auto"
       />
 
       <q-select
@@ -23,9 +24,18 @@
         :option-label="course => course.name"
         :display-value="course ? course.name : 'Escolha o curso'"
         :loading="loading"
+        class="col-12 col-sm-auto"
       />
 
-      <q-input outlined v-model="startDate" mask="date" lazy-rules="ondemand" :rules="rules.startDate">
+      <q-input
+        outlined
+        label="Data de início"
+        v-model="startDate"
+        mask="date"
+        lazy-rules="ondemand"
+        :rules="rules.startDate"
+        class="col-12 col-sm-auto"
+      >
         <template v-slot:append>
           <q-icon name="event" class="cursor-pointer">
             <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -41,13 +51,15 @@
         </template>
       </q-input>
 
-      <div>Name: {{ name }}</div>
-      <div>Course: {{ course }}</div>
-      <div>Start Date: {{ startDate }}</div>
+      <div class="col-12" v-if="false">
+        <div>Name: {{ name }}</div>
+        <div>Course: {{ course }}</div>
+        <div>Start Date: {{ startDate }}</div>
+      </div>
 
-      <div>
-        <q-btn label="Guardar" type="submit" color="primary"/>
-        <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
+      <div class="col-12">
+        <q-btn unelevated label="Guardar" type="submit" color="primary"/>
+        <q-btn unelevated label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
       </div>
     </q-form>
     </div>
@@ -84,9 +96,9 @@ const rules = classDTO.rules()
 
 onMounted(async () => {
   try {
+    setDefaults()
     loading.value = true
     courses.value = await coursesAPI.index()
-    console.log(courses.value)
     loading.value = false
   } catch (error) {
     console.error(error)
