@@ -16,7 +16,7 @@
 
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
-          <q-btn unelevated text-color="primary" @click="console.log('show' + props.key)">
+          <q-btn unelevated text-color="primary" :to="`internships/show/${props.key}`">
             <q-icon name="visibility"></q-icon>
           </q-btn>
           <q-btn unelevated text-color="secondary" :to="`internships/edit/${props.key}`">
@@ -82,7 +82,6 @@ const columns = [
 ]
 
 async function onRequest(props) {
-
   const { page, rowsPerPage } = props.pagination
   // const filter = props.filter
   const params = {
