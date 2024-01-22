@@ -1,13 +1,14 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue';
-import { get } from "src/services/fetches/users.js";
+import userAPI from "src/services/fetches/users.js";
 
 import { matEdit, matDelete } from '@quasar/extras/material-icons'
 const columns = [
-  { name: 'Id', align: 'center', label: 'Id', field: 'id', },
-  { name: 'Name', label: 'Name', field: 'name', },
-  { name: 'Email', label: 'Email', field: 'email', },
-  { name: 'Action', label: 'Action', field: 'action', }
+  { name: 'id', align: 'center', label: 'Id', field: 'id', },
+  { name: 'name', label: 'Name', field: 'name', },
+  { name: 'email', label: 'Email', field: 'email', },
+  { name: 'role', label: 'Role', field: 'role', },
+  { name: 'action', label: 'Action', field: 'action', }
 ];
 
 
@@ -30,12 +31,14 @@ const pagination = ref({
 async function onRequest(props) {
   const { page, rowsPerPage, sortBy, descending } = props.pagination;
   loading.value = true
-  const companiesRequest = await get(page, props.filter, rowsPerPage);
-  rows.value.splice(0, rows.value.length, ...companiesRequest.Data);
+  const usersRequest = await userAPI.index({
+    ...filters,
+    quantity: rowsPerPage,
+    page: page,
+  });
+  rows.value.splice(0, rows.value.length, ...usersRequest.Data);
 
-  pagination.value.page = page;
-  pagination.value.rowsNumber = companiesRequest.Pagination.total;
-  pagination.value.rowsPerPage = rowsPerPage
+  pagination.value = usersRequest.pagination;
   loading.value = false
 }
 
@@ -83,7 +86,7 @@ onMounted(() => {
       </template>
 
 
-      <template v-slot:body-cell-Action="props">
+      <template v-slot:body-cell-action="props">
         <q-td :props="props">
           <q-btn :to="`users/${props.row.id}`" unelevated :icon="matEdit" text-color="secondary"></q-btn>
         </q-td>

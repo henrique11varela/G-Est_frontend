@@ -1,17 +1,27 @@
 import { api } from "src/boot/axios"
 import { useLoginStore } from "../../stores/login.js";
+import CompanyPeopleDTO from "src/dto/CompanyPeopleDTO.js"
+import PaginationDTO from "src/dto/PaginationDTO.js"
 
 export default {
   index,
   store,
   show,
-  destroy
+  destroy,
+  update
 }
 
-async function index() {
+async function index(params = null) {
   try {
-    const { data } = await api.get('api/v1/companypeople')
-    return data
+    const { data } = await api.get('api/v1/companypeople', { params })
+    const peoples = []
+    for (const company of data.data) {
+      peoples.push(CompanyPeopleDTO.input(company));
+    }
+    return {
+      data: peoples,
+      pagination: PaginationDTO.input(data)
+    }
   } catch (error) {
     console.log(error);
   }
@@ -29,7 +39,7 @@ async function store(payload) {
 async function show(id) {
   try {
     const { data } = await api.get(`api/v1/companypeople/${id}`)
-    return data
+    return CompanyPeopleDTO.input(data)
   } catch (error) {
     console.log(error);
   }

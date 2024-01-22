@@ -27,15 +27,15 @@ export default route(function (/* { store, ssrContext } */) {
     history: createHistory(process.env.VUE_ROUTER_BASE)
   })
 
-  Router.beforeEach(async (to, from) => {
-    const { role } = await tokenAPI.checkRole();
-    if (!role && to.fullPath != '/login') {
-      return 'login'
-    }
-    if (to.fullPath == '/login' && role) {
-      return ''
-    }
-  })
+  // Router.beforeEach(async (to, from) => {
+  //   const { role } = await tokenAPI.checkRole();
+  //   if (!role && to.fullPath != '/login') {
+  //     return 'login'
+  //   }
+  //   if (to.fullPath == '/login' && role) {
+  //     return ''
+  //   }
+  // })
 
   return Router
 })

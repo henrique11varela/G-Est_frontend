@@ -1,69 +1,58 @@
 import { api } from "src/boot/axios"
-import { UserDTO } from "src/dto/UserDTO"
-import { PaginationDTO } from "src/dto/PaginationDTO.js"
-export {
-  get,
-  post,
-  put,
-  getUser,
-  deleteUser
+import UserDTO from "src/dto/UserDTO"
+import PaginationDTO from "src/dto/PaginationDTO.js"
+export default {
+  index,
+  create,
+  update,
+  show,
+  destroy
 }
-async function get(
-  page = 1,
+async function index(
   filter = {
     name: "",
     email: "",
+    quantity: 15,
+    page: 1,
   },
-  quantity = 15
 ) {
   try {
-    const { data } = await api.get(`/api/v1/users?page=${page}&name=${filter.name}&email=${filter.email}&quantity=${quantity}`)
+    const { data } = await api.get(`/api/v1/users`, filter)
     const users = []
     for (const user of data.data) {
-      users.push(new UserDTO(user));
+      users.push(new UserDTO.input(user));
     }
     return {
       "Data": users,
-      "Pagination": new PaginationDTO(data.total, data.current_page, data.per_page)
+      "Pagination": new PaginationDTO.input(data)
     }
   } catch (error) {
     console.log(error);
   }
 }
-async function getUser(id) {
+async function show(id) {
   const { data } = await api.get('/api/v1/users/' + id)
-  const company = new UserDTO(data);
+  const company = new UserDTO.input(data);
   return company
 }
-async function post(name, email, password) {
+async function create(payload) {
   try {
-    const payload = {
-      "name": name,
-      "email": email,
-      "password": password,
-    }
     const { data } = await api.post('api/v1/users', payload)
     return data
   } catch (error) {
     console.log(error);
   }
 }
-async function getCompany(id) {
-  const { data } = await api.get('/api/v1/companies/' + id)
-  const company = new UserDTO(data);
-  return company
-}
 
-async function put(id, user) {
+async function update(payload) {
   try {
-    const payload = user
-    const { data } = await api.put('api/v1/users/' + id, payload)
+    const { data } = await api.put('api/v1/users/' + payload.id, payload)
     return data
   } catch (error) {
     console.log(error);
   }
 }
-async function deleteUser(id) {
+async function destroy(id) {
   try {
     const { data } = await api.delete('api/v1/users/' + id)
     return data
