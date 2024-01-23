@@ -1,3 +1,4 @@
+import areaDTO from "./AreaDTO"
 export default { input, output, rules }
 
 function input(data) {
@@ -5,8 +6,8 @@ function input(data) {
     return {
       id: data.id,
       name: data.name,
-      courseType: data.course_type,
-      area: data.area
+      type: data.type,
+      ...(data.hasOwnProperty('area') && { area: new areaDTO.input(data.area) }),
     }
   } catch (error) {
     return null
@@ -17,7 +18,7 @@ function output(data) {
   try {
     return {
       name: data.name,
-      course_type_id: data.courseType.id,
+      type: data.type,
       area_id: data.area.id
     }
   } catch (error) {
@@ -28,7 +29,7 @@ function output(data) {
 function rules() {
   return {
     name: [ val => val && val.length > 0 || 'Introduza um nome' ],
-    courseTypeId: [ val => val  || 'Selecione o tipo de curso' ],
-    areaId: [ val => val || 'Selecione a área de formação'],
+    type: [ val => val || 'Selecione o tipo de curso' ],
+    area: [ val => val || 'Selecione a área de formação' ],
   }
 }
