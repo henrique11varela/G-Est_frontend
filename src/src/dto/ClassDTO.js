@@ -1,4 +1,6 @@
 import studentDTO from "./StudentDTO"
+import internshipDTO from "./InternshipDTO"
+import courseDTO from "./CourseDTO"
 export default { input, output, rules }
 
 function input(data) {
@@ -11,13 +13,21 @@ function input(data) {
         students.push(new studentDTO.input(student))
       }
     }
+    const internships = []
+    let hasIntershipsKey = false
+    if (data.hasOwnProperty('internships')) {
+      hasIntershipsKey = true
+      for (const internship of data.internships) {
+        internships.push(new internshipDTO.input(internship))
+      }
+    }
     const hasCourseKey = data.hasOwnProperty('course')
     return {
       id: data.id,
       name: data.name,
-      startDate: data.start_date,
       ...(hasStudentsKey && { students }),
-      ...(hasCourseKey && { course: data.course }),
+      ...(hasCourseKey && { course: new courseDTO.input(data.course) }),
+      ...(hasIntershipsKey && { internships }),
     }
   } catch (error) {
     console.error("Error:", error)
@@ -37,7 +47,6 @@ function output(data) {
     }
     return {
       name: data.name,
-      start_date: data.startDate,
       course_id: data.course.id,
       ...(hasStudentsKey && { students }),
     }
@@ -50,7 +59,6 @@ function output(data) {
 function rules() {
   return {
     name: [ val => val && val.length > 0 || 'Introduza um nome' ],
-    startDate: [ (val, rules) => rules.date(val)  || 'Introduza uma data válida' ],
     course: [ val => val || 'Selecione um curso'],
   }
 }

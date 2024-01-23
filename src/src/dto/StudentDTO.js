@@ -26,6 +26,9 @@ function input(data) {
       personalEmail: data.personal_email,
       atecEmail: data.atec_email,
       phoneNumber: data.phone_number,
+      address: data.address,
+      softSkills: data.soft_skills,
+      hardSkills: data.hard_skills,
       ...(hasStudentCollectionsKey && { classes: studentClasses }),
       ...(hasIntershipsKey && { internships: internships })
     }
@@ -42,6 +45,9 @@ function output(data) {
       personal_email: data.personalEmail,
       atec_email: data.atecEmail,
       phone_number: data.phoneNumber,
+      address: data.address,
+      soft_skills: data.softSkills,
+      hard_skills: data.hardSkills,
       ...(data.hasOwnProperty('classes') && { student_collections: data.classes }),
       ...(data.hasOwnProperty('internships') && { internships: data.internships }),
     }
@@ -55,7 +61,10 @@ function rules() {
   return {
     name: [ val => val && val.length > 0 || 'Introduza um nome' ],
     email: [ (val, rules) => rules.email(val)  || 'Introduza um email válido' ],
-    phoneNumber: [ val => val && val.length > 0 || 'Introduza um telefone'],
+    phoneNumber: [ val => val && val.length > 0 || 'Introduza um telefone' ],
+    address: [ val => val && val.length > 0 || 'Introduza uma morada' ],
+    softSkills: [ val => val || 'Preencha soft skills' ],
+    hardSkills: [ val => val || 'Preencha hard skills' ],
 
     //phoneNumber: [ val => /^\d{9}$/.test(val) || 'Introduza um telefone válido'],
 
