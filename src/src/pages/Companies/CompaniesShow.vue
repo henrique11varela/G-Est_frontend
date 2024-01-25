@@ -1,6 +1,7 @@
 <script setup>
-import CompanyFrom from '../../components/companies/CompanyFrom.vue'
+import CompanyInfo from '../../components/companies/CompanyInfo.vue'
 import CompanyPeopleList from '../../components/companiesPeople/CompanyPeopleList.vue'
+import CompanyAddressesList from '../../components/companyAddressesList/CompanyAddressesList.vue'
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import Router from 'src/router';
@@ -28,11 +29,13 @@ async function EditCompany(obj) {
 }
 const company = ref(false)
 const people = ref(false)
+const addresses = ref(false)
 onMounted(async () => {
   try {
     const data = await companiesAPI.show(id);
     company.value = data.company;
-    people.value = data.contactPeople;
+    people.value = data.company.peoples;
+    addresses.value = data.company.addresses;
   } catch ($e) {
     // await router.push({ path: 'companies' });
     // await router.go();
@@ -42,7 +45,11 @@ onMounted(async () => {
 <template>
   <q-page>
     <span class="text-h5">Ver Empresa</span>
-    <CompanyFrom v-if="company" @submit-Company="EditCompany" :company="company" :edit="edit" />
-    <CompanyPeopleList v-if="people" :people="people" />
+
+    <q-btn :to="`/companies/edit/${id}`" :icon="matEdit" label="Edit" />
+
+    <CompanyInfo v-if="company" @submit-Company="EditCompany" :company="company" :edit="edit" />
+    <CompanyPeopleList v-if="people" :people="people" :companyid="id" />
+    <CompanyAddressesList v-if="addresses" :addresses="addresses" :companyid="id" />
   </q-page>
 </template>

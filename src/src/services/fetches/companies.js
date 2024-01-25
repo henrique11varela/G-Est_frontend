@@ -1,7 +1,6 @@
 import { api } from "src/boot/axios"
 import CompanyDTO from "src/dto/CompanyDTO.js"
 import PaginationDTO from "src/dto/PaginationDTO.js"
-import CompanyPeopleDTO from "src/dto/CompanyPeopleDTO.js"
 export default {
   index,
   store,
@@ -27,17 +26,10 @@ async function index(params = null) {
 
 async function show(id) {
   try {
-    const contactPeople = [];
-    const { data } = await api.get('/api/v1/companies/' + id)
-    if(data.company_people){
-      data.company_people.forEach((people) => {
-        contactPeople.push(CompanyPeopleDTO.input(people));
-      })
-    }
+    const { data } = await api.get(`/api/v1/companies/${id}`)
     const company = CompanyDTO.input(data);
     return {
       company: company,
-      contactPeople: contactPeople,
     }
   } catch (e) {
     console.log(e)
@@ -54,10 +46,10 @@ async function store(company) {
   }
 }
 
-async function update(id, company) {
+async function update(company) {
   try {
-    const payload = company
-    const { data } = await api.put('api/v1/companies/' + id, payload);
+    const payload = CompanyDTO.output(company)
+    const { data } = await api.put('api/v1/companies/' + payload.id, payload);
 
     return data
   } catch (error) {
