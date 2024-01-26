@@ -1,11 +1,14 @@
 <template>
   <q-page padding>
     <h1>Estágios</h1>
-    <InternshipsList />
+    <InternshipsForm />
   </q-page>
 </template>
 
 <script setup>
-import InternshipsList from "../../components/internships/internshipsList.vue";
-
+  import InternshipsForm from "../../components/internships/internshipsForm.vue";
 </script>
+
+<style scoped>
+
+</style>

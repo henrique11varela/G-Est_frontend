@@ -13,10 +13,12 @@ export default {
 async function index(params = null) {
   try {
     const { data } = await api.get('api/v1/internships', { params: params })
+    console.log(data.data);
     const internships = []
     data.data.forEach(internship => {
       internships.push(InternshipDTO.input(internship))
     });
+    console.log(internships);
     return {
       data: internships,
       pagination: PaginationDTO.input(data)

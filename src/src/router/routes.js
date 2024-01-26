@@ -120,21 +120,8 @@ const routes = [
         path: 'internships',
         children: [
           {
-
-            path: '',
+            path: ':class/:student',
             component: () => import('pages/Internships/InternshipsPage.vue'),
-          },
-          {
-            path: 'add/:id',
-            component: () => import('pages/Internships/InternshipsAddPage.vue'),
-          },
-          {
-            path: 'edit/:id',
-            component: () => import('pages/Internships/InternshipsEditPage.vue'),
-          },
-          {
-            path: 'show/:id',
-            component: () => import('pages/Internships/InternshipsShowPage.vue'),
           },
         ]
       },
