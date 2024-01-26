@@ -31,8 +31,8 @@
 
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
-          <q-btn unelevated text-color="primary" :to="`classes/show/${props.row.id}`">
-            <q-icon name="visibility"></q-icon>
+          <q-btn unelevated text-color="primary" :to="`/classes/show/${props.row.id}`">
+            <q-icon name="visibility" />
           </q-btn>
         </q-td>
       </template>
@@ -58,13 +58,6 @@ const columns = [
     label: 'Curso',
     align: 'left',
     field: row => row.course.name,
-  },
-  {
-    name: 'startDate',
-    required: true,
-    label: 'Data de início',
-    align: 'left',
-    field: row => row.startDate,
   },
   {
     name: 'actions',
