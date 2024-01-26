@@ -2,9 +2,11 @@
 import { defineProps, ref, defineEmits, reactive, onMounted } from 'vue'
 import { matEdit, matDelete } from '@quasar/extras/material-icons'
 import CompanyFrom from '../../components/companies/CompanyFrom.vue'
-const emit = defineEmits(['submit-Company'])
+import CompanyDTO from "src/dto/CompanyDTO"
+const emit = defineEmits(['valuecreated'])
 import { useQuasar } from 'quasar'
 import Router from 'src/router'
+import CompanyAPI from "src/services/fetches/companies.js";
 
 const router = Router()
 const props = defineProps({
@@ -21,8 +23,15 @@ const CompanyData = ref({
   niss: '',
   nipc: '',
 })
-function onSubmit() {
-  emit('submit-Company', CompanyData.value)
+async function onSubmit() {
+  const data = {};
+  if (!props.edit) {
+    data = await CompanyAPI.store(CompanyData.value)
+  }
+  else {
+    data = await CompanyAPI.update(CompanyData.value)
+  }
+  emit('valuecreated', data)
 }
 
 function editButton() {
@@ -42,7 +51,7 @@ function showDeleteModal() {
     cancel: true,
     persistent: true
   }).onOk(async () => {
-    await CompanyFrom.destroy(CompanyData.value.id)
+    await CompanyAPI.destroy(CompanyData.value.id)
     await router.push({ path: 'companies' });
     await router.go();
 
@@ -52,8 +61,6 @@ function showDeleteModal() {
 <template>
     <!-- content -->
     <div v-if="CompanyData.id">
-      <q-btn :to="`/companies/edit/${CompanyData.id}`" :icon="matEdit" label="Edit" />
-
       <q-btn v-if="reactiveEdit" @click="showDeleteModal" color="red" :icon="matDelete" label="Delete" />
     </div>
     <q-form action="companies" @submit.prevent="onSubmit">
@@ -61,28 +68,18 @@ function showDeleteModal() {
       <div class="row">
         <div class="col-md-4">
           <q-input class="q-ma-md" filled v-model="CompanyData.name" label="Name *" hint="Name" lazy-rules
-            :rules="[val => val && val.length > 0 || 'Please type something']" :readonly="!reactiveEdit"></q-input>
+            :rules="CompanyDTO.rules().name" ></q-input>
         </div>
         <div class="col-md-4">
           <q-input class="q-ma-md" filled v-model="CompanyData.nipc" label="NIPC*" hint="Name and surname" lazy-rules
-            :rules="[val => val && val.length > 0 || 'Please type something']" :readonly="!reactiveEdit"></q-input>
+            :rules="CompanyDTO.rules().nipc" ></q-input>
         </div>
         <div class="col-md-4">
           <q-input class="q-ma-md" filled v-model="CompanyData.niss" label="NISS *" hint="Name and surname" lazy-rules
-            :rules="[val => val && val.length > 0 || 'Please type something']" :readonly="!reactiveEdit"></q-input>
+            :rules="CompanyDTO.rules().niss" ></q-input>
         </div>
         <div class="col-md-4">
-          <q-input class="q-ma-md" filled v-model="CompanyData.address" label="Address *" hint="Name and surname"
-            lazy-rules :rules="[val => val && val.length > 0 || 'Please type something']"
-            :readonly="!reactiveEdit"></q-input>
-        </div>
-        <div class="col-md-4">
-          <q-input class="q-ma-md" filled v-model="CompanyData.postcode" label="Postal Code *" hint="Name and surname"
-            lazy-rules :rules="[val => val && val.length > 0 || 'Please type something']"
-            :readonly="!reactiveEdit"></q-input>
-        </div>
-        <div class="col-md-4">
-          <q-btn class="q-ma-md " style="width: 70%" label="Submit" type="submit" color="primary" v-if="reactiveEdit" />
+          <q-btn class="q-ma-md " style="width: 70%" label="Submit" type="submit" color="primary"/>
         </div>
       </div>
     </q-form>

@@ -4,7 +4,9 @@ import { matEdit, matDelete } from '@quasar/extras/material-icons'
 const emit = defineEmits(['submit-person'])
 import { useQuasar } from 'quasar'
 import Router from 'src/router'
+import companyPearsonDTO from "src/dto/CompanyPeopleDTO"
 
+import companyPeopleAPI from "src/services/fetches/companyPeople.js";
 const router = Router()
 const props = defineProps({
   person: null,
@@ -18,8 +20,15 @@ const personData = ref({
   isTutor: null,
   isContact: null,
 })
-function onSubmit() {
-  emit('submit-person', personData.value)
+async function onSubmit() {
+  const data = {};
+  if (props.edit) {
+    data = await companyPeopleAPI.store(personData.value)
+  }
+  else {
+    data = await companyPeopleAPI.update(personData.value)
+  }
+  emit('valuecreated', data)
 }
 
 onMounted(() => {
@@ -35,7 +44,7 @@ function showDeleteModal() {
     cancel: true,
     persistent: true
   }).onOk(async () => {
-    await personFrom.destroy(personData.value.id)
+    await companyPeopleAPI.destroy(personData.value.id)
     await router.push({ path: 'companies' });
     await router.go();
 
@@ -52,15 +61,15 @@ function showDeleteModal() {
     <div class="row">
       <div class="col-md-4">
         <q-input class="q-ma-md" filled v-model="personData.name" label="Name *" hint="Name" lazy-rules
-          :rules="[val => val && val.length > 0 || 'Please type something']"></q-input>
+          :rules="companyPearsonDTO.rules().name"></q-input>
       </div>
       <div class="col-md-4">
         <q-input class="q-ma-md" filled v-model="personData.email" label="NIPC*" hint="Name and surname" lazy-rules
-          :rules="[val => val && val.length > 0 || 'Please type something']"></q-input>
+          :rules="companyPearsonDTO.rules().email"></q-input>
       </div>
       <div class="col-md-4">
         <q-input class="q-ma-md" filled v-model="personData.phoneNumber" label="NISS *" hint="Name and surname" lazy-rules
-          :rules="[val => val && val.length > 0 || 'Please type something']"></q-input>
+          :rules="companyPearsonDTO.rules().phoneNumber"></q-input>
       </div>
 
       <div class="col-md-12">

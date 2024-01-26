@@ -82,6 +82,19 @@ const routes = [
                   },
                 ]
               },
+              {
+                path: 'contactaddress',
+                children: [
+                  {
+                    path: 'add',
+                    component: () => import('pages/CompaniesAddresses/CompaniesAddressesAdd.vue'),
+                  },
+                  {
+                    path: 'edit/:addressId',
+                    component: () => import('pages/CompaniesAddresses/CompaniesAddressesEdit.vue'),
+                  },
+                ]
+              },
             ]
           },
         ]
