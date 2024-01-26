@@ -3,7 +3,7 @@ import StudentDTO from "./StudentDTO.js";
 import ClassDTO from "./ClassDTO.js";
 import CompanyDTO from "./CompanyDTO.js";
 import CompanyPeopleDTO from "./CompanyPeopleDTO.js";
-// import CompanyPersonDTO from "./CompanyPersonDTO.js";
+import CompanyAddressDTO from "./CompanyAddressDTO.js";
 
 function input(data) {
   try {
@@ -41,9 +41,7 @@ function input(data) {
       startedInternship.startDate = data.started_internship.start_date;
       //companyAddress
       let companyAddress = null;
-      // let hasCompanyAddressKey = false;
       if (data.started_internship.hasOwnProperty("company_address")) {
-        // hasCompanyAddressKey = true;
         companyAddress = new CompanyAddressDTO.input(
           data.started_internship.company_address
         );
@@ -52,9 +50,7 @@ function input(data) {
 
       //companyPerson
       let companyPerson = null;
-      // let hasCompanyPersonKey = false;
       if (data.started_internship.hasOwnProperty("company_person")) {
-        // hasCompanyPersonKey = true;
         companyPerson = new CompanyPeopleDTO.input(
           data.started_internship.company_person
         );
@@ -62,6 +58,7 @@ function input(data) {
       startedInternship.tutor = companyPerson;
     }
 
+    //endedInternship
     let endedInternship = null;
     if (data.ended_internship) {
       endedInternship = {};
@@ -70,7 +67,6 @@ function input(data) {
       endedInternship.isWorkingThere = data.ended_internship.is_working_there;
     }
 
-    console.log(data.id);
     return {
       id: data.id,
       ...(hasStudentKey && { student }),
@@ -85,18 +81,19 @@ function input(data) {
   }
 }
 
+//TODO: missing started and ended internship
 function output(data) {
   try {
-    return {
+    const outputPayload = {
       student_id: data.student_id,
-      meal_allowance: data.meal_allowance,
-      start_date: data.start_date,
-      address: data.address,
-      postcode: data.postcode,
+      student_collection_id: data.student_collection_id,
       observations: data.observations,
-      company_person_id: data.tutor_id,
-      company_id: data.company_id,
+      companies: data.companies,
+
+      started_internship: null,
+      ended_internship: null,
     };
+    return outputPayload;
   } catch (error) {
     console.error("Error:", error);
   }

@@ -1,6 +1,6 @@
 <template>
   <q-page padding>
-    <h1>Estágios</h1>
+    <h1 class="text-h6">Estágio</h1>
     <InternshipsForm />
   </q-page>
 </template>
