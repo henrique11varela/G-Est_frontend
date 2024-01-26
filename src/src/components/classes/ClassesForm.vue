@@ -1,13 +1,20 @@
 <template>
     <div class="q-py-md">
+    <q-spinner
+      color="primary"
+      size="3em"
+      :thickness="2"
+      v-if="loading"
+    />
     <q-form
-      @submit="$emit('classSubmit', {name, course, startDate})"
+      @submit="onSubmit"
       @reset="onReset"
       class="q-gutter-md row"
+      v-else
     >
       <q-input
         outlined
-        v-model="name"
+        v-model="data.name"
         label="Turma"
         lazy-rules="ondemand"
         :rules="rules.name"
@@ -16,88 +23,48 @@
 
       <q-select
         outlined
-        v-model="course"
+        v-model="data.course"
         :options="courses"
         label="Curso"
         lazy-rules="ondemand"
         :rules="rules.course"
         :option-label="course => course.name"
-        :display-value="course ? course.name : 'Escolha o curso'"
-        :loading="loading"
+        :display-value="data.course ? data.course.name : 'Escolha o curso'"
         class="col-12 col-sm-auto"
       />
 
-      <q-input
-        outlined
-        label="Data de início"
-        v-model="startDate"
-        mask="date"
-        lazy-rules="ondemand"
-        :rules="rules.startDate"
-        class="col-12 col-sm-auto"
-      >
-        <template v-slot:append>
-          <q-icon name="event" class="cursor-pointer">
-            <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-              <q-date
-                v-model="startDate"
-                :locale="qDateLocale">
-                <div class="row items-center justify-end">
-                  <q-btn v-close-popup label="Close" color="primary" flat />
-                </div>
-              </q-date>
-            </q-popup-proxy>
-          </q-icon>
-        </template>
-      </q-input>
-
-      <div class="col-12" v-if="false">
-        <div>Name: {{ name }}</div>
-        <div>Course: {{ course }}</div>
-        <div>Start Date: {{ startDate }}</div>
-      </div>
-
       <div class="col-12">
-        <q-btn unelevated label="Guardar" type="submit" color="primary"/>
-        <q-btn unelevated label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
+        <q-btn unelevated label="Guardar" type="submit" color="primary" :disabled="submitting"/>
+        <q-btn unelevated label="Reset" type="reset" color="primary" flat class="q-ml-sm" :disabled="submitting"/>
+        <q-spinner color="primary" size="2.5em" :thickness="2" v-if="submitting"/>
       </div>
     </q-form>
     </div>
 </template>
 
 <script setup>
-import { qDateLocale } from 'src/config/config'
 import classDTO from '../../dto/ClassDTO'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, defineEmits, watch } from 'vue'
 import coursesAPI from '../../services/fetches/courses'
+import classesAPI from '../../services/fetches/classes'
+import { useRoute } from "vue-router"
 
-const props = defineProps({
-  defaultName: {
-    type: String,
-    default: ""
-  },
-  defaultCourse: {
-    type: Object,
-    default: null
-  },
-  defaultStartDate: {
-    type: String,
-    default: ""
-  },
-})
-
-const name = ref("")
-const course = ref(null)
-const startDate = ref("")
+const data = ref(defaultValues())
+const defaults = defaultValues()
 const courses = ref(null)
 const loading = ref(false)
+const submitting = ref(false)
 const rules = classDTO.rules()
+const route = useRoute();
 
+const props = defineProps({
+  edit: Boolean,
+});
 
 onMounted(async () => {
   try {
-    setDefaults()
     loading.value = true
+    if (props.edit) getClass(route.params.id)
     courses.value = await coursesAPI.index()
     loading.value = false
   } catch (error) {
@@ -105,13 +72,37 @@ onMounted(async () => {
   }
 })
 
-function onReset() {
-  setDefaults()
+watch(
+  () => route.params.id,
+  async newId => getClass(newId)
+)
+
+async function getClass(id) {
+  const output = await classesAPI.show(id)
+  data.value.name = defaults.name = output.name
+  data.value.course = defaults.course = output.course
+  data.value.id = id
 }
 
-function setDefaults() {
-  name.value = props.defaultName
-  course.value = props.defaultCourse
-  startDate.value = props.defaultStartDate
+function defaultValues() {
+  return { name: "", course: null }
+}
+
+function onReset() {
+  data.value.name = defaults.name
+  data.value.course = defaults.course
+}
+
+const emit = defineEmits(['valuecreated'])
+
+async function onSubmit() {
+  submitting.value = true
+
+  const output = props.edit ?
+  await classesAPI.update(data.value) :
+  await classesAPI.store(data.value)
+
+  submitting.value = false
+  emit('valuecreated', output)
 }
 </script>

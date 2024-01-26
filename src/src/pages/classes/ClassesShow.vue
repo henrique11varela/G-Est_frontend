@@ -8,10 +8,10 @@
       />
     </div>
     <div class="q-pa-md" v-else>
-      <q-btn unelevated color="secondary" icon="edit" label="Editar" :to="`/classes/edit/${route.params.id}`" v-if="isAdmin"/>
+      <q-btn unelevated color="secondary" label="Editar" :to="`/classes/edit/${route.params.id}`" v-if="isAdmin"/>
       <ClassesInfo :class-info="classInfo"></ClassesInfo>
-      <q-btn class="q-mt-md" unelevated color="secondary" icon="edit" label="Editar" :to="`/classes/edit/${route.params.id}/students`" v-if="isAdmin"/>
-      <ClassesStudentsList :students="students"></ClassesStudentsList>
+      <q-btn class="q-mt-md" unelevated color="secondary" label="Editar" :to="`/classes/edit/${route.params.id}/students`" v-if="isAdmin"/>
+      <ClassesStudentsList :class-id="route.params.id" :students="students"></ClassesStudentsList>
     </div>
   </q-page>
 </template>

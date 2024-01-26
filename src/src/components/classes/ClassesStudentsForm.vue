@@ -22,7 +22,7 @@
         <q-btn unelevated label="Associar" color="accent" @click="addStudent"/>
       </div>
     </div>
-    <ClassesStudentsList @remove-student="removeStudent" is-edit :students="editList"></ClassesStudentsList>
+    <ClassesStudentsList @remove-student="removeStudent" edit :students="editList"></ClassesStudentsList>
     <div>
       <q-btn unelevated label="Guardar" color="primary" @click="$emit('submitStudents', editList)"/>
       <q-btn unelevated label="Reset" color="primary" flat class="q-ml-sm" @click="setDefaultList()" />

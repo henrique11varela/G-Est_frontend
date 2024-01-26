@@ -15,13 +15,6 @@
           <q-item-label>{{ classInfo.course }}</q-item-label>
         </q-item-section>
       </q-item>
-
-      <q-item class="col-12 col-sm-3">
-        <q-item-section>
-          <q-item-label overline>Data de início</q-item-label>
-          <q-item-label>{{ classInfo.startDate }}</q-item-label>
-        </q-item-section>
-      </q-item>
     </q-list>
   </div>
 </template>
