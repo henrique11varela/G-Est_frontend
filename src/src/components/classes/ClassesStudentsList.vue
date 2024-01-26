@@ -25,27 +25,22 @@
           </q-btn>
         </q-td>
       </template>
-      <template v-slot:body-cell-internship="props">
-        <q-td :props="props">
-          <div class="my-table-details">
-            {{ props.row.internhips }}
-          </div>
-        </q-td>
+      <template v-slot:body-cell-currentInternship="props">
+        <CurrentInternship :table-data="props"></CurrentInternship>
       </template>
     </q-table>
   </div>
 </template>
 
 <script setup>
+import CurrentInternship from './CurrentInternship.vue';
+
 const props = defineProps({
   students: Object,
   edit: Boolean,
   classId: String
 })
 
-import { onMounted } from 'vue';
-
-onMounted(()=> console.log(props.students))
 const isAdmin = true
 
 const columns = [
@@ -71,7 +66,7 @@ const columns = [
     field: row => row.softSkills,
   },
   {
-    name: 'internship',
+    name: 'currentInternship',
     required: true,
     label: 'Estágio atual',
     align: 'left',
