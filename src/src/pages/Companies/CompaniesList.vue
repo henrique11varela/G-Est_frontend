@@ -1,6 +1,7 @@
 <script setup>
 import { computed, onMounted, ref, defineEmits } from 'vue';
 
+import { useQuasar } from 'quasar'
 
 import companiesAPI from "src/services/fetches/companies.js";
 
@@ -46,6 +47,8 @@ async function onRequest(props) {
 
 onMounted(() => {
   tableRef.value.requestServerInteraction()
+
+
 })
 </script>
 
@@ -100,7 +103,6 @@ onMounted(() => {
         </q-input>
 
       </template>
-      <q-space />
       <template v-slot:top-right>
         <q-input outlined bg-color="white" borderless dense debounce="300" v-model="filter" placeholder="Search">
           <template v-slot:append>

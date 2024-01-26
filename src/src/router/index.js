@@ -2,6 +2,7 @@ import { route } from 'quasar/wrappers'
 import { createRouter, createMemoryHistory, createWebHistory, createWebHashHistory } from 'vue-router'
 import routes from './routes'
 import tokenAPI from "../services/fetches/token.js";
+import { Loading, QSpinnerGears } from 'quasar'
 
 /*
  * If not building with SSR mode, you can
@@ -13,6 +14,7 @@ import tokenAPI from "../services/fetches/token.js";
  */
 
 export default route(function (/* { store, ssrContext } */) {
+
   const createHistory = process.env.SERVER
     ? createMemoryHistory
     : (process.env.VUE_ROUTER_MODE === 'history' ? createWebHistory : createWebHashHistory)
@@ -28,7 +30,14 @@ export default route(function (/* { store, ssrContext } */) {
   })
 
   // Router.beforeEach(async (to, from) => {
+  //   Loading.show({
+  //     backgroundColor: 'black',
+
+  //   })
+
   //   const { role } = await tokenAPI.checkRole();
+
+  //   Loading.hide()
   //   if (!role && to.fullPath != '/login') {
   //     return 'login'
   //   }

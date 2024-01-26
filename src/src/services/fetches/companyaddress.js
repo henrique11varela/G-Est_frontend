@@ -1,6 +1,6 @@
 import { api } from "src/boot/axios"
 import { useLoginStore } from "../../stores/login.js";
-import CompanyPeopleDTO from "src/dto/CompanyPeopleDTO.js"
+import companyAddressesDTO from "src/dto/CompanyAddressDTO.js"
 import PaginationDTO from "src/dto/PaginationDTO.js"
 
 export default {
@@ -13,10 +13,10 @@ export default {
 
 async function index(params = null) {
   try {
-    const { data } = await api.get('api/v1/companypeople', { params })
+    const { data } = await api.get('api/v1/companyaddresses', { params })
     const peoples = []
     for (const company of data.data) {
-      peoples.push(CompanyPeopleDTO.input(company));
+      peoples.push(companyAddressesDTO.input(company));
     }
     return {
       data: peoples,
@@ -29,7 +29,10 @@ async function index(params = null) {
 
 async function store(payload) {
   try {
-    const { data } = await api.post('api/v1/companypeople', CompanyPeopleDTO.output(payload))
+    console.log(payload)
+    payload = companyAddressesDTO.output(payload)
+    console.log(payload)
+    const { data } = await api.post('api/v1/companyaddresses', payload)
     return data
   } catch (error) {
     console.log(error);
@@ -38,8 +41,8 @@ async function store(payload) {
 
 async function show(id) {
   try {
-    const { data } = await api.get(`api/v1/companypeople/${id}`)
-    return CompanyPeopleDTO.input(data)
+    const { data } = await api.get(`api/v1/companyaddresses/${id}`)
+    return companyAddressesDTO.input(data)
   } catch (error) {
     console.log(error);
   }
@@ -47,7 +50,8 @@ async function show(id) {
 
 async function update(payload) {
   try {
-    const { data } = await api.put(`api/v1/companypeople/${payload.id}`, CompanyPeopleDTO.output(payload))
+    payload = companyAddressesDTO.output(payload)
+    const { data } = await api.put(`api/v1/companyaddresses/${payload.id}`, payload)
     return data
   } catch (error) {
     console.log(error);
@@ -56,7 +60,7 @@ async function update(payload) {
 
 async function destroy(id) {
   try {
-    const { data } = await api.delee(`api/v1/companypeople/${id}`)
+    const { data } = await api.delee(`api/v1/companyaddresses/${id}`)
     return data
   } catch (error) {
     console.log(error);

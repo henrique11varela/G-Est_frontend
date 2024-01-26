@@ -1,20 +1,20 @@
 <script setup>
-import CompanyPeopleFrom from '../../components/companiesPeople/CompanyPeopleFrom.vue'
+import CompanyAddressesFrom from 'src/components/companyAddressesList/CompanyAddressesFrom.vue'
 import Router from 'src/router';
-import companyPeopleAPI from "src/services/fetches/companyPeople.js";
+import companyAddressAPI from "src/services/fetches/companyaddress.js";
 
 import { useRoute } from 'vue-router';
 import { computed, onMounted, ref } from 'vue';
 
 const router = Router();
 const route = useRoute();
-const id = route.params.personId;
+const id = route.params.addressId;
 const edit = ref(true);
 
-const companyPerson = ref(false)
+const companyAddress = ref(false)
 onMounted(async () => {
   try {
-    companyPerson.value = await companyPeopleAPI.show(id);
+    companyAddress.value = await companyAddressAPI.show(id);
   } catch ($e) {
     await router.push({ path: 'companies' });
     await router.go();
@@ -24,6 +24,6 @@ onMounted(async () => {
 </script>
 <template>
   <q-page>
-    <CompanyPeopleFrom v-if="companyPerson" :person="companyPerson" :edit="edit"  />
+    <CompanyAddressesFrom v-if="companyAddress" :address="companyAddress" :edit="edit"  />
   </q-page>
 </template>

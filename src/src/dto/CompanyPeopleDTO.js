@@ -29,7 +29,12 @@ function rules() {
   return {
     name: [
       val => val && val.length > 0 || "Introduza um nome",
-
+    ],
+    email: [
+      val => val && val.length > 0 || "Introduza um nome",
+    ],
+    phoneNumber: [
+      val => val && val.length > 0 || "Introduza um nome",
     ],
   }
 }

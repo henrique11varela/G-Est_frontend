@@ -2,15 +2,14 @@
 import { onMounted, ref, defineEmits, defineProps } from 'vue';
 
 const props = defineProps({
-  people: Array,
+  addresses: Array,
   companyid: Number,
 })
 const emit = defineEmits(['request'])
 const columns = [
-  { name: 'Name', label: 'Name', field: 'name', },
-  { name: 'phoneNumber', label: 'PhoneNumber', field: 'phoneNumber', },
-  { name: 'isContact', label: 'isContact', field: 'isContact', },
-  { name: 'isTutor', label: 'isTutor', field: 'isTutor', },
+  { name: 'description', label: 'Description', field: 'description', },
+  { name: 'address', label: 'Address', field: 'address', },
+  { name: 'postalCode', label: 'Postal Code', field: 'postalCode', },
   { name: 'Action', label: 'Action', field: 'action', }
 ];
 const tableRef = ref()
@@ -28,15 +27,15 @@ const pagination = ref({
   rowsPerPage: 15,
   rowsNumber: 15
 })
-
-
 const companyId = props.companyid;
+
 onMounted(() => {
-  rows.value = props.people
+  rows.value = props.addresses
 })
 </script>
 <template>
-  <q-btn color="primary" :disable="loading" label="Adicionar" :to="`/companies/show/${companyId}/contactperson/add`" />
+
+  <q-btn color="primary" :disable="loading" label="Adicionar" :to="`/companies/show/${companyId}/contactaddress/add`" />
   <q-table flat bordered ref="tableRef" title="Treats" :rows="rows" :columns="columns" row-key="id"
     v-model:pagination="pagination"  :filter="filters" binary-state-sort>
 
@@ -57,19 +56,6 @@ onMounted(() => {
       </q-input>
       <q-space />
 
-      <q-input label="Post Code" borderless dense debounce="300" v-model="filters.isContact" placeholder="Search">
-        <template v-slot:append>
-          <q-icon name="search" />
-        </template>
-      </q-input>
-      <q-space />
-
-      <q-input label="NIIS" borderless dense debounce="300" v-model="filters.isTutor" placeholder="Search">
-        <template v-slot:append>
-          <q-icon name="search" />
-        </template>
-      </q-input>
-
     </template>
     <q-space />
     <template v-slot:top-right>
@@ -83,7 +69,7 @@ onMounted(() => {
 
     <template v-slot:body-cell-Action="props">
       <q-td>
-        <q-btn :to="`/companies/show/${companyId}/contactperson/edit/${props.row.id}`" unelevated text-color="secondary">
+        <q-btn :to="`/companies/show/${companyId}/contactaddress/edit/${props.row.id}`" unelevated text-color="secondary">
           <q-icon name="edit"></q-icon>
         </q-btn>
       </q-td>
