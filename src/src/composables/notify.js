@@ -2,24 +2,24 @@ import { Notify } from 'quasar'
 
 export default { store, update, destroy }
 
-export function store() {
+function store() {
   notify('Criado')
 }
 
-export function update() {
+function update() {
   notify('Editado')
 }
 
-export function destroy() {
-  notify('Apagado', 'red-4')
+function destroy() {
+  notify('Apagado', 'negative')
 }
 
-function notify(message, color = 'green-4') {
+function notify(message, color = 'positive') {
   Notify.create({
-    color: color,
+    color,
     textColor: 'white',
     icon: 'cloud_done',
-    message: message
+    message
   })
 }
 
