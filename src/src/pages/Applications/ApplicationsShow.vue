@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import ApllicationsInputs from 'src/components/Apllications/ApllicationsInputs.vue';
+import ApllicationsInputs from 'src/components/Apllications/ApllicationsForm.vue';
 
 
 export default {

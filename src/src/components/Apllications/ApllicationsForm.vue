@@ -89,7 +89,7 @@
         </div>
       </div>
       <hr />
-      <q-btn type="submit" label="Editar" color="primary" />
+      
     </q-form>
   </div>
 </template>

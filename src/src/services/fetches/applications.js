@@ -6,6 +6,7 @@ export default {
   index,
   store,
   show,
+  update,
   destroy
 }
 
