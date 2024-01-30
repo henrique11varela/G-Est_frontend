@@ -3,33 +3,42 @@
     <q-form class="q-ma-lg" @submit.prevent="onSubmit">
       <div class="row">
         <q-input outlined readonly class="q-mb-md col-4" v-model="internshipData.class.name" label="Turma" type="text"
-          :loading="loading" />
+          :loading="pageState.loading" />
         <q-input outlined readonly class="q-mb-md offset-1 col-7" v-model="internshipData.student.name" label="Aluno"
-          type="text" :loading="loading" />
+          type="text" :loading="pageState.loading" />
       </div>
 
       <div ref="companiesElement">
         <!-- first -->
-        <div v-for="numberSelect in 3" :key="numberSelect" class="row">
-          <q-select outlined label="Empresa" v-model="companyTest[numberSelect - 1].company" use-input hide-selected fill-input
-            input-debounce="500" :options="options.companies" option-label="name" @filter="filterCompaniesFn"
-            class="q-mb-md col-7">
-            <template v-slot:no-option>
-              <q-item>
-                <q-item-section class="text-grey">
-                  No results
-                </q-item-section>
-              </q-item>
-            </template>
-          </q-select>
-          <q-select outlined label="Estado" v-model="companyTest[numberSelect - 1].status" :options="options.status"
-            class="q-mb-md offset-1 col-4">
-          </q-select>
+        <div v-for="numberSelect in selectedCompanies.length" :key="numberSelect" class="row">
+          <div class="q-mb-md col-7">
+            <q-select outlined label="Empresa" v-model="selectedCompanies[numberSelect - 1].company" use-input
+              hide-selected fill-input input-debounce="500" :options="options.companies" option-label="name"
+              @filter="filterCompaniesFn">
+              <template v-slot:no-option>
+                <q-item>
+                  <q-item-section class="text-grey">
+                    No results
+                  </q-item-section>
+                </q-item>
+              </template>
+            </q-select>
+          </div>
+          <div class="q-mb-md col q-pl-lg">
+            <q-select outlined label="Estado" v-model="selectedCompanies[numberSelect - 1].status"
+              :options="options.status">
+            </q-select>
+          </div>
+          <div v-if="selectedCompanies.length > 1" class="q-mb-md col-1 flex justify-center items-center">
+            <q-btn color="primary" round icon="remove" @click="removeCompany(numberSelect - 1)"></q-btn>
+          </div>
         </div>
+        <q-btn color="primary" round class="q-mb-md" icon="add" @click="addCompany"></q-btn>
       </div>
       <!-- <q-btn color="primary" round class="q-mb-md">+</q-btn> -->
 
       <div v-if="startFormShow">
+        <hr class="q-mb-md">
         <q-input outlined v-model="date" mask="date" :rules="['date']">
           <template v-slot:append>
             <q-icon name="event" class="cursor-pointer">
@@ -67,20 +76,22 @@
             </q-item>
           </template>
         </q-select>
+        <hr class="q-mb-md">
 
       </div>
 
-      <q-input outlined class="q-mb-md" v-model="internshipData.observations" label="Observations" type="textarea" />
+      <q-input outlined class="q-mb-md" v-model="internshipData.observations" label="Observações" type="textarea" />
 
       <q-btn color="primary" type="submit">Salvar</q-btn>
-      <q-btn color="primary" v-if="!startFormShow" @click="startFormShow = true">Iniciar estágio</q-btn>
+      <q-btn color="primary" v-if="!startFormShow && pageState.readyStarted" @click="startFormShow = true">Iniciar
+        estágio</q-btn>
       <!-- {{ internshipData }} -->
     </q-form>
   </div>
 </template>
 
 <script setup>
-import { onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { qDateLocale } from "../../config/config.js";
 import internshipsAPI from "../../services/fetches/internships.js";
@@ -88,43 +99,10 @@ import studentsAPI from "../../services/fetches/students.js";
 import classesAPI from "../../services/fetches/classes.js";
 import companiesAPI from "../../services/fetches/companies.js";
 
+const route = useRoute();
 const startFormShow = ref(false);
 
-//TODO: REMOVE THIS TRASH CODE, IT'S JUST FOR TESTING
-const companyTest = ref([
-  {
-    company: "",
-    status: "",
-  },
-  {
-    company: "",
-    status: "",
-  },
-  {
-    company: "",
-    status: "",
-  },
-])
-
-const date = ref(null);
-const refeição = ref(false);
-const companyPerson = ref();
-const companyAddress = ref();
-
-//END TODO
-
-const route = useRoute();
-const loading = ref(false);
-const pageState = ref({
-  edit: false,
-  started: false,
-});
-
-const options = ref({
-  status: ['Aceite', 'Em Colocação', 'Não Aceite'],
-  companies: [],
-});
-
+// GERAL
 const internshipData = ref({
   id: "",
   class: {
@@ -139,18 +117,77 @@ const internshipData = ref({
   endedInternship: null,
 });
 
+const pageState = ref({
+  loading: false,
+  edit: false,
+  readyStarted: false,
+  started: false,
+});
+
+// Companies colocação
+const selectedCompanies = ref([
+  {
+    company: "",
+    status: "",
+  }
+]);
+
+const isAccepted = computed(() => {
+  return selectedCompanies.value.some(e => e.status === 'Aceite');
+});
+
+watch(
+  () => selectedCompanies,
+  (val) => {
+    pageState.value.readyStarted = isAccepted.value
+  },
+  { deep: true });
+
+function addCompany() {
+  selectedCompanies.value.push({
+    company: '',
+    status: ''
+  })
+}
+
+function removeCompany(id) {
+  selectedCompanies.value.splice(id, 1);
+}
+
+const options = ref({
+  status: ['Opção', 'Em Colocação', 'Aceite', 'Não Aceite'],
+  companies: [],
+});
+
+// started
+
+const startedInternship = ref({
+  date: "",
+  refeição: false,
+  companyPerson: "",
+  companyAddress: "",
+});
+
+const endedInternship = ref({
+  date: "",
+  refeição: false,
+  companyPerson: "",
+  companyAddress: "",
+});
+
+// fetches
 async function fetchInternship() {
-  loading.value = true;
+  pageState.value.loading = true;
   const data = await internshipsAPI.index({
     student_collection_id: route.params.class,
     student_id: route.params.student,
   })
 
-  if (data.data.length > 0) {
+  if (data.data.length > 0) { //If there is any internship
     const internship = data.data.find((item) => {
       return item.endedInternship === null;
     });
-    if (internship) {
+    if (internship) { //if there is any internship that is not ended
       internshipData.value = internship;
       pageState.value.edit = true;
       if (internshipData.value.startedInternship) {
@@ -162,24 +199,20 @@ async function fetchInternship() {
     internshipData.value.student = await studentsAPI.show(route.params.student);
     internshipData.value.class = await classesAPI.show(route.params.class);
   }
-  console.log(internshipData.value);
-  loading.value = false;
+  pageState.value.loading = false;
 }
 
-async function fetchCompanies() {
-  const response = await companiesAPI.index();
-  options.value.companies = response.data;
-  console.log(options.value.companies);
-}
-
+// lifecycle
 onMounted(() => {
   fetchInternship();
-  fetchCompanies()
 });
 
 function onSubmit() {
+  // console.log(selectedCompanies.value);
+  console.log(test.value);
 }
 
+// filters
 function filterCompaniesFn(val, update, abort) {
   update(async () => {
     const needle = val.toLowerCase()
@@ -187,8 +220,10 @@ function filterCompaniesFn(val, update, abort) {
       name: needle,
     })
     options.value.companies = response.data
+    console.log(options.value.companies);
   })
 }
+
 function filterTutorsFn(val, update, abort) {
   // update(async () => {
   //   const needle = val.toLowerCase()
@@ -200,6 +235,7 @@ function filterTutorsFn(val, update, abort) {
   //   // })
   // })
 }
+
 function filterMoradaFn(val, update, abort) {
   // update(async () => {
   //   const needle = val.toLowerCase()
