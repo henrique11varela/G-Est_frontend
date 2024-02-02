@@ -136,16 +136,7 @@ const routes = [
           },
           {
             path: 'edit/:id',
-            children: [
-              {
-                path: '',
-                component: () => import('pages/Students/StudentsEdit.vue'),
-              },
-              {
-                path: 'classes',
-                component: () => import('pages/Students/StudentsClassesEdit.vue'),
-              },
-            ]
+            component: () => import('pages/Students/StudentsEdit.vue'),
           },
           {
             path: 'show/:id',
