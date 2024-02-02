@@ -29,22 +29,22 @@ export default route(function (/* { store, ssrContext } */) {
     history: createHistory(process.env.VUE_ROUTER_BASE)
   })
 
-  // Router.beforeEach(async (to, from) => {
-  //   Loading.show({
-  //     backgroundColor: 'black',
+  Router.beforeEach(async (to, from) => {
+    Loading.show({
+      backgroundColor: 'black',
 
-  //   })
+    })
 
-  //   const { role } = await tokenAPI.checkRole();
+    const { role } = await tokenAPI.checkRole();
 
-  //   Loading.hide()
-  //   if (!role && to.fullPath != '/login') {
-  //     return 'login'
-  //   }
-  //   if (to.fullPath == '/login' && role) {
-  //     return ''
-  //   }
-  // })
+    Loading.hide()
+    if (!role && to.fullPath != '/login') {
+      return 'login'
+    }
+    if (to.fullPath == '/login' && role) {
+      return ''
+    }
+  })
 
   return Router
 })
