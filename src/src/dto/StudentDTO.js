@@ -63,12 +63,6 @@ function rules() {
     email: [ (val, rules) => rules.email(val)  || 'Introduza um email válido' ],
     phoneNumber: [ val => val && val.length > 0 || 'Introduza um telefone' ],
     address: [ val => val && val.length > 0 || 'Introduza uma morada' ],
-    softSkills: [ val => val || 'Preencha soft skills' ],
-    hardSkills: [ val => val || 'Preencha hard skills' ],
-
-    //phoneNumber: [ val => /^\d{9}$/.test(val) || 'Introduza um telefone válido'],
-
-    // Será necessário validação de turma a partir da criação/update de um aluno?
-    //classes: [val => isArray(val) && val.length > 0 || 'Associe uma turma ao aluno'],
+    skills: (skill) => [ val => val && val.length > 0 || `Selecione valor para ${skill} skills` ],
   }
 }
