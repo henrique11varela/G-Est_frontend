@@ -9,11 +9,11 @@ export default {
   destroy
 }
 
-async function index() {
+async function index(params = null) {
   try {
-    const { data } = await api.get('api/v1/courses')
+    const { data } = await api.get('api/v1/courses', { params: params })
     const courses = []
-    for (const course of data.data) {
+    for (const course of data) {
       courses.push(new courseDTO.input(course))
     }
     return courses

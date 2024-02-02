@@ -180,6 +180,23 @@ const routes = [
           },
         ]
       },
+      {
+        path: 'courses',
+        children: [
+          {
+            path: '',
+            component: () => import('pages/Courses/CoursesPage.vue'),
+          },
+          {
+            path: 'add',
+            component: () => import('pages/Courses/CoursesAdd.vue'),
+          },
+          {
+            path: 'edit/:id',
+            component: () => import('pages/Courses/CoursesEdit.vue'),
+          },
+        ]
+      },
     ]
   },
 
