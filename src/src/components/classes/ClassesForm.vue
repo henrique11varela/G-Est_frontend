@@ -1,5 +1,5 @@
 <template>
-    <div class="q-py-md">
+  <div class="q-py-md">
     <q-spinner
       color="primary"
       size="3em"
@@ -13,6 +13,7 @@
       v-else
     >
       <q-input
+        :readonly="submitting"
         outlined
         v-model="data.name"
         label="Turma"
@@ -22,6 +23,7 @@
       />
 
       <q-select
+        :readonly="submitting"
         outlined
         v-model="data.course"
         :options="courses"
@@ -39,7 +41,7 @@
         <q-spinner color="primary" size="2.5em" :thickness="2" v-if="submitting"/>
       </div>
     </q-form>
-    </div>
+  </div>
 </template>
 
 <script setup>
@@ -55,7 +57,7 @@ const courses = ref(null)
 const loading = ref(false)
 const submitting = ref(false)
 const rules = classDTO.rules()
-const route = useRoute();
+const route = useRoute()
 
 const props = defineProps({
   edit: Boolean,
@@ -64,7 +66,7 @@ const props = defineProps({
 onMounted(async () => {
   try {
     loading.value = true
-    if (props.edit) getClass(route.params.id)
+    if (props.edit) await getClass(route.params.id)
     courses.value = await coursesAPI.index()
     loading.value = false
   } catch (error) {
@@ -81,7 +83,7 @@ async function getClass(id) {
   const output = await classesAPI.show(id)
   data.value.name = defaults.name = output.name
   data.value.course = defaults.course = output.course
-  data.value.id = id
+  data.value.id = output.id
 }
 
 function defaultValues() {

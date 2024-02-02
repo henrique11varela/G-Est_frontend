@@ -16,7 +16,14 @@
       :rows-per-page-options="[5, 10, 15, 20, 25, 30, 50, 100]"
     >
       <template v-slot:loading>
-        <q-inner-loading showing color="primary" />
+        <q-inner-loading showing>
+          <q-spinner
+            color="primary"
+            size="3em"
+            :thickness="2"
+            v-if="loading"
+          />
+        </q-inner-loading>
       </template>
 
       <template v-slot:top-right>

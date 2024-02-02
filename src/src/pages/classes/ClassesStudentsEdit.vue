@@ -8,7 +8,7 @@
       />
     </div>
     <div class="q-pa-md" v-else>
-      <h1 class="text-h6">Editar alunos de {{ classInfo.name }}</h1>
+      <h1 class="text-h6">Associar/remover alunos de {{ classInfo.name }}</h1>
       <ClassesStudentsForm :students="classInfo.students" @submit-students="submitStudents"></ClassesStudentsForm>
     </div>
   </q-page>
@@ -40,7 +40,8 @@ onMounted(async () => {
 
 async function getClass(id) {
   loading.value = true
-  classInfo.value = await classesAPI.show(id)
+  const response = await classesAPI.show(id)
+  classInfo.value = response
   loading.value = false
 }
 

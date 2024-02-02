@@ -4,7 +4,7 @@
       <div class="flex justify-between items-center">
         <h1 class="text-h6">Editar turma</h1>
         <div v-if="isAdmin">
-          <q-btn unelevated color="negative" icon="delete" label="Apagar" @click="deleteClass"/>
+          <q-btn unelevated color="negative" label="Apagar" @click="deleteClass"/>
         </div>
       </div>
       <ClassesForm edit @valuecreated="postSubmit"></ClassesForm>
@@ -30,6 +30,6 @@ function postSubmit(value) {
 }
 
 function deleteClass() {
-  deleteModel(classesAPI.destroy, route, router, '/classes', 'a turma')
+  deleteModel(classesAPI.destroy, route.params.id, router, 'a turma', '/classes')
 }
 </script>
