@@ -29,7 +29,10 @@ function input(data) {
     if (data.hasOwnProperty("companies")) {
       hasCompaniesKey = true;
       for (const company of data.companies) {
-        companiesArray.push(new CompanyDTO.input(company));
+        companiesArray.push({
+          company: CompanyDTO.input(company),
+          status: 'Opção',
+        });
       }
     }
 
@@ -37,12 +40,13 @@ function input(data) {
     let startedInternship = null;
     if (data.started_internship) {
       startedInternship = {};
-      startedInternship.mealAllowance = data.started_internship.meal_allowance;
-      startedInternship.startDate = data.started_internship.start_date;
+      startedInternship.mealAllowance = data.started_internship.meal_allowance > 0;
+      startedInternship.startDate = data.started_internship.start_date?.split('').slice(0,10).join('').replace(/-/g, '/');
+      startedInternship.endDate = data.started_internship.end_date?.split('').slice(0,10).join('').replace(/-/g, '/');
       //companyAddress
       let companyAddress = null;
       if (data.started_internship.hasOwnProperty("company_address")) {
-        companyAddress = new CompanyAddressDTO.input(
+        companyAddress = CompanyAddressDTO.input(
           data.started_internship.company_address
         );
       }
@@ -51,7 +55,7 @@ function input(data) {
       //companyPerson
       let companyPerson = null;
       if (data.started_internship.hasOwnProperty("company_person")) {
-        companyPerson = new CompanyPeopleDTO.input(
+        companyPerson = CompanyPeopleDTO.input(
           data.started_internship.company_person
         );
       }
@@ -60,12 +64,12 @@ function input(data) {
 
     //endedInternship
     let endedInternship = null;
-    if (data.ended_internship) {
-      endedInternship = {};
-      endedInternship.reason = data.ended_internship.reason;
-      endedInternship.endDate = data.ended_internship.end_date;
-      endedInternship.isWorkingThere = data.ended_internship.is_working_there;
-    }
+    // if (data.ended_internship) {
+    //   endedInternship = {};
+    //   endedInternship.reason = data.ended_internship.reason;
+    //   endedInternship.endDate = data.ended_internship.end_date;
+    //   endedInternship.isWorkingThere = data.ended_internship.is_working_there;
+    // }
 
     return {
       id: data.id,
@@ -81,17 +85,45 @@ function input(data) {
   }
 }
 
-//TODO: missing started and ended internship
+//TODO: missing ended internship
 function output(data) {
   try {
-    const outputPayload = {
-      student_id: data.student_id,
-      student_collection_id: data.student_collection_id,
-      observations: data.observations,
-      companies: data.companies,
 
-      started_internship: null,
-      ended_internship: null,
+    let started_internship = null;
+    if (data.startedInternship) {
+      started_internship = {
+        meal_allowance: data.startedInternship.mealAllowance ? 1 : 0,
+        start_date: data.startedInternship.startDate,
+        end_date: data.startedInternship.endDate,
+        company_address_id: data.startedInternship.address.id,
+        company_person_id: data.startedInternship.tutor.id,
+      };
+    }
+
+    let ended_internship = null;
+    // if (data.ended_internship) {
+    //   started_internship = {
+    //     meal_allowance: data.started_internship.mealAllowance,
+    //     start_date: data.started_internship.startDate,
+    //     end_date: data.started_internship.endDate,
+    //     company_address: data.started_internship.address,
+    //     company_person: data.started_internship.tutor,
+    //   };
+    // }
+
+    const outputPayload = {
+      student_id: data.student.id,
+      student_collection_id: data.class.id,
+      observations: data.observations,
+      companies: data.companies.map((item) => {
+        return {
+          id: item.company.id,
+          status: item.status,
+        }
+      }),
+
+      started_internship: started_internship,
+      ended_internship: ended_internship,
     };
     return outputPayload;
   } catch (error) {
