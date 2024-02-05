@@ -49,50 +49,52 @@ onMounted(() => {
 
 <template>
   <q-page padding>
-    <!-- content -->
-    <h1>Users</h1>
-    <q-table flat bordered ref="tableRef" title="Treats" :rows="rows" :columns="columns" row-key="id"
-      v-model:pagination="pagination" :loading="loading" :filter="filters" binary-state-sort @request="onRequest">
+    <div class="q-pa-md">
+      <!-- content -->
+      <h1>Users</h1>
+      <q-table flat bordered ref="tableRef" title="Treats" :rows="rows" :columns="columns" row-key="id"
+        v-model:pagination="pagination" :loading="loading" :filter="filters" binary-state-sort @request="onRequest">
 
-      <template v-slot:loading>
-        <q-inner-loading showing color="primary" />
-      </template>
-
-
-      <template v-slot:top>
-        <q-btn color="primary" :disable="loading" label="Adicionar" :to="`users/add`" />
-        <q-space />
-        <q-input label="Name" borderless dense debounce="300" v-model="filters.name" placeholder="Search">
-          <template v-slot:append>
-            <q-icon name="search" />
-          </template>
-        </q-input>
-
-        <q-space />
-        <q-input label="Email" borderless dense debounce="300" v-model="filters.email" placeholder="Search">
-          <template v-slot:append>
-            <q-icon name="search" />
-          </template>
-        </q-input>
-        <q-space />
-
-      </template>
-      <template v-slot:top-right>
-        <q-input outlined bg-color="white" borderless dense debounce="300" v-model="filter" placeholder="Search">
-          <template v-slot:append>
-            <q-icon name="search" />
-          </template>
-        </q-input>
-      </template>
+        <template v-slot:loading>
+          <q-inner-loading showing color="primary" />
+        </template>
 
 
-      <template v-slot:body-cell-action="props">
-        <q-td :props="props">
-          <q-btn :to="`users/${props.row.id}`" unelevated :icon="matEdit" text-color="secondary"></q-btn>
-        </q-td>
-      </template>
+        <template v-slot:top>
+          <q-btn color="primary" :disable="loading" label="Adicionar" :to="`users/add`" />
+          <q-space />
+          <q-input label="Name" borderless dense debounce="300" v-model="filters.name" placeholder="Search">
+            <template v-slot:append>
+              <q-icon name="search" />
+            </template>
+          </q-input>
+
+          <q-space />
+          <q-input label="Email" borderless dense debounce="300" v-model="filters.email" placeholder="Search">
+            <template v-slot:append>
+              <q-icon name="search" />
+            </template>
+          </q-input>
+          <q-space />
+
+        </template>
+        <template v-slot:top-right>
+          <q-input outlined bg-color="white" borderless dense debounce="300" v-model="filter" placeholder="Search">
+            <template v-slot:append>
+              <q-icon name="search" />
+            </template>
+          </q-input>
+        </template>
 
 
-    </q-table>
+        <template v-slot:body-cell-action="props">
+          <q-td :props="props">
+            <q-btn :to="`users/${props.row.id}`" unelevated :icon="matEdit" text-color="secondary"></q-btn>
+          </q-td>
+        </template>
+
+
+      </q-table>
+    </div>
   </q-page>
 </template>
