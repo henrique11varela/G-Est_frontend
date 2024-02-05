@@ -7,7 +7,7 @@ export default {
 }
 function input(data) {
 
-  try{
+  try {
     const peoples = []
     let hasPeopleKey = false
     if (data.hasOwnProperty('company_people')) {
@@ -41,18 +41,23 @@ function input(data) {
         addresses.push(new CompanyAddressDTO.input(people))
       }
     }
+
+
     return {
       id: data.id,
       name: data.name,
       niss: data.niss,
       nipc: data.nipc,
+      cae: data.cae,
+      status: data.pivot.status,
       numberPeople: peoples.length,
       numberTutor: tutors.length,
       numberContact: contacts.length,
+      ...(data.hasOwnProperty('pivot') && { status: data.pivot.status }),
       ...(hasPeopleKey && { peoples }),
-      ...(hasAddressesKey && {addresses}),
-      ...(hasTutorsKey && {tutors}),
-      ...(hasContactsKey && {contacts})
+      ...(hasAddressesKey && { addresses }),
+      ...(hasTutorsKey && { tutors }),
+      ...(hasContactsKey && { contacts })
     }
   } catch (error) {
     console.error("Error:", error)
@@ -65,6 +70,7 @@ function output(data) {
     name: data.name,
     niss: data.niss,
     nipc: data.nipc,
+    cae: data.cae,
   }
 }
 function rules() {
@@ -73,10 +79,10 @@ function rules() {
       val => val && val.length > 0 || "Introduza um nome",
     ],
     niss: [
-      val => val && val.length > 0 || "Introduza um Niss",
+      // val => val && val.length > 0 || "Introduza um Niss",
     ],
-    nipc:[
-      val => val && val.length > 0 || "Introduza um Nipc",
+    nipc: [
+      // val => val && val.length > 0 || "Introduza um Nipc",
     ]
   }
 }
