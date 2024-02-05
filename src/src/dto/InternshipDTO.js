@@ -29,10 +29,7 @@ function input(data) {
     if (data.hasOwnProperty("companies")) {
       hasCompaniesKey = true;
       for (const company of data.companies) {
-        companiesArray.push({
-          company: CompanyDTO.input(company),
-          status: 'Opção',
-        });
+        companiesArray.push(CompanyDTO.input(company));
       }
     }
 
@@ -117,7 +114,7 @@ function output(data) {
       observations: data.observations,
       companies: data.companies.map((item) => {
         return {
-          id: item.company.id,
+          id: item.id,
           status: item.status,
         }
       }),
