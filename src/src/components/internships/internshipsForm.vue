@@ -18,7 +18,7 @@
       <div ref="companiesElement">
         <div v-for="numberSelect in internshipData.companies.length" :key="numberSelect" class="row">
           <div class="q-mb-md col-7">
-            <q-select outlined label="Empresa" v-model="internshipData.companies[numberSelect - 1].company" use-input
+            <q-select outlined label="Empresa" v-model="internshipData.companies[numberSelect - 1]" use-input
               hide-selected fill-input input-debounce="500" :options="options.companies"
               :readonly="isAccepted || pageState.isSubmitting" :loading="pageState.loadingCompanies" option-label="name"
               @filter="filterCompaniesFn">
@@ -125,11 +125,11 @@
       <!-- Observations -->
       <q-input outlined class="q-mb-md" v-model="internshipData.observations" label="Observações" type="textarea" />
 
-      <div class="row" v-if="!pageState.isSubmitting">
-        <q-btn color="primary" class="col-3" type="submit">Salvar</q-btn>
-        <q-btn color="primary" class="col-3 offset-6" v-if="!pageState.started && pageState.readyToBeStarted" @click="startInternship">Iniciar
+      <div class="row">
+        <q-btn color="primary" class="col-3" type="submit" :disable="pageState.isSubmitting">Salvar</q-btn>
+        <q-btn color="primary" class="col-3 offset-6" v-if="!pageState.started && pageState.readyToBeStarted" :disable="pageState.isSubmitting" @click="startInternship">Iniciar
           estágio</q-btn>
-        <q-btn color="primary" class="col-3 offset-6" v-if="pageState.started && pageState.edit" @click="endInternship">Terminar
+        <q-btn color="primary" class="col-3 offset-6" v-if="pageState.started && pageState.edit" :disable="pageState.isSubmitting" @click="endInternship">Terminar
           estágio</q-btn>
       </div>
       <!-- {{ internshipData }} -->
@@ -158,10 +158,10 @@ const internshipData = ref({
   },
   observations: "",
   companies: [
-    {
-      company: "",
-      status: "Opção",
-    },
+      {
+        name: "",
+        status: "",
+      },
   ],
   startedInternship: null,
   endedInternship: null,
@@ -183,7 +183,7 @@ const isAccepted = computed(() => {
 });
 
 const acceptedCompany = computed(() => {
-  return internshipData.value.companies.find(e => e.status === 'Aceite').company;
+  return internshipData.value.companies.find(e => e.status === 'Aceite');
 });
 
 watch(
@@ -200,8 +200,8 @@ watch(
 
 function addCompany() {
   internshipData.value.companies.push({
-    company: '',
-    status: 'Opção'
+    name: "",
+    status: ''
   })
 }
 
