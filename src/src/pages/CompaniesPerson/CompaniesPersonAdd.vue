@@ -11,7 +11,9 @@ const person = {
 </script>
 
 <template>
-  <q-page>
-    <CompanyPeopleFrom :person="person"/>
+  <q-page padding>
+    <div class="q-pa-md">
+      <CompanyPeopleFrom :person="person" />
+    </div>
   </q-page>
 </template>

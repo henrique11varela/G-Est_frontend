@@ -22,7 +22,7 @@ const personData = ref({
 })
 async function onSubmit() {
   const data = {};
-  if (props.edit) {
+  if (!props.edit) {
     data = await companyPeopleAPI.store(personData.value)
   }
   else {
@@ -39,8 +39,8 @@ onMounted(() => {
 
 function showDeleteModal() {
   $q.dialog({
-    title: 'Alert',
-    message: 'Some message',
+    title: 'Apagar',
+    message: 'Deseija eleminar o contacto da empresa?',
     cancel: true,
     persistent: true
   }).onOk(async () => {
@@ -60,24 +60,24 @@ function showDeleteModal() {
 
     <div class="row">
       <div class="col-md-4">
-        <q-input class="q-ma-md" filled v-model="personData.name" label="Name *" hint="Name" lazy-rules
+        <q-input outlined class="q-ma-md" filled v-model="personData.name" label="Name *" hint="Name" lazy-rules
           :rules="companyPearsonDTO.rules().name"></q-input>
       </div>
       <div class="col-md-4">
-        <q-input class="q-ma-md" filled v-model="personData.email" label="NIPC*" hint="Name and surname" lazy-rules
+        <q-input outlined class="q-ma-md" filled v-model="personData.email" label="NIPC*" hint="Name and surname" lazy-rules
           :rules="companyPearsonDTO.rules().email"></q-input>
       </div>
       <div class="col-md-4">
-        <q-input class="q-ma-md" filled v-model="personData.phoneNumber" label="NISS *" hint="Name and surname" lazy-rules
+        <q-input outlined class="q-ma-md" filled v-model="personData.phoneNumber" label="NISS *" hint="Name and surname" lazy-rules
           :rules="companyPearsonDTO.rules().phoneNumber"></q-input>
       </div>
 
       <div class="col-md-12">
         <div>
-          <q-checkbox v-model="personData.isTutor" label="isTutor" />
+          <q-checkbox v-model="personData.isTutor" label="Tutor" />
         </div>
         <div>
-          <q-checkbox v-model="personData.isContact" label="isContact" />
+          <q-checkbox v-model="personData.isContact" label="Contact" />
         </div>
       </div>
       <q-btn class="q-ma-md " style="width: 100%" label="Submit" type="submit" color="primary"  />

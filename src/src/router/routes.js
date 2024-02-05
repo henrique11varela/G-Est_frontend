@@ -76,7 +76,7 @@ const routes = [
         children: [
           {
             path: '',
-            component: () => import('pages/Companies/CompaniesList.vue'),
+            component: () => import('pages/Companies/CompaniesPage.vue'),
           },
           {
             path: 'add',

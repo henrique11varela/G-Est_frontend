@@ -4,6 +4,8 @@ import routes from './routes'
 import tokenAPI from "../services/fetches/token.js";
 import { Loading, QSpinnerGears } from 'quasar'
 
+import { useLoginStore } from "src/stores/login.js";
+import { storeToRefs } from 'pinia'
 /*
  * If not building with SSR mode, you can
  * directly export the Router instantiation;
@@ -30,6 +32,7 @@ export default route(function (/* { store, ssrContext } */) {
   })
 
   Router.beforeEach(async (to, from) => {
+    const store = useLoginStore;
     Loading.show({
       backgroundColor: 'black',
 
@@ -42,6 +45,7 @@ export default route(function (/* { store, ssrContext } */) {
       return 'login'
     }
     if (to.fullPath == '/login' && role) {
+      store.setPermission(role)
       return ''
     }
   })

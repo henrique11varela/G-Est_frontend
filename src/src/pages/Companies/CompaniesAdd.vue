@@ -9,6 +9,10 @@ const router = Router();
 const edit = ref(false)
 </script>
 <template>
-  <span class="text-h5">Adicionar empresa</span>
-  <CompanyFrom  :edit="edit" @submit-Company="addCompany" />
+  <q-page padding>
+    <div class="q-pa-md">
+      <span class="text-h5">Adicionar empresa</span>
+      <CompanyFrom :edit="edit" @submit-Company="addCompany" />
+    </div>
+  </q-page>
 </template>

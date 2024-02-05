@@ -5,7 +5,7 @@ import { api } from "src/boot/axios.js";
 
 export const useLoginStore = defineStore('login', () => {
   const token = ref("")
-
+  const userPermission = ref("")
   const bearerToken = computed(() => {
     // if (token.value === "") {
     //   redirect to login
@@ -35,11 +35,16 @@ export const useLoginStore = defineStore('login', () => {
     //fazer pedido a backend para logout
   }
 
+  function setPermission(permission) {
+    this.userPermission = permission
+  }
+
   return {
     token,
     login,
     logout,
     bearerToken,
-    setToken
+    setToken,
+    setPermission
   }
 });

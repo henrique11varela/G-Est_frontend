@@ -1,10 +1,11 @@
 <script setup>
 import CompanyAddressesFrom from 'src/components/companyAddressesList/CompanyAddressesFrom.vue'
 import Router from 'src/router';
-import companyAddressAPI from "src/services/fetches/companyaddress.js";
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
-const route = useRoute();
+import notify from 'src/composables/notify'
+const router = useRouter()
+const route = useRoute()
 const id = route.params.id;
 const address = {
   companyId: id,
@@ -12,12 +13,19 @@ const address = {
   address: '',
   postalCode: '',
 }
-
+const valueCreated = async function (data) {
+  if (data.status == 200) {
+    notify.store()
+    await router.back()
+  }
+}
 
 </script>
 
 <template>
-  <q-page>
-    <CompanyAddressesFrom :address="address" :edit="false"/>
+  <q-page padding>
+    <div class="q-pa-md">
+      <CompanyAddressesFrom :address="address" :edit="false" @valuecreated="valueCreated" />
+    </div>
   </q-page>
 </template>

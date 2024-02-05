@@ -38,7 +38,7 @@ function editButton() {
   reactiveEdit.value = !reactiveEdit.value;
 }
 onMounted(() => {
-  if (props.company) {
+  if (!props.company) {
     CompanyData.value = props.company
   }
   reactiveEdit.value = props.edit
@@ -46,8 +46,8 @@ onMounted(() => {
 
 function showDeleteModal() {
   $q.dialog({
-    title: 'Alert',
-    message: 'Some message',
+    title: 'Apagar',
+    message: 'Deseija eleminar a empresa?',
     cancel: true,
     persistent: true
   }).onOk(async () => {
@@ -67,15 +67,15 @@ function showDeleteModal() {
 
       <div class="row">
         <div class="col-md-4">
-          <q-input class="q-ma-md" filled v-model="CompanyData.name" label="Name *" hint="Name" lazy-rules
+          <q-input outlined class="q-ma-md" filled v-model="CompanyData.name" label="Name *" hint="Name" lazy-rules
             :rules="CompanyDTO.rules().name" ></q-input>
         </div>
         <div class="col-md-4">
-          <q-input class="q-ma-md" filled v-model="CompanyData.nipc" label="NIPC*" hint="Name and surname" lazy-rules
+          <q-input outlined class="q-ma-md" filled v-model="CompanyData.nipc" label="NIPC*" hint="NIPC" lazy-rules
             :rules="CompanyDTO.rules().nipc" ></q-input>
         </div>
         <div class="col-md-4">
-          <q-input class="q-ma-md" filled v-model="CompanyData.niss" label="NISS *" hint="Name and surname" lazy-rules
+          <q-input outlined class="q-ma-md" filled v-model="CompanyData.niss" label="NISS *" hint="NISS" lazy-rules
             :rules="CompanyDTO.rules().niss" ></q-input>
         </div>
         <div class="col-md-4">
