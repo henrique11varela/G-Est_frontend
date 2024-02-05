@@ -49,7 +49,6 @@ function input(data) {
       niss: data.niss,
       nipc: data.nipc,
       cae: data.cae,
-      status: data.pivot.status,
       numberPeople: peoples.length,
       numberTutor: tutors.length,
       numberContact: contacts.length,
