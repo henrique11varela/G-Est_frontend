@@ -28,7 +28,7 @@
 
       <template v-slot:top-right>
         <div>
-          <q-input outlined bg-color="white" borderless dense debounce="300" v-model="filter" placeholder="Search">
+          <q-input outlined bg-color="white" borderless dense debounce="600" v-model="filter" placeholder="Search">
             <template v-slot:append>
               <q-icon name="search" />
             </template>
