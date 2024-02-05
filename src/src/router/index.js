@@ -32,21 +32,24 @@ export default route(function (/* { store, ssrContext } */) {
   })
 
   Router.beforeEach(async (to, from) => {
-    const store = useLoginStore;
+    const store = useLoginStore();
+
     Loading.show({
       backgroundColor: 'black',
-
     })
 
     const { role } = await tokenAPI.checkRole();
 
     Loading.hide()
+
     if (!role && to.fullPath != '/login') {
       return 'login'
     }
-    if (to.fullPath == '/login' && role) {
+    if (role) {
       store.setPermission(role)
-      return ''
+      if (to.fullPath == '/login') {
+        return ''
+      }
     }
   })
 
