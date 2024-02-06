@@ -7,7 +7,7 @@ function input(data) {
       id: data.id,
       name: data.name,
       type: data.type,
-      ...(data.hasOwnProperty('area') && { area: new areaDTO.input(data.area) }),
+      ...(data.hasOwnProperty('area') && { area: areaDTO.input(data.area) }),
       hourlyLoad: data.hourly_load
     }
   } catch (error) {

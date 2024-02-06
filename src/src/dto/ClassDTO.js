@@ -10,7 +10,7 @@ function input(data) {
     if (data.hasOwnProperty('students')) {
       hasStudentsKey = true
       for (const student of data.students) {
-        students.push(new studentDTO.input(student))
+        students.push(studentDTO.input(student))
       }
     }
     const internships = []
@@ -18,7 +18,7 @@ function input(data) {
     if (data.hasOwnProperty('internships')) {
       hasIntershipsKey = true
       for (const internship of data.internships) {
-        internships.push(new internshipDTO.input(internship))
+        internships.push(internshipDTO.input(internship))
       }
     }
     const hasCourseKey = data.hasOwnProperty('course')
@@ -26,7 +26,7 @@ function input(data) {
       id: data.id,
       name: data.name,
       ...(hasStudentsKey && { students }),
-      ...(hasCourseKey && { course: new courseDTO.input(data.course) }),
+      ...(hasCourseKey && { course: courseDTO.input(data.course) }),
       ...(hasIntershipsKey && { internships }),
     }
   } catch (error) {

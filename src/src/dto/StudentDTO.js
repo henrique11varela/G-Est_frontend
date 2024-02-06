@@ -9,7 +9,7 @@ function input(data) {
     if (data.hasOwnProperty('student_collections')) {
       hasStudentCollectionsKey = true
       for (const studentClass of data.student_collections) {
-        studentClasses.push(new classDTO.input(studentClass))
+        studentClasses.push(classDTO.input(studentClass))
       }
     }
     const internships = []
@@ -17,7 +17,7 @@ function input(data) {
     if (data.hasOwnProperty('internships')) {
       hasIntershipsKey = true
       for (const internship of data.internships) {
-        internships.push(new internshipDTO.input(internship))
+        internships.push(internshipDTO.input(internship))
       }
     }
     return {
