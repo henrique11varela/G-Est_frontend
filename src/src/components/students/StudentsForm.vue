@@ -30,7 +30,6 @@
           label="Hard skills"
           lazy-rules="ondemand"
           :rules="rules.skills('hard')"
-          :display-value="data.hardSkills ? data.hardSkills : 'Classifique hard skills'"
           class="col-12 col-sm"
         />
 
@@ -42,20 +41,41 @@
           label="Soft skills"
           lazy-rules="ondemand"
           :rules="rules.skills('soft')"
-          :display-value="data.softSkills ? data.softSkills : 'Classifique soft skills'"
           class="col-12 col-sm"
         />
       </div>
 
-      <q-input
-        :readonly="submitting"
-        outlined
-        v-model="data.address"
-        label="Morada"
-        lazy-rules="ondemand"
-        :rules="rules.address"
-        class="q-mb-md"
-      />
+      <div class="row q-col-gutter-md q-mb-md">
+        <q-input
+          :readonly="submitting"
+          outlined
+          v-model="data.address"
+          label="Morada"
+          lazy-rules="ondemand"
+          :rules="rules.address"
+          class="col-12 col-lg-8 col-md-6"
+        />
+
+        <q-input
+          :readonly="submitting"
+          outlined
+          v-model="data.postalCode"
+          label="Código Postal"
+          mask="####-###"
+          lazy-rules="ondemand"
+          :rules="rules.postalCode"
+          class="col-12 col-sm"
+        />
+        <q-input
+          :readonly="submitting"
+          outlined
+          v-model="data.locality"
+          label="Localidade"
+          lazy-rules="ondemand"
+          :rules="rules.locality"
+          class="col-12 col-sm"
+        />
+      </div>
 
       <div class="row q-col-gutter-md q-mb-md">
         <q-input
@@ -102,7 +122,7 @@
 import studentDTO from 'src/dto/StudentDTO'
 import studentsAPI from 'src/services/fetches/students'
 import { useRoute } from "vue-router"
-import { ref, onMounted, defineEmits, watch } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 
 const props = defineProps({
   edit: Boolean,
@@ -140,6 +160,8 @@ async function getStudent(id) {
   data.value.atecEmail = defaults.atecEmail = output.atecEmail
   data.value.phoneNumber = defaults.phoneNumber = output.phoneNumber
   data.value.address = defaults.address = output.address
+  data.value.postalCode = defaults.postalCode = output.postalCode
+  data.value.locality = defaults.locality = output.locality
   data.value.hardSkills = defaults.hardSkills = output.hardSkills
   data.value.softSkills = defaults.softSkills = output.softSkills
   data.value.id = output.id
@@ -152,6 +174,8 @@ function defaultValues() {
     atecEmail: "",
     phoneNumber: "",
     address: "",
+    postalCode: "",
+    locality: "",
     hardSkills: "",
     softSkills: ""
   }
@@ -163,6 +187,8 @@ function onReset() {
   data.value.atecEmail = defaults.atecEmail
   data.value.phoneNumber = defaults.phoneNumber
   data.value.address = defaults.address
+  data.value.postalCode = defaults.postalCode
+  data.value.locality = defaults.locality
   data.value.hardSkills = defaults.hardSkills
   data.value.softSkills = defaults.softSkills
 }
