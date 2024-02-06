@@ -1,5 +1,6 @@
 import { api } from "src/boot/axios"
 import courseDTO from "src/dto/CourseDTO"
+import paginationDTO from "src/dto/PaginationDTO"
 
 export default {
   index,
@@ -13,10 +14,13 @@ async function index(params = null) {
   try {
     const { data } = await api.get('api/v1/courses', { params: params })
     const courses = []
-    for (const course of data) {
-      courses.push(new courseDTO.input(course))
+    for (const course of data.data) {
+      courses.push(courseDTO.input(course))
     }
-    return courses
+    return {
+      data: courses,
+      pagination: paginationDTO.input(data)
+    }
   } catch (error) {
     console.log(error);
   }
@@ -24,7 +28,7 @@ async function index(params = null) {
 
 async function store(payload) {
   try {
-    const { data } = await api.post('api/v1/courses', new courseDTO.output(payload))
+    const { data } = await api.post('api/v1/courses', courseDTO.output(payload))
     return data
   } catch (error) {
     console.log(error);
@@ -34,7 +38,7 @@ async function store(payload) {
 async function show(id) {
   try {
     const { data } = await api.get(`api/v1/courses/${id}`)
-    return new courseDTO.input(data)
+    return courseDTO.input(data)
   } catch (error) {
     console.log(error);
   }
@@ -42,7 +46,7 @@ async function show(id) {
 
 async function update(payload) {
   try {
-    const { data } = await api.put(`api/v1/courses/${payload.id}`, new courseDTO.output(payload))
+    const { data } = await api.put(`api/v1/courses/${payload.id}`, courseDTO.output(payload))
     return data
   } catch (error) {
     console.log(error);

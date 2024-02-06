@@ -1,21 +1,21 @@
 <template>
   <q-page padding>
     <div class="q-pa-md">
-      <h1 class="text-h6">Criar turma</h1>
-      <ClassesForm @valuecreated="postSubmit"></ClassesForm>
+      <h1 class="text-h6">Criar curso</h1>
+      <CoursesForm @valuecreated="postSubmit"></CoursesForm>
     </div>
   </q-page>
 </template>
 
 <script setup>
-import ClassesForm from 'src/components/classes/ClassesForm.vue'
+import CoursesForm from 'src/components/courses/CoursesForm.vue'
 import { useRouter } from 'vue-router'
 import notify from 'src/composables/notify'
 const router = useRouter()
 
 function postSubmit(value) {
   notify.store()
-  router.push(`/classes/show/${value.id}`)
+  router.push('/courses')
 }
 
 </script>

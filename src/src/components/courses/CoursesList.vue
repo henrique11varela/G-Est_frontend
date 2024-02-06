@@ -8,20 +8,27 @@
       :rows="rows"
       :columns="columns"
       row-key="id"
+      v-model:pagination="pagination"
       :loading="loading"
       :filter="filter"
       @request="onRequest"
       hide-no-data
-      hide-pagination
-      :pagination="{ rowsPerPage:0 }"
+      :rows-per-page-options="[5, 10, 15, 20, 25, 30, 50, 100]"
     >
       <template v-slot:loading>
-        <q-inner-loading showing color="primary" />
+        <q-inner-loading showing>
+          <q-spinner
+            color="primary"
+            size="3em"
+            :thickness="2"
+            v-if="loading"
+          />
+        </q-inner-loading>
       </template>
 
       <template v-slot:top-right>
         <div>
-          <q-input outlined bg-color="white" borderless dense debounce="300" v-model="filter" placeholder="Search">
+          <q-input outlined bg-color="white" borderless dense debounce="600" v-model="filter" placeholder="Search">
             <template v-slot:append>
               <q-icon name="search" />
             </template>
@@ -31,9 +38,7 @@
 
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
-          <q-btn unelevated text-color="secondary" :to="`/courses/edit/${props.row.id}`">
-            <q-icon name="edit" />
-          </q-btn>
+          <q-btn unelevated text-color="secondary" icon="edit" :to="`/courses/edit/${props.row.id}`" />
         </q-td>
       </template>
     </q-table>
@@ -83,14 +88,24 @@ const tableRef = ref()
 const rows = ref([])
 const filter = ref('')
 const loading = ref(false)
+const pagination = ref({
+  page: 1,
+  rowsPerPage: 15,
+  rowsNumber: 0
+})
 
 async function onRequest (props) {
+  const { page, rowsPerPage } = props.pagination
   const filter = props.filter
-  const params = { name: filter }
+  const params = { page, quantity: rowsPerPage, name: filter }
+
   loading.value = true
   const response = await coursesAPI.index(params)
+
   //validations go here
-  rows.value = response
+
+  rows.value = response.data
+  pagination.value = response.pagination
   loading.value = false
 }
 

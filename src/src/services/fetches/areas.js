@@ -1,4 +1,5 @@
 import { api } from "src/boot/axios"
+import AreaDTO from "src/dto/AreaDTO"
 
 export default {
   index,
@@ -10,7 +11,11 @@ export default {
 async function index() {
   try {
     const { data } = await api.get('api/v1/areas')
-    return data
+    const areas = []
+    for (const area of data) {
+      areas.push(AreaDTO.input(area))
+    }
+    return areas
   } catch (error) {
     console.log(error);
   }

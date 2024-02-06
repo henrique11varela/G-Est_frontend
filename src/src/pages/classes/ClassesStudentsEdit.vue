@@ -9,7 +9,7 @@
     </div>
     <div class="q-pa-md" v-else>
       <h1 class="text-h6">Associar/remover alunos de {{ classInfo.name }}</h1>
-      <ClassesStudentsForm :students="classInfo.students" @submit-students="submitStudents"></ClassesStudentsForm>
+      <ClassesStudentsForm :submitting="submitting" :students="classInfo.students" @submit-students="submitStudents"></ClassesStudentsForm>
     </div>
   </q-page>
 </template>
@@ -19,13 +19,13 @@ import ClassesStudentsForm from 'src/components/classes/ClassesStudentsForm.vue'
 import classesAPI from 'src/services/fetches/classes'
 import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useQuasar } from 'quasar'
+import notify from 'src/composables/notify'
 
 const classInfo = ref({})
 const loading = ref(true)
+const submitting = ref(false)
 const route = useRoute()
 const router = useRouter()
-const $q = useQuasar()
 
 watch(
   () => route.params.id,
@@ -47,13 +47,11 @@ async function getClass(id) {
 
 async function submitStudents(editedList) {
   classInfo.value.students = editedList
+  submitting.value = true
   const response = await classesAPI.update(classInfo.value)
-  $q.notify({
-      color: 'green-4',
-      textColor: 'white',
-      icon: 'cloud_done',
-      message: 'Editado'
-    })
-    router.push(`/classes/show/${route.params.id}`)
+  submitting.value = false
+  //validations go here
+  notify.update()
+  router.push(`/classes/show/${route.params.id}`)
 }
 </script>

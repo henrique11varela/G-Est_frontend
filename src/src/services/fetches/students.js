@@ -15,7 +15,7 @@ async function index(params) {
     const { data } = await api.get('api/v1/students', { params: params })
     const students = []
     for (const student of data.data) {
-      students.push(new studentDTO.input(student))
+      students.push(studentDTO.input(student))
     }
     return {
       data: students,
@@ -28,7 +28,7 @@ async function index(params) {
 
 async function store(payload) {
   try {
-    const { data } = await api.post('api/v1/students', new studentDTO.output(payload))
+    const { data } = await api.post('api/v1/students', studentDTO.output(payload))
     return data
   } catch (error) {
     console.log(error);
@@ -46,7 +46,7 @@ async function show(id) {
 
 async function update(payload) {
   try {
-    const { data } = await api.put(`api/v1/students/${payload.id}`, new studentDTO.output(payload))
+    const { data } = await api.put(`api/v1/students/${payload.id}`, studentDTO.output(payload))
     return data
   } catch (error) {
     console.log(error);
