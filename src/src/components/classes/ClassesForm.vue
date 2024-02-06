@@ -4,7 +4,7 @@
       color="primary"
       size="3em"
       :thickness="2"
-      v-if="loading"
+      v-if="loading.studentClass"
     />
     <q-form
       @submit="onSubmit"
@@ -19,21 +19,29 @@
         label="Turma"
         lazy-rules="ondemand"
         :rules="rules.name"
-        class="col-12 col-sm-auto"
+        class="col-12 col-sm-4"
       />
 
       <q-select
-        :readonly="submitting"
         outlined
-        v-model="data.course"
-        :options="courses"
         label="Curso"
-        lazy-rules="ondemand"
-        :rules="rules.course"
+        v-model="data.course"
+        use-input hide-selected fill-input
+        input-debounce="500"
+        :options="courses"
+        :readonly="submitting"
+        :loading="loading.courses"
         :option-label="course => course.name"
-        :display-value="data.course ? data.course.name : 'Escolha o curso'"
-        class="col-12 col-sm-auto"
-      />
+        @filter="filterCoursesFn"
+        class="col-12 col-sm">
+        <template v-slot:no-option>
+          <q-item>
+            <q-item-section class="text-grey" v-if="!loading.courses">
+              Sem resultados
+            </q-item-section>
+          </q-item>
+        </template>
+      </q-select>
 
       <div class="col-12">
         <q-btn unelevated label="Guardar" type="submit" color="primary" :disabled="submitting"/>
@@ -53,8 +61,11 @@ import { useRoute } from "vue-router"
 
 const data = ref(defaultValues())
 const defaults = defaultValues()
-const courses = ref(null)
-const loading = ref(false)
+const courses = ref([])
+const loading = ref({
+  studentClass: false,
+  courses: false
+})
 const submitting = ref(false)
 const rules = classDTO.rules()
 const route = useRoute()
@@ -65,14 +76,25 @@ const props = defineProps({
 
 onMounted(async () => {
   try {
-    loading.value = true
+    loading.value.studentClass = true
     if (props.edit) await getClass(route.params.id)
-    courses.value = await coursesAPI.index()
-    loading.value = false
+    loading.value.studentClass = false
   } catch (error) {
     console.error(error)
   }
 })
+
+function filterCoursesFn(val, update, abort) {
+  update(async () => {
+    loading.value.courses = true
+    const response = await coursesAPI.index({
+      name: val,
+    })
+    console.log(response)
+    courses.value = response.data
+    loading.value.courses = false
+  })
+}
 
 watch(
   () => route.params.id,
