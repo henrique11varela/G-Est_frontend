@@ -107,14 +107,18 @@ function studentContacts(student) {
       atecEmail,
       personalEmail,
       phoneNumber,
-      address
+      address,
+      postalCode,
+      locality
     } = student
 
     return {
       atecEmail,
       personalEmail,
       phoneNumber,
-      address
+      address,
+      postalCode,
+      locality
     }
   }
 }

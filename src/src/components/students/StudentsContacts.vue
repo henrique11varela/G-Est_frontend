@@ -25,6 +25,18 @@
           <q-item-label>{{ props.contacts.address }}</q-item-label>
         </q-item-section>
       </q-item>
+      <q-item class="col-12 col-sm-auto">
+        <q-item-section>
+          <q-item-label overline>Código Postal</q-item-label>
+          <q-item-label>{{ props.contacts.postalCode }}</q-item-label>
+        </q-item-section>
+      </q-item>
+      <q-item class="col-12 col-sm-auto">
+        <q-item-section>
+          <q-item-label overline>Localidade</q-item-label>
+          <q-item-label>{{ props.contacts.locality }}</q-item-label>
+        </q-item-section>
+      </q-item>
     </q-list>
   </div>
 </template>

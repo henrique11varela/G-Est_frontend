@@ -68,7 +68,7 @@
 
 <script setup>
 import courseDTO from '../../dto/CourseDTO'
-import { ref, onMounted, defineEmits, watch } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import coursesAPI from '../../services/fetches/courses'
 import { useRoute } from "vue-router"
 import areasAPI from 'src/services/fetches/areas'
