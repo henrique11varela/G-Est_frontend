@@ -30,7 +30,8 @@
                 </q-item>
               </template>
               <template v-slot:append>
-                <q-btn flat round icon="add" class="cursor-pointer" @click.stop="openCompanyForm(numberSelect - 1)"></q-btn>
+                <q-btn flat round icon="add" class="cursor-pointer"
+                  @click.stop="openCompanyForm(numberSelect - 1)"></q-btn>
               </template>
             </q-select>
           </div>
@@ -45,8 +46,8 @@
             <q-btn color="primary" round icon="remove" @click="removeCompany(numberSelect - 1)"></q-btn>
           </div>
         </div>
-        <q-btn color="primary" v-if="!isAccepted && !pageState.isSubmitting && !pageState.started" round class="q-mb-md" icon="add"
-          @click="addCompany"></q-btn>
+        <q-btn color="primary" v-if="!isAccepted && !pageState.isSubmitting && !pageState.started" round class="q-mb-md"
+          icon="add" @click="addCompany"></q-btn>
       </div>
 
       <!-- Started -->
@@ -130,9 +131,11 @@
 
       <div class="row">
         <q-btn color="primary" class="col-3" type="submit" :disable="pageState.isSubmitting">Salvar</q-btn>
-        <q-btn color="primary" class="col-3 offset-6" v-if="!pageState.started && pageState.readyToBeStarted" :disable="pageState.isSubmitting" @click="startInternship">Iniciar
+        <q-btn color="primary" class="col-3 offset-6" v-if="!pageState.started && pageState.readyToBeStarted"
+          :disable="pageState.isSubmitting" @click="startInternship">Iniciar
           estágio</q-btn>
-        <q-btn color="primary" class="col-3 offset-6" v-if="pageState.started && pageState.edit" :disable="pageState.isSubmitting" @click="endInternship">Terminar
+        <q-btn color="primary" class="col-3 offset-6" v-if="pageState.started && pageState.edit"
+          :disable="pageState.isSubmitting" @click="endInternship">Terminar
           estágio</q-btn>
       </div>
       <!-- {{ internshipData }} -->
@@ -163,10 +166,10 @@ const internshipData = ref({
   },
   observations: "",
   companies: [
-      {
-        name: "",
-        status: "",
-      },
+    {
+      name: "",
+      status: "",
+    },
   ],
   startedInternship: null,
   endedInternship: null,
@@ -284,7 +287,7 @@ async function onSubmit() {
     response = await internshipsAPI.store(internshipData.value)
     pageState.value.edit = true;
   }
-  if (response.id){
+  if (response.id) {
     internshipData.value = await internshipsAPI.show(response.id)
   }
   pageState.value.isSubmitting = false;
@@ -321,21 +324,8 @@ function filterMoradaFn(val, update, abort) {
   })
 }
 
-const testCompany = ref({
-  name: "",
-  status: "",
-});
-
-watch(
-  () => testCompany.value,
-  (val) => {
-    console.log(val);
-  },
-  { deep: true }
-);
-
-function openCompanyForm(index) {
-  innerFormStore.openInnerForm('courses/CoursesForm', testCompany)
+async function openCompanyForm(index) {
+  internshipData.value.companies[index] = await innerFormStore.openInnerForm('companies/CompanyFrom')
 }
 
 </script>
