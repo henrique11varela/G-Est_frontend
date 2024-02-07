@@ -9,15 +9,20 @@ import { useQuasar } from 'quasar'
 import Router from 'src/router'
 import CompanyAPI from "src/services/fetches/companies.js";
 
+import notify from 'src/composables/notify';
 const route = useRoute();
-const router = Router()
+const router = Router();
+const errors = ref({
+
+})
+
 const props = defineProps({
   edit: Boolean
 })
 const $q = useQuasar()
 const CompanyData = ref({})
 async function onSubmit() {
-  const data = {};
+  let data = {};
   if (!props.edit) {
     data = await CompanyAPI.store(CompanyData.value)
   }
@@ -76,7 +81,7 @@ function showDeleteModal() {
       <div class="row">
         <div class="col-md-4">
           <q-input outlined class="q-ma-md" filled v-model="CompanyData.name" label="Name *" hint="Name" lazy-rules
-            :rules="CompanyDTO.rules().name" :error="errors.hasOwnProperty('name')">
+            :rules="CompanyDTO.rules().name" :error="errors?.hasOwnProperty('name')">
             <template v-slot:error>
               <span :key="index" v-for="(title, index) in errors.name">
                 {{ title }}
@@ -86,7 +91,7 @@ function showDeleteModal() {
         </div>
         <div class="col-md-4">
           <q-input outlined class="q-ma-md" filled v-model="CompanyData.nipc" label="NIPC*" hint="NIPC" lazy-rules
-            :rules="CompanyDTO.rules().nipc" :error="errors.hasOwnProperty('nipc')">
+            :rules="CompanyDTO.rules().nipc" :error="errors?.hasOwnProperty('nipc')">
             <template v-slot:error>
               <span :key="index" v-for="(title, index) in errors.name">
                 {{ title }}
@@ -96,7 +101,7 @@ function showDeleteModal() {
         </div>
         <div class="col-md-4">
           <q-input outlined class="q-ma-md" filled v-model="CompanyData.niss" label="NISS *" hint="NISS" lazy-rules
-            :rules="CompanyDTO.rules().niss" :error="errors.hasOwnProperty('niss')">
+            :rules="CompanyDTO.rules().niss" :error="errors?.hasOwnProperty('niss')">
             <template v-slot:error>
               <span :key="index" v-for="(title, index) in errors.name">
                 {{ title }}
@@ -106,7 +111,7 @@ function showDeleteModal() {
         </div>
         <div class="col-md-4">
           <q-input outlined class="q-ma-md" filled v-model="CompanyData.cae" label="CAE *" hint="CAE" lazy-rules
-            :rules="CompanyDTO.rules().cae" :error="errors.hasOwnProperty('cae')">
+            :rules="CompanyDTO.rules().cae" :error="errors?.hasOwnProperty('cae')">
             <template v-slot:error>
               <span :key="index" v-for="(title, index) in errors.name">
                 {{ title }}

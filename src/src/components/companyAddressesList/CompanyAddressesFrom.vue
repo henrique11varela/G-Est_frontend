@@ -7,7 +7,7 @@ import Router from 'src/router';
 import companyAddressAPI from "src/services/fetches/companyaddress.js";
 import { useQuasar } from 'quasar'
 import companyAddressesDTO from "src/dto/CompanyAddressDTO.js"
-
+import notify from 'src/composables/notify';
 import CompanyAddressDTO from 'src/dto/CompanyAddressDTO.js';
 const emit = defineEmits(['valuecreated'])
 
@@ -83,7 +83,7 @@ function showDeleteModal() {
       <div class="col-md-4">
         <q-input outlined class="q-ma-md" filled v-model="addressData.description" label="Description *"
           hint="Description" lazy-rules :rules="companyAddressesDTO.rules().description"
-          :error="errors.hasOwnProperty('description')">
+          :error="errors?.hasOwnProperty('description')">
           <template v-slot:error>
             <span :key="index" v-for="(title, index) in errors.description">
               {{ title }}
@@ -93,7 +93,7 @@ function showDeleteModal() {
       </div>
       <div class="col-md-4">
         <q-input outlined class="q-ma-md" filled v-model="addressData.address" label="Address*" hint="Name and surname"
-          lazy-rules :rules="companyAddressesDTO.rules().address" :error="errors.hasOwnProperty('address')">
+          lazy-rules :rules="companyAddressesDTO.rules().address" :error="errors?.hasOwnProperty('address')">
           <template v-slot:error>
             <span :key="index" v-for="(title, index) in errors.address">
               {{ title }}
@@ -104,7 +104,7 @@ function showDeleteModal() {
       <div class="col-md-4">
         <q-input outlined class="q-ma-md" filled v-model="addressData.postalCode" label="Postal code *"
           hint="Name and surname" lazy-rules :rules="companyAddressesDTO.rules().postalCode"
-          :error="errors.hasOwnProperty('postalCode')">
+          :error="errors?.hasOwnProperty('postalCode')">
           <template v-slot:error>
             <span :key="index" v-for="(title, index) in errors.postalCode">
               {{ title }}

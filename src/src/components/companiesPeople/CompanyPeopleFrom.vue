@@ -14,11 +14,14 @@ const route = useRoute();
 const props = defineProps({
   edit: Boolean
 })
+const errors = ref({
+
+})
 const personData = ref({
 })
 const $q = useQuasar()
 async function onSubmit() {
-  const data = {};
+  let data = {};
   if (!props.edit) {
     data = await companyPeopleAPI.store(personData.value)
   }
@@ -76,7 +79,7 @@ function showDeleteModal() {
     <div class="row">
       <div class="col-md-4">
         <q-input outlined class="q-ma-md" filled v-model="personData.name" label="Name *" hint="Name" lazy-rules
-          :rules="companyPearsonDTO.rules().name" :error="errors.hasOwnProperty('name')">
+          :rules="companyPearsonDTO.rules().name" :error="errors?.hasOwnProperty('name')">
           <template v-slot:error>
             <span :key="index" v-for="(title, index) in errors.name">
               {{ title }}
@@ -86,7 +89,7 @@ function showDeleteModal() {
       </div>
       <div class="col-md-4">
         <q-input outlined class="q-ma-md" filled v-model="personData.email" label="Email*" hint="Email" lazy-rules
-          :rules="companyPearsonDTO.rules().email" :error="errors.hasOwnProperty('email')">
+          :rules="companyPearsonDTO.rules().email" :error="errors?.hasOwnProperty('email')">
           <template v-slot:error>
             <span :key="index" v-for="(title, index) in errors.email">
               {{ title }}
@@ -96,7 +99,7 @@ function showDeleteModal() {
       </div>
       <div class="col-md-4">
         <q-input outlined class="q-ma-md" filled v-model="personData.phoneNumber" label="Phone *" hint="Phone" lazy-rules
-          :rules="companyPearsonDTO.rules().phoneNumber" :error="errors.hasOwnProperty('phoneNumber')">
+          :rules="companyPearsonDTO.rules().phoneNumber" :error="errors?.hasOwnProperty('phoneNumber')">
           <template v-slot:error>
             <span :key="index" v-for="(title, index) in errors.phoneNumber">
               {{ title }}
