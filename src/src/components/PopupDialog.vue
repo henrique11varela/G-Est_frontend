@@ -1,7 +1,10 @@
 <template>
   <div>
     <q-dialog v-model="innerFormStore.isOpen" persistent>
-      <component class="bg-white q-pa-lg" :is="innerFormComponent" @valuecreated="innerFormStore?.callbackFn" />
+      <div class="bg-white q-pa-lg" style="overflow: hidden;">
+        <q-btn icon="close" color="negative" @click="innerFormStore.innerFormComponentPath = ''"></q-btn>
+        <component :is="innerFormComponent" @valuecreated="innerFormStore?.callbackFn" />
+      </div>
     </q-dialog>
   </div>
 </template>
@@ -9,20 +12,17 @@
 <script setup>
 import { defineAsyncComponent, shallowRef, watch } from "vue";
 import { useInnerFormStore } from "../stores/innerForm.js";
-// import CourseForm from "./courses/CoursesForm.vue";
 const innerFormStore = useInnerFormStore();
 const innerFormComponent = shallowRef(null);
 
 watch(
-  () => innerFormStore.innerFormComponent,
+  () => innerFormStore.innerFormComponentPath,
   (newValue) => {
-    // innerFormComponent.value = defineAsyncComponent(() => import(`./courses/CoursesForm.vue`));
-    innerFormComponent.value = defineAsyncComponent(() => import(`./${newValue}.vue`));
-    // innerFormComponent.value = CourseForm
+    if (newValue) {
+      innerFormComponent.value = defineAsyncComponent(() => import(`./${newValue}.vue`));
+    }
   }
 );
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
