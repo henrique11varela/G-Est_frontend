@@ -29,6 +29,9 @@
                   </q-item-section>
                 </q-item>
               </template>
+              <template v-slot:append>
+                <q-btn flat round icon="add" class="cursor-pointer" @click.stop="openCompanyForm(numberSelect - 1)"></q-btn>
+              </template>
             </q-select>
           </div>
           <div class="q-mb-md col q-pl-lg">
@@ -144,8 +147,10 @@ import { qDateLocale } from "../../config/config.js";
 import internshipsAPI from "../../services/fetches/internships.js";
 import studentsAPI from "../../services/fetches/students.js";
 import companiesAPI from "../../services/fetches/companies.js";
+import { useInnerFormStore } from "../../stores/innerForm.js";
 
 const route = useRoute();
+const innerFormStore = useInnerFormStore();
 
 // GERAL
 const internshipData = ref({
@@ -314,6 +319,23 @@ function filterMoradaFn(val, update, abort) {
       return item.description.toLowerCase().indexOf(needle) > -1 || item.address.toLowerCase().indexOf(needle) > -1;
     })
   })
+}
+
+const testCompany = ref({
+  name: "",
+  status: "",
+});
+
+watch(
+  () => testCompany.value,
+  (val) => {
+    console.log(val);
+  },
+  { deep: true }
+);
+
+function openCompanyForm(index) {
+  innerFormStore.openInnerForm('courses/CoursesForm', testCompany)
 }
 
 </script>
