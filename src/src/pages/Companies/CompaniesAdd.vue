@@ -1,18 +1,20 @@
 <script setup>
 import CompanyFrom from '../../components/companies/CompanyFrom.vue'
-
-import Router from 'src/router/index.js';
-import { useQuasar } from 'quasar'
-import { computed, onMounted, ref } from 'vue';
-const $q = useQuasar()
+import Router from 'src/router';
+import notify from 'src/composables/notify'
 const router = Router();
-const edit = ref(false)
+const valueCreated = async function (data) {
+  if (data.status == 200) {
+    notify.store()
+    await router.back()
+  }
+}
 </script>
 <template>
   <q-page padding>
     <div class="q-pa-md">
       <span class="text-h5">Adicionar empresa</span>
-      <CompanyFrom :edit="edit" @submit-Company="addCompany" />
+      <CompanyFrom :edit="false" @valuecreated="valueCreated" />
     </div>
   </q-page>
 </template>

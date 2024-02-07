@@ -1,10 +1,11 @@
 <script setup>
-import { computed, onMounted, ref, defineEmits } from 'vue';
+import { onMounted, ref, defineEmits } from 'vue';
 
-import { useQuasar } from 'quasar'
 
 import companiesAPI from "src/services/fetches/companies.js";
+import { useLoginStore } from "src/stores/login.js";
 
+const store = useLoginStore()
 const emit = defineEmits(['request'])
 const columns = [
   {
@@ -12,35 +13,27 @@ const columns = [
     align: 'left',
   },
   {
-    name: 'numberContact', label: 'Numero de Contatos', field: 'numberContact',
+    name: 'NameContact', label: 'Nome de Contatos', field: 'NameContact',
     align: 'left',
   },
   {
-    name: 'numberTutor', label: 'Numero de Tutores', field: 'numberTutor',
+    name: 'EmailContact', label: 'Email de Contatos', field: 'EmailContact',
     align: 'left',
   },
   {
-    name: 'NISS', label: 'NISS', field: 'niss',
-    align: 'left',
-  },
-  {
-    name: 'NIPC', label: 'NIPC', field: 'nipc',
+    name: 'PhoneContact', label: 'Numero de Contacto', field: 'PhoneContact',
     align: 'left',
   },
   {
     name: 'Action', label: 'Action', field: 'action',
   }
-];
 
+];
 const tableRef = ref()
 const rows = ref([])
 const loading = ref(true)
 const filters = ref({
-  id: '',
   name: '',
-  address: '',
-  postcode: '',
-  niss: '',
 })
 const pagination = ref({
   sortBy: 'desc',
@@ -89,21 +82,9 @@ onMounted(() => {
         </q-input>
 
 
-        <q-input outlined label="NIIS" borderless dense debounce="300" v-model="filters.niss" placeholder="Search">
-          <template v-slot:append>
-            <q-icon name="search" />
-          </template>
-        </q-input>
-
-        <q-input outlined label="NIPC" borderless dense debounce="300" v-model="filters.nipc" placeholder="Search">
-          <template v-slot:append>
-            <q-icon name="search" />
-          </template>
-        </q-input>
-
       </template>
       <template v-slot:top-right>
-        <q-input  outlined bg-color="white" borderless dense debounce="300" v-model="filter" placeholder="Search">
+        <q-input outlined bg-color="white" borderless dense debounce="300" v-model="filter" placeholder="Search">
           <template v-slot:append>
             <q-icon name="search" />
           </template>
@@ -111,16 +92,38 @@ onMounted(() => {
       </template>
 
 
-      <template v-slot:body-cell-Action="props">
+      <template v-slot:body-cell-NameContact="props">
+        <q-td :props="props">
+          <span v-if="props.row.contacts.length > 0">
+            {{ props.row.contacts[0].name }}
+          </span>
+        </q-td>
+      </template>
+      <template v-slot:body-cell-EmailContact="props">
+        <q-td :props="props">
+          <span v-if="props.row.contacts.length > 0">
+            {{ props.row.contacts[0].email }}
+          </span>
+        </q-td>
+      </template>
+      <template v-slot:body-cell-PhoneContact="props">
+        <q-td :props="props">
+          <span v-if="props.row.contacts.length > 0">
+            {{ props.row.contacts[0].phoneNumber }}
+          </span>
+        </q-td>
+      </template>
+      <template v-slot:body-cell-Action="props" >
         <q-td :props="props">
           <q-btn :to="`companies/show/${props.row.id}`" unelevated text-color="primary">
             <q-icon name="visibility"></q-icon>
-        </q-btn>
-        <q-btn :to="`companies/edit/${props.row.id}`" unelevated text-color="secondary">
-          <q-icon name="edit"></q-icon>
-        </q-btn>
-      </q-td>
-    </template>
+          </q-btn>
+          <q-btn v-if="store.isAdmin" :to="`companies/edit/${props.row.id}`" unelevated text-color="secondary">
+            <q-icon name="edit"></q-icon>
+          </q-btn>
+        </q-td>
+      </template>
 
-  </q-table>
-</div></template>
+    </q-table>
+  </div>
+</template>

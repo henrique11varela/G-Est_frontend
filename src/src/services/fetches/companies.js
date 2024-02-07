@@ -29,7 +29,7 @@ async function show(id) {
     const { data } = await api.get(`/api/v1/companies/${id}`)
     const company = CompanyDTO.input(data);
     return {
-      company: company,
+      ...company,
     }
   } catch (e) {
     console.log(e)

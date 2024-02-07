@@ -41,7 +41,10 @@ function input(data) {
         addresses.push(new CompanyAddressDTO.input(people))
       }
     }
-
+    let hasPivotKey = false;
+    if(data.hasOwnProperty('pivot')){
+      hasPivotKey = true;
+    }
 
     return {
       id: data.id,
@@ -49,11 +52,10 @@ function input(data) {
       niss: data.niss,
       nipc: data.nipc,
       cae: data.cae,
-      status: data.pivot.status,
       numberPeople: peoples.length,
       numberTutor: tutors.length,
       numberContact: contacts.length,
-      ...(data.hasOwnProperty('pivot') && { status: data.pivot.status }),
+      ...(hasPivotKey) && { status: data.pivot.status },
       ...(hasPeopleKey && { peoples }),
       ...(hasAddressesKey && { addresses }),
       ...(hasTutorsKey && { tutors }),

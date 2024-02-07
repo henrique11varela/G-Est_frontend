@@ -1,27 +1,26 @@
 <script setup>
 import { defineProps, ref, defineEmits, onMounted } from 'vue'
-import { matEdit, matDelete } from '@quasar/extras/material-icons'
-
 import { Loading, QSpinnerGears } from 'quasar';
+import { matEdit, matDelete } from '@quasar/extras/material-icons'
+import { useRoute } from 'vue-router';
+import Router from 'src/router';
+import companyAddressAPI from "src/services/fetches/companyaddress.js";
 import { useQuasar } from 'quasar'
-import Router from 'src/router'
 import companyAddressesDTO from "src/dto/CompanyAddressDTO.js"
 
-import companyAddressAPI from "src/services/fetches/companyaddress.js";
+import CompanyAddressDTO from 'src/dto/CompanyAddressDTO.js';
 const emit = defineEmits(['valuecreated'])
+
+const route = useRoute();
 const router = Router()
 const props = defineProps({
-  address: null,
+  edit: Boolean
 })
 const errors = ref({
 
 })
 const $q = useQuasar()
 const addressData = ref({
-  id: '',
-  description: '',
-  address: '',
-  postalCode: '',
 })
 async function onSubmit() {
   Loading.show();
@@ -33,19 +32,29 @@ async function onSubmit() {
     data = await companyAddressAPI.update(addressData.value)
   }
   Loading.hide();
-  if (data.status == 200) {
+  if (data.requestStatus == 200) {
+    if (!props.edit) {
+      notify.store()
+    } else {
+      notify.update()
+    }
     emit('valuecreated', data)
+    return
   }
-  if(data.status == 500){
+  if (data.requestStatus == 422) {
     errors.value.description = data.errors.description
     errors.value.address = data.errors.address
     errors.value.postalCode = data.errors.postal_code
+    return
   }
 }
 
-onMounted(() => {
-  if (props.address) {
-    addressData.value = props.address
+onMounted(async () => {
+  addressData.value = CompanyAddressDTO.input({});
+  if (props.edit) {
+    Loading.show();
+    addressData.value = await companyAddressAPI.show(route.params.addressId);
+    Loading.hide();
   }
 })
 
@@ -65,7 +74,7 @@ function showDeleteModal() {
 </script>
 <template>
   <!-- content -->
-  <div v-if="addressData.id">
+  <div v-if="edit">
     <q-btn @click="showDeleteModal" color="red" :icon="matDelete" label="Delete" />
   </div>
   <q-form action="companies" @submit.prevent="onSubmit">
@@ -103,7 +112,11 @@ function showDeleteModal() {
           </template>
         </q-input>
       </div>
-
+      <div class="col-md-12">
+        <div>
+          <q-checkbox v-model="addressData.hq" label="Sede" />
+        </div>
+      </div>
       <q-btn class="q-ma-md " style="width: 100%" label="Submit" type="submit" color="primary" />
     </div>
   </q-form>
