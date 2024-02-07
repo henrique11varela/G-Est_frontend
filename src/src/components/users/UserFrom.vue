@@ -53,7 +53,7 @@ function showDeleteModal() {
 }
 </script>
 <template>
-  <q-page padding>
+  <div>
     <!-- content -->
     <div v-if="UserData.id">
       <q-btn v-if="reactiveEdit" @click="showDeleteModal" color="red" :icon="matDelete" label="Delete" />
@@ -70,19 +70,17 @@ function showDeleteModal() {
             :rules="[val => val && val.length > 0 || 'Please type something']" :readonly="!reactiveEdit"></q-input>
         </div>
         <div class="col-md-4">
-          <q-input class="q-ma-md" type="password" filled v-model="UserData.password" label="Password" hint="Name and surname" lazy-rules
-            :rules="[val => val && val.length > 0 || 'Please type something']" :readonly="!reactiveEdit"></q-input>
+          <q-input class="q-ma-md" type="password" filled v-model="UserData.password" label="Password"
+            hint="Name and surname" lazy-rules :rules="[val => val && val.length > 0 || 'Please type something']"
+            :readonly="!reactiveEdit"></q-input>
         </div>
         <div class="col-md-4">
           <q-select v-model="UserData.role" :options="options" label="Rule" />
         </div>
         <div class="col-md-4">
-          <q-btn class="q-ma-md "  style="width: 70%" label="Submit" type="submit" color="primary" v-if="reactiveEdit" />
+          <q-btn class="q-ma-md " style="width: 70%" label="Submit" type="submit" color="primary" v-if="reactiveEdit" />
         </div>
       </div>
     </q-form>
-
-
-
-  </q-page>
+  </div>
 </template>

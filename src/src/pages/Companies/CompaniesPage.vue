@@ -2,7 +2,6 @@
 import CompaniesList from 'src/components/companies/CompanyList.vue'
 
 import { useLoginStore } from "src/stores/login.js";
-import { storeToRefs } from 'pinia'
 
 const store = useLoginStore()
 </script>
@@ -13,7 +12,7 @@ const store = useLoginStore()
       <!-- content -->
       <h1>Empresas</h1>
       <div>
-        <q-btn v-if="store.userPermission == 'admin'" unelevated color="primary" :disable="loading" label="Adicionar" :to="`companies/add`" />
+        <q-btn v-if="store.isAdmin" unelevated color="primary" :disable="loading" label="Adicionar" :to="`companies/add`" />
       </div>
       <CompaniesList />
     </div>

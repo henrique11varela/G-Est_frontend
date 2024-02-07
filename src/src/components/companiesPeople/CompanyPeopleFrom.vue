@@ -1,25 +1,22 @@
 <script setup>
-import { defineProps, ref, defineEmits, onMounted } from 'vue'
-import { matEdit, matDelete } from '@quasar/extras/material-icons'
-const emit = defineEmits(['submit-person'])
+import { ref, onMounted } from 'vue'
+import { Loading } from 'quasar';
+import { matDelete } from '@quasar/extras/material-icons'
+const emit = defineEmits(['valuecreated'])
 import { useQuasar } from 'quasar'
 import Router from 'src/router'
+import { useRoute } from 'vue-router';
 import companyPearsonDTO from "src/dto/CompanyPeopleDTO"
-
 import companyPeopleAPI from "src/services/fetches/companyPeople.js";
+import notify from 'src/composables/notify';
 const router = Router()
+const route = useRoute();
 const props = defineProps({
-  person: null,
+  edit: Boolean
+})
+const personData = ref({
 })
 const $q = useQuasar()
-const personData = ref({
-  id: '',
-  name: '',
-  phoneNumber: '',
-  email: '',
-  isTutor: null,
-  isContact: null,
-})
 async function onSubmit() {
   const data = {};
   if (!props.edit) {
@@ -28,12 +25,30 @@ async function onSubmit() {
   else {
     data = await companyPeopleAPI.update(personData.value)
   }
-  emit('valuecreated', data)
+
+  if (data.requestStatus == 200) {
+    if (!props.edit) {
+      notify.store()
+    } else {
+      notify.update()
+    }
+    emit('valuecreated', data)
+    return
+  }
+  if (data.requestStatus == 422) {
+    errors.value.name = data.errors.name
+    errors.value.email = data.errors.email
+    errors.value.phoneNumber = data.errors.phoneNumber
+    return
+  }
 }
 
-onMounted(() => {
-  if (props.person) {
-    personData.value = props.person
+onMounted(async () => {
+  personData.value = companyPearsonDTO.input({});
+  if (props.edit) {
+    Loading.show();
+    personData.value = await companyPeopleAPI.show(route.params.personId);
+    Loading.hide();
   }
 })
 
@@ -53,23 +68,41 @@ function showDeleteModal() {
 </script>
 <template>
   <!-- content -->
-  <div v-if="personData.id">
-    <q-btn  @click="showDeleteModal" color="red" :icon="matDelete" label="Delete" />
+  <div v-if="edit">
+    <q-btn @click="showDeleteModal" color="red" :icon="matDelete" label="Delete" />
   </div>
   <q-form action="companies" @submit.prevent="onSubmit">
 
     <div class="row">
       <div class="col-md-4">
         <q-input outlined class="q-ma-md" filled v-model="personData.name" label="Name *" hint="Name" lazy-rules
-          :rules="companyPearsonDTO.rules().name"></q-input>
+          :rules="companyPearsonDTO.rules().name" :error="errors.hasOwnProperty('name')">
+          <template v-slot:error>
+            <span :key="index" v-for="(title, index) in errors.name">
+              {{ title }}
+            </span>
+          </template>
+        </q-input>
       </div>
       <div class="col-md-4">
-        <q-input outlined class="q-ma-md" filled v-model="personData.email" label="NIPC*" hint="Name and surname" lazy-rules
-          :rules="companyPearsonDTO.rules().email"></q-input>
+        <q-input outlined class="q-ma-md" filled v-model="personData.email" label="Email*" hint="Email" lazy-rules
+          :rules="companyPearsonDTO.rules().email" :error="errors.hasOwnProperty('email')">
+          <template v-slot:error>
+            <span :key="index" v-for="(title, index) in errors.email">
+              {{ title }}
+            </span>
+          </template>
+        </q-input>
       </div>
       <div class="col-md-4">
-        <q-input outlined class="q-ma-md" filled v-model="personData.phoneNumber" label="NISS *" hint="Name and surname" lazy-rules
-          :rules="companyPearsonDTO.rules().phoneNumber"></q-input>
+        <q-input outlined class="q-ma-md" filled v-model="personData.phoneNumber" label="Phone *" hint="Phone" lazy-rules
+          :rules="companyPearsonDTO.rules().phoneNumber" :error="errors.hasOwnProperty('phoneNumber')">
+          <template v-slot:error>
+            <span :key="index" v-for="(title, index) in errors.phoneNumber">
+              {{ title }}
+            </span>
+          </template>
+        </q-input>
       </div>
 
       <div class="col-md-12">
@@ -80,7 +113,7 @@ function showDeleteModal() {
           <q-checkbox v-model="personData.isContact" label="Contact" />
         </div>
       </div>
-      <q-btn class="q-ma-md " style="width: 100%" label="Submit" type="submit" color="primary"  />
+      <q-btn class="q-ma-md " style="width: 100%" label="Submit" type="submit" color="primary" />
     </div>
   </q-form>
 </template>
