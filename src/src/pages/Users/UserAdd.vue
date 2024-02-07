@@ -27,5 +27,9 @@ async function addUser(obj) {
 }
 </script>
 <template>
-  <UserFrom :edit="true" @submit-User="addUser" />
+  <q-page padding>
+    <div class="q-pa-md">
+      <UserFrom :edit="true" @submit-User="addUser" />
+    </div>
+  </q-page>
 </template>

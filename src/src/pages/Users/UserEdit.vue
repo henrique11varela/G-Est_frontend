@@ -40,5 +40,9 @@ onMounted(async () => {
 })
 </script>
 <template>
-  <UserFrom v-if="user"  @submit-user="EditUser" :user="user" :edit="edit"/>
+  <q-page padding>
+    <div class="q-pa-md">
+      <UserFrom v-if="user" @submit-user="EditUser" :user="user" :edit="edit" />
+    </div>
+  </q-page>
 </template>
