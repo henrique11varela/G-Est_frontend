@@ -14,6 +14,7 @@ const route = useRoute();
 const props = defineProps({
   edit: Boolean
 })
+const submitting = ref(false)
 const errors = ref({
 
 })
@@ -21,6 +22,7 @@ const personData = ref({
 })
 const $q = useQuasar()
 async function onSubmit() {
+  submitting.value = true
   let data = {};
   if (!props.edit) {
     data = await companyPeopleAPI.store(personData.value)
@@ -29,6 +31,7 @@ async function onSubmit() {
     data = await companyPeopleAPI.update(personData.value)
   }
 
+  submitting.value = false
   if (data.requestStatus == 200) {
     if (!props.edit) {
       notify.store()
@@ -79,7 +82,7 @@ function showDeleteModal() {
     <div class="row">
       <div class="col-md-4">
         <q-input outlined class="q-ma-md" filled v-model="personData.name" label="Name *" hint="Name" lazy-rules
-          :rules="companyPearsonDTO.rules().name" :error="errors?.hasOwnProperty('name')">
+          :rules="companyPearsonDTO.rules().name" :error="errors?.hasOwnProperty('name')" :disable="submitting">
           <template v-slot:error>
             <span :key="index" v-for="(title, index) in errors.name">
               {{ title }}
@@ -89,7 +92,7 @@ function showDeleteModal() {
       </div>
       <div class="col-md-4">
         <q-input outlined class="q-ma-md" filled v-model="personData.email" label="Email*" hint="Email" lazy-rules
-          :rules="companyPearsonDTO.rules().email" :error="errors?.hasOwnProperty('email')">
+          :rules="companyPearsonDTO.rules().email" :error="errors?.hasOwnProperty('email')"  :disable="submitting">
           <template v-slot:error>
             <span :key="index" v-for="(title, index) in errors.email">
               {{ title }}
@@ -99,7 +102,7 @@ function showDeleteModal() {
       </div>
       <div class="col-md-4">
         <q-input outlined class="q-ma-md" filled v-model="personData.phoneNumber" label="Phone *" hint="Phone" lazy-rules
-          :rules="companyPearsonDTO.rules().phoneNumber" :error="errors?.hasOwnProperty('phoneNumber')">
+          :rules="companyPearsonDTO.rules().phoneNumber" :error="errors?.hasOwnProperty('phoneNumber')"  :disable="submitting">
           <template v-slot:error>
             <span :key="index" v-for="(title, index) in errors.phoneNumber">
               {{ title }}
@@ -110,13 +113,13 @@ function showDeleteModal() {
 
       <div class="col-md-12">
         <div>
-          <q-checkbox v-model="personData.isTutor" label="Tutor" />
+          <q-checkbox v-model="personData.isTutor" label="Tutor"  :disable="submitting"/>
         </div>
         <div>
-          <q-checkbox v-model="personData.isContact" label="Contact" />
+          <q-checkbox v-model="personData.isContact" label="Contact" :disable="submitting" />
         </div>
       </div>
-      <q-btn class="q-ma-md " style="width: 100%" label="Submit" type="submit" color="primary" />
+      <q-btn class="q-ma-md " style="width: 100%" label="Submit" type="submit" color="primary"  :disable="submitting"/>
     </div>
   </q-form>
 </template>
