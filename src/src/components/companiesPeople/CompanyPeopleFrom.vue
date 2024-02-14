@@ -12,8 +12,15 @@ import notify from 'src/composables/notify';
 const router = Router()
 const route = useRoute();
 const props = defineProps({
-  edit: Boolean
+  edit: Boolean,
+  propid: {
+    type: Number,
+    required: false,
+    default: null
+  }
 })
+
+const CompanyId = ref(props.propid ? props.propid : route.params.id)
 const submitting = ref(false)
 const errors = ref({
 
@@ -51,6 +58,7 @@ async function onSubmit() {
 
 onMounted(async () => {
   personData.value = companyPearsonDTO.input({});
+  personData.value.companyId = CompanyId.value;
   if (props.edit) {
     Loading.show();
     personData.value = await companyPeopleAPI.show(route.params.personId);
@@ -92,7 +100,7 @@ function showDeleteModal() {
       </div>
       <div class="col-md-4">
         <q-input outlined class="q-ma-md" filled v-model="personData.email" label="Email*" hint="Email" lazy-rules
-          :rules="companyPearsonDTO.rules().email" :error="errors?.hasOwnProperty('email')"  :disable="submitting">
+          :rules="companyPearsonDTO.rules().email" :error="errors?.hasOwnProperty('email')" :disable="submitting">
           <template v-slot:error>
             <span :key="index" v-for="(title, index) in errors.email">
               {{ title }}
@@ -102,7 +110,8 @@ function showDeleteModal() {
       </div>
       <div class="col-md-4">
         <q-input outlined class="q-ma-md" filled v-model="personData.phoneNumber" label="Phone *" hint="Phone" lazy-rules
-          :rules="companyPearsonDTO.rules().phoneNumber" :error="errors?.hasOwnProperty('phoneNumber')"  :disable="submitting">
+          :rules="companyPearsonDTO.rules().phoneNumber" :error="errors?.hasOwnProperty('phoneNumber')"
+          :disable="submitting">
           <template v-slot:error>
             <span :key="index" v-for="(title, index) in errors.phoneNumber">
               {{ title }}
@@ -113,13 +122,13 @@ function showDeleteModal() {
 
       <div class="col-md-12">
         <div>
-          <q-checkbox v-model="personData.isTutor" label="Tutor"  :disable="submitting"/>
+          <q-checkbox v-model="personData.isTutor" label="Tutor" :disable="submitting" />
         </div>
         <div>
           <q-checkbox v-model="personData.isContact" label="Contact" :disable="submitting" />
         </div>
       </div>
-      <q-btn class="q-ma-md " style="width: 100%" label="Submit" type="submit" color="primary"  :disable="submitting"/>
+      <q-btn class="q-ma-md " style="width: 100%" label="Submit" type="submit" color="primary" :disable="submitting" />
     </div>
   </q-form>
 </template>

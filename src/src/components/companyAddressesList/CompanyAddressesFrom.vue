@@ -14,8 +14,18 @@ const emit = defineEmits(['valuecreated'])
 const route = useRoute();
 const router = Router()
 const props = defineProps({
-  edit: Boolean
+  edit: Boolean,
+  propid: {
+    type: Number,
+    required: false,
+    default: null
+  }
 })
+
+const CompanyId = ref(props.propid ? props.propid : route.params.id)
+
+
+
 const errors = ref({
 
 })
@@ -49,6 +59,7 @@ async function onSubmit() {
 
 onMounted(async () => {
   addressData.value = CompanyAddressDTO.input({});
+  addressData.value.companyId = CompanyId.value;
   if (props.edit) {
     Loading.show();
     addressData.value = await companyAddressAPI.show(route.params.addressId);

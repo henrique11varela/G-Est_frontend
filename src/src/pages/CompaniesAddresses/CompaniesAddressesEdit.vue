@@ -7,7 +7,7 @@ const router = Router();
 
 const valueCreated = function (data) {
   if (data.requestStatus == 200) {
-    notify.store()
+
     router.back()
   }
 }

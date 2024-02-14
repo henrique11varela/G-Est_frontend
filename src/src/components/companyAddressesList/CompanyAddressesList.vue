@@ -5,6 +5,7 @@ import { useLoginStore } from "src/stores/login.js";
 const store = useLoginStore()
 const props = defineProps({
   addresses: Array,
+  companyid: Number
 })
 const emit = defineEmits(['request'])
 const columns = [
@@ -93,7 +94,7 @@ onMounted(() => {
 })
 </script>
 <template>
-  <q-btn v-if="store.isAdmin" color="primary" label="Adicionar" :to="`/companies/show/${companyId}/contactaddress/add`" />
+  <q-btn v-if="store.isAdmin" color="primary" label="Adicionar" :to="`/companies/show/${companyid}/contactaddress/add`" />
   <q-table :loading="loading" @request="onRequest" flat bordered ref="tableRef" title="Treats" :rows="rows"
     :columns="columns" row-key="id" v-model:pagination="pagination" :filter="filters" binary-state-sort>
 
