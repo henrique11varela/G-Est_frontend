@@ -1,6 +1,8 @@
 import { api } from "src/boot/axios"
 import { useLoginStore } from "../../stores/login.js";
 import Router from "../../router";
+import paginationDTO from "src/dto/PaginationDTO.js";
+import applicationDTO from "src/dto/ApplicationDTO.js";
 
 export default {
   index,
@@ -10,12 +12,19 @@ export default {
   destroy
 }
 
-async function index() {
+async function index(params = null) {
   try {
-    const { data } = await api.get('api/v1/applications')
-    return data
+    const { data } = await api.get('api/v1/applications', {params: params})
+    const applications = []
+    for(const application of data.data) {
+      applications.push(applicationDTO.input(application))
+    }
+    return {
+      data: applications,
+      pagination: paginationDTO.input(data)
+    }
   } catch (error) {
-    console.log(Router);
+    console.log(error);
   }
 }
 
@@ -31,7 +40,7 @@ async function store(payload) {
 async function show(id) {
   try {
     const { data } = await api.get(`api/v1/applications/${id}`)
-    return data
+    return applicationDTO.input(data)
   } catch (error) {
     console.log(error);
   }

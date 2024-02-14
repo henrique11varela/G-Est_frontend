@@ -172,6 +172,23 @@ const routes = [
         ]
       },
       {
+        path:'coordinators',
+        children:[
+          {
+            path:'',
+            component: () => import('pages/Coordinators/CoordinatorsPage.vue'),
+          },
+          {
+            path:'add',
+            component: () => import('pages/Coordinators/CoordinatorsAdd.vue'),
+          },
+          {
+            path:':id',
+            component: () => import('pages/Coordinators/CoordinatorsEdit.vue'),
+          }
+        ]
+      },
+      {
         path: 'courses',
         children: [
           {

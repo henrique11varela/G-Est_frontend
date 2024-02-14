@@ -47,6 +47,11 @@ const linksList = [
     link: '/classes'
   },
   {
+    title: 'Coordenadores',
+    icon: 'school',
+    link: '/coordinators'
+  },
+  {
     title: 'Alunos',
     icon: 'school',
     link: '/students'
