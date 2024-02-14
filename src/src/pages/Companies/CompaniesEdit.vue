@@ -5,7 +5,7 @@ import notify from 'src/composables/notify'
 const router = Router();
 const valueCreated = async function (data) {
   if (data.status == 200) {
-    notify.store()
+
     await router.back()
   }
 }
