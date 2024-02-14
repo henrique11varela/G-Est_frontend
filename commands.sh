@@ -67,6 +67,12 @@ case $1 in
 	start)
 		startProject
 		;;
+	# start
+	start-local)
+		cd src && \
+		npm run dev && \
+		cd ..
+		;;
 	# stop
 	stop)
 		stopProject
@@ -81,6 +87,15 @@ case $1 in
 			setup)
 				envDevFill
 				setupProject
+				;;
+			setup-local)
+				cd src && \
+				rm -rf ./.env && \
+				cp ./.env.dockerless ./.env && \
+				cp ./quasar.config.js.dockerless ./quasar.config.js && \
+				npm install && \
+				cd .. && \
+				echo "local app setup"
 				;;
 			# run ____
 			*)

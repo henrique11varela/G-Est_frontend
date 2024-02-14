@@ -71,6 +71,12 @@ const linksList = [
     icon: 'school',
     link: '/users'
   },
+  {
+    title: 'Cursos',
+    icon: 'school',
+    link: '/courses'
+  },
+
 ]
 
 export default defineComponent({

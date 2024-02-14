@@ -9,7 +9,8 @@ function input(data) {
     description: data.description,
     address: data.address,
     postalCode: data.postal_code,
-    companyId: data.company_id
+    companyId: data.company_id,
+    hq: data.hq == 1 ? true : false,
   }
 }
 function output(data) {
@@ -18,7 +19,8 @@ function output(data) {
     description: data.description,
     address: data.address,
     postal_code: data.postalCode,
-    company_id: data.companyId
+    company_id: data.companyId,
+    hq: data.hq
   }
 }
 function rules() {

@@ -1,29 +1,17 @@
 <script setup>
 import CompanyPeopleFrom from '../../components/companiesPeople/CompanyPeopleFrom.vue'
 import Router from 'src/router';
-import companyPeopleAPI from "src/services/fetches/companyPeople.js";
-
-import { useRoute } from 'vue-router';
-import { computed, onMounted, ref } from 'vue';
-
 const router = Router();
-const route = useRoute();
-const id = route.params.personId;
-const edit = ref(true);
+const valueCreated = async function (data) {
 
-const companyPerson = ref(false)
-onMounted(async () => {
-  try {
-    companyPerson.value = await companyPeopleAPI.show(id);
-  } catch ($e) {
-    await router.push({ path: 'companies' });
-    await router.go();
-  }
-})
+  await router.back()
+}
 
 </script>
 <template>
-  <q-page>
-    <CompanyPeopleFrom v-if="companyPerson" :person="companyPerson" :edit="edit"  />
+  <q-page padding>
+    <div class="q-pa-md">
+      <CompanyPeopleFrom :edit="true" @valuecreated="valueCreated" />
+    </div>
   </q-page>
 </template>

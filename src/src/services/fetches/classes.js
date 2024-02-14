@@ -28,7 +28,7 @@ async function index(params = null) {
 
 async function store(payload) {
   try {
-    const { data } = await api.post('api/v1/studentcollections', new classDTO.output(payload))
+    const { data } = await api.post('api/v1/studentcollections', classDTO.output(payload))
     return data
   } catch (error) {
     console.log(error)
@@ -38,7 +38,7 @@ async function store(payload) {
 async function show(id) {
   try {
     const { data } = await api.get(`api/v1/studentcollections/${id}`)
-    return new classDTO.input(data)
+    return classDTO.input(data)
   } catch (error) {
     console.log(error)
   }
@@ -46,7 +46,7 @@ async function show(id) {
 
 async function update(payload) {
   try {
-    const { data } = await api.put(`api/v1/studentcollections/${payload.id}`, new classDTO.output(payload))
+    const { data } = await api.put(`api/v1/studentcollections/${payload.id}`, classDTO.output(payload))
     return data
   } catch (error) {
     console.log(error)

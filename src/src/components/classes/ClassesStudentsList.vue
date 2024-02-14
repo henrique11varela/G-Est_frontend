@@ -10,30 +10,64 @@
       hide-pagination
       :pagination="{ rowsPerPage:0 }"
     >
-      <template v-slot:body-cell-actions="props">
-        <q-td :props="props" v-if="edit && isAdmin">
-          <q-btn unelevated text-color="negative" @click="$emit('removeStudent', props.row.id)">
+
+      <template v-slot:header="props">
+        <q-tr :props="props">
+          <q-th auto-width></q-th>
+          <q-th
+            v-for="col in props.cols"
+            :key="col.name"
+            :props="props"
+          >
+            {{ col.label }}
+          </q-th>
+          <q-th class="text-left">Situação Atual</q-th>
+          <q-th auto-width></q-th>
+        </q-tr>
+      </template>
+
+      <template v-slot:body="props">
+        <q-tr :props="props">
+          <q-td auto-width>
+            <q-btn size="sm" color="info" unelevated round dense @click="props.expand = !props.expand" :icon="props.expand ? 'remove' : 'add'" />
+          </q-td>
+          <q-td
+            v-for="col in props.cols"
+            :key="col.name"
+            :props="props"
+          >
+            {{ col.value }}
+          </q-td>
+          <CurrentInternship :internships="props.row.internships"></CurrentInternship>
+          <q-td v-if="isAdmin">
+            <q-btn unelevated text-color="negative" @click="$emit('removeStudent', props.row.id)" v-if="edit">
               <q-icon name="remove"></q-icon>
-          </q-btn>
-        </q-td>
-        <q-td :props="props" v-else>
-          <q-btn unelevated text-color="secondary" :to="`/students/edit/${props.row.id}`">
-              <q-icon name="edit"></q-icon>
-          </q-btn>
-          <q-btn unelevated text-color="accent" :to="`/internhips/${classId}/${props.row.id}`">
-              <q-icon name="work"></q-icon>
-          </q-btn>
-        </q-td>
+            </q-btn>
+            <div v-else>
+              <q-btn unelevated text-color="secondary" :to="`/students/edit/${props.row.id}`">
+                <q-icon name="edit"></q-icon>
+              </q-btn>
+              <q-btn unelevated text-color="accent" :to="`/internships/${classId}/${props.row.id}`">
+                <q-icon name="work"></q-icon>
+              </q-btn>
+            </div>
+          </q-td>
+        </q-tr>
+        <q-tr no-hover v-show="props.expand" :props="props">
+          <q-td colspan="100%">
+            <StudentsContacts
+            :contacts="studentContacts(props.row)"></StudentsContacts>
+          </q-td>
+        </q-tr>
       </template>
-      <template v-slot:body-cell-currentInternship="props">
-        <CurrentInternship :table-data="props"></CurrentInternship>
-      </template>
+
     </q-table>
   </div>
 </template>
 
 <script setup>
-import CurrentInternship from './CurrentInternship.vue';
+import CurrentInternship from './CurrentInternship.vue'
+import StudentsContacts from '../students/StudentsContacts.vue'
 
 const props = defineProps({
   students: Object,
@@ -65,15 +99,27 @@ const columns = [
     align: 'left',
     field: row => row.softSkills,
   },
-  {
-    name: 'currentInternship',
-    required: true,
-    label: 'Estágio atual',
-    align: 'left',
-  },
-  {
-    name: 'actions',
-    align: 'center',
-  }
 ]
+
+function studentContacts(student) {
+  if (student) {
+    const {
+      atecEmail,
+      personalEmail,
+      phoneNumber,
+      address,
+      postalCode,
+      locality
+    } = student
+
+    return {
+      atecEmail,
+      personalEmail,
+      phoneNumber,
+      address,
+      postalCode,
+      locality
+    }
+  }
+}
 </script>

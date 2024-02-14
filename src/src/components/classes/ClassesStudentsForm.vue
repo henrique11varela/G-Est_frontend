@@ -2,55 +2,70 @@
   <div class="q-py-md">
     <div>
       <q-input
-        style="max-width: 300px;"
+        style="max-width: 400px;"
         type="search"
         outlined
         bg-color="white"
         borderless dense
-        debounce="400"
-        v-model="email"
+        debounce="500"
+        v-model="filter"
         :loading="loading"
-        placeholder="Procurar email institucional"
+        placeholder="Procurar formando"
         @update:model-value="fetchStudent"
       >
         <template v-slot:append>
           <q-icon name="search" />
         </template>
       </q-input>
-      <div v-if="student">
-        <StudentsInfo class="col-11" :student-info="student"></StudentsInfo>
-        <q-btn unelevated label="Associar" color="accent" @click="addStudent"/>
+
+      <div class="q-py-md" v-if="filteredStudents.length > 0">
+        <AssociateStudentsInfo
+          v-for="(student, index) in filteredStudents"
+          :key="index"
+          :student="student"
+          :associate="!isStudentDuplicate(student)"
+          :submitting="submitting"
+          @studentPicked="addStudent"
+        >
+        </AssociateStudentsInfo>
       </div>
     </div>
     <ClassesStudentsList @remove-student="removeStudent" edit :students="editList"></ClassesStudentsList>
     <div>
-      <q-btn unelevated label="Guardar" color="primary" @click="$emit('submitStudents', editList)"/>
-      <q-btn unelevated label="Reset" color="primary" flat class="q-ml-sm" @click="setDefaultList()" />
+      <q-btn unelevated label="Guardar" color="primary" @click="$emit('submitStudents', editList)" :disabled="submitting"/>
+      <q-btn unelevated label="Reset" color="primary" flat class="q-ml-sm" @click="setDefaultList()" :disabled="submitting"/>
+      <q-spinner color="primary" size="2.5em" :thickness="2" v-if="submitting"/>
     </div>
   </div>
 </template>
 
 <script setup>
-import StudentsInfo from 'src/components/students/StudentsInfo.vue'
+import AssociateStudentsInfo from 'src/components/students/AssociateStudentsInfo.vue'
 import ClassesStudentsList from './ClassesStudentsList.vue'
 import studentsAPI from 'src/services/fetches/students'
 import { ref, onMounted } from 'vue'
 
 const editList = ref([])
-const email = ref("")
-const student = ref(null)
+const filter = ref("")
+const filteredStudents = ref([])
 const loading = ref(false)
 
 const props = defineProps({
   students: {
     type: Object,
     required: true
-  }
+  },
+  submitting: Boolean
 })
 
 onMounted(async () => {
   setDefaultList()
 })
+
+function isStudentDuplicate(student) {
+  if (!student) return false
+  return editList.value.some((item) => item.id === student.id)
+}
 
 function setDefaultList() {
   editList.value = [...props.students]
@@ -61,22 +76,16 @@ function removeStudent(id) {
   if (studentIndex !== -1) editList.value.splice(studentIndex, 1)
 }
 
-function addStudent() {
-  if (student.value) {
-    editList.value.push(student.value)
-    student.value = null
-  }
+function addStudent(student) {
+  if (student) editList.value.push(student)
 }
 
 async function fetchStudent(value) {
+  if (!value) return
   loading.value = true
-  const args = { atec_email: value }
+  const args = { name: value, atec_email: value }
   const response = await studentsAPI.index(args)
-  console.log(response)
-  if (response.data.length === 1) {
-    //Validate if student already is in class but not sure if it should be here
-    student.value = response.data[0]
-  }
+  filteredStudents.value = response.data
   loading.value = false
 }
 </script>

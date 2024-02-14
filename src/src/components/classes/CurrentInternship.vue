@@ -1,6 +1,6 @@
 <template>
-  <q-td :props="props.tableData">
-    <div :key="index" v-for="(internship, index) in props.tableData.row.internships">
+  <q-td>
+    <div :key="index" v-for="(internship, index) in props.internships">
       {{ console.log(internship) }}
       <div>{{ internship.id }}</div>
     </div>
@@ -11,16 +11,22 @@
 import { ref, onMounted } from 'vue'
 
 const props = defineProps({
-  tableData: Object
+  internships: Object
 })
 
-const currentInternship = ref(null)
+const currentInternship = ref({ company: "", status: "", date: "" })
 
-onMounted(() => setCurrentInternship())
+// onMounted(() => compareInternships())
 
 function setCurrentInternship() {
-  for (const internhip of props.tableData.row.internships) {
-    console.log(internhip)
+  for (const internship of props.tableData.row.internships) {
+    for (const company of internship.companies) {
+      if (company.pivot.status === 'Em Colocação') {
+        currentInternship.value.company = company.name
+        currentInternship.value.status = company.pivot.status
+        break
+      }
+    }
   }
 }
 

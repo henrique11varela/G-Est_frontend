@@ -4,52 +4,46 @@ import CompanyPeopleList from '../../components/companiesPeople/CompanyPeopleLis
 import CompanyAddressesList from '../../components/companyAddressesList/CompanyAddressesList.vue'
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import Router from 'src/router';
 import companiesAPI from "src/services/fetches/companies.js";
-const router = Router();
+import { useLoginStore } from "src/stores/login.js";
+
+const store = useLoginStore()
+import {
+  Loading,
+
+  QSpinnerGears
+} from 'quasar'
 const route = useRoute();
-const id = route.params.id;
-const edit = ref(false);
-async function EditCompany(obj) {
-  try {
-    await companiesAPI.update(id, obj);
-    $q.notify({
-      color: 'green-4',
-      textColor: 'white',
-      icon: 'cloud_done',
-      message: 'Submitted'
-    })
-    await router.push({
-      path: "companies"
-    });
-    await router.go();
-  } catch (e) {
-    console.log(e)
-  }
-}
+const id =  ref(route.params.id);
 const company = ref(false)
 const people = ref(false)
 const addresses = ref(false)
+const load = ref(false);
+// default options
 onMounted(async () => {
+Loading.show()
+
   try {
-    const data = await companiesAPI.show(id);
-    company.value = data.company;
-    people.value = data.company.peoples;
-    addresses.value = data.company.addresses;
+    const data = await companiesAPI.show(id.value);
+    company.value = data;
+    people.value = data.peoples;
+    addresses.value = data.addresses;
+    load.value = true;
   } catch ($e) {
-    // await router.push({ path: 'companies' });
-    // await router.go();
   }
+    Loading.hide()
 })
 </script>
 <template>
-  <q-page>
-    <span class="text-h5">Ver Empresa</span>
+  <q-page padding>
+    <div class="q-pa-md" v-if="load">
 
-    <q-btn :to="`/companies/edit/${id}`" :icon="matEdit" label="Edit" />
+      <q-btn v-if="store.isAdmin" unelevated color="primary" :to="`/companies/edit/${id}`" :icon="matEdit" label="Edit" />
+      <h1 class="text-h6">Empresa {{ company.name }}</h1>
 
-    <CompanyInfo v-if="company" @submit-Company="EditCompany" :company="company" :edit="edit" />
-    <CompanyPeopleList v-if="people" :people="people" :companyid="id" />
-    <CompanyAddressesList v-if="addresses" :addresses="addresses" :companyid="id" />
+      <CompanyInfo  :company="company" />
+      <CompanyPeopleList :people="people" :companyid="id" />
+      <CompanyAddressesList :addresses="addresses" :companyid="id" />
+    </div>
   </q-page>
 </template>

@@ -28,7 +28,7 @@
 
       <template v-slot:top-right>
         <div>
-          <q-input outlined bg-color="white" borderless dense debounce="500" v-model="filter" placeholder="Search">
+          <q-input outlined bg-color="white" borderless dense debounce="600" v-model="filter" placeholder="Search">
             <template v-slot:append>
               <q-icon name="search" />
             </template>
@@ -38,9 +38,7 @@
 
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
-          <q-btn unelevated text-color="primary" :to="`/classes/show/${props.row.id}`">
-            <q-icon name="visibility" />
-          </q-btn>
+          <q-btn unelevated text-color="secondary" icon="edit" :to="`/courses/edit/${props.row.id}`" />
         </q-td>
       </template>
     </q-table>
@@ -49,22 +47,36 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import classesAPI from 'src/services/fetches/classes'
+import coursesAPI from 'src/services/fetches/courses'
 
 const columns = [
   {
     name: 'name',
     required: true,
-    label: 'Turmas',
+    label: 'Curso',
     align: 'left',
     field: row => row.name,
   },
   {
-    name: 'course',
+    name: 'type',
     required: true,
-    label: 'Curso',
+    label: 'Tipo',
     align: 'left',
-    field: row => row.course.name,
+    field: row => row.type,
+  },
+  {
+    name: 'area',
+    required: true,
+    label: 'Área',
+    align: 'left',
+    field: row => `${row.area.areaCode} - ${row.area.name}`,
+  },
+  {
+    name: 'hourlyLoad',
+    required: true,
+    label: 'Carga horária',
+    align: 'left',
+    field: row => row.hourlyLoad,
   },
   {
     name: 'actions',
@@ -85,14 +97,15 @@ const pagination = ref({
 async function onRequest (props) {
   const { page, rowsPerPage } = props.pagination
   const filter = props.filter
+  const params = { page, quantity: rowsPerPage, name: filter }
 
   loading.value = true
+  const response = await coursesAPI.index(params)
 
-  const params = { page, quantity: rowsPerPage, name: filter }
-  const response = await classesAPI.index(params)
+  //validations go here
+
   rows.value = response.data
   pagination.value = response.pagination
-
   loading.value = false
 }
 

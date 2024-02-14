@@ -5,6 +5,7 @@ axios.defaults.withCredentials = true
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 axios.defaults.headers.common['Accept'] = 'application/json';
 
+//axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://g-est_backend.test';
 // Be careful when using SSR for cross-request state pollution
 // due to creating a Singleton instance here;
 // If any client changes this (global) instance, it might be a

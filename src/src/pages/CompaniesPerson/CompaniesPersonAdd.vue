@@ -1,17 +1,21 @@
 <script setup>
 import CompanyPeopleFrom from 'src/components/companiesPeople/CompanyPeopleFrom.vue'
-import { useRoute } from 'vue-router';
+import Router from 'src/router';
+import notify from 'src/composables/notify'
+const router = Router();
+const valueCreated = async function (data) {
+  if (data.requestStatus == 200) {
 
-const route = useRoute();
-const id = route.params.id;
-const person = {
-  companyId: id
+    await router.back()
+  }
 }
 
 </script>
 
 <template>
-  <q-page>
-    <CompanyPeopleFrom :person="person"/>
+  <q-page padding>
+    <div class="q-pa-md">
+      <CompanyPeopleFrom @valuecreated="valueCreated" />
+    </div>
   </q-page>
 </template>

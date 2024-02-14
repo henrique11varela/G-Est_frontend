@@ -76,7 +76,7 @@ const routes = [
         children: [
           {
             path: '',
-            component: () => import('pages/Companies/CompaniesList.vue'),
+            component: () => import('pages/Companies/CompaniesPage.vue'),
           },
           {
             path: 'add',
@@ -136,16 +136,7 @@ const routes = [
           },
           {
             path: 'edit/:id',
-            children: [
-              {
-                path: '',
-                component: () => import('pages/Students/StudentsEdit.vue'),
-              },
-              {
-                path: 'classes',
-                component: () => import('pages/Students/StudentsClassesEdit.vue'),
-              },
-            ]
+            component: () => import('pages/Students/StudentsEdit.vue'),
           },
           {
             path: 'show/:id',
@@ -196,7 +187,24 @@ const routes = [
             component: () => import('pages/Coordinators/CoordinatorsEdit.vue'),
           }
         ]
-      }
+      },
+      {
+        path: 'courses',
+        children: [
+          {
+            path: '',
+            component: () => import('pages/Courses/CoursesPage.vue'),
+          },
+          {
+            path: 'add',
+            component: () => import('pages/Courses/CoursesAdd.vue'),
+          },
+          {
+            path: 'edit/:id',
+            component: () => import('pages/Courses/CoursesEdit.vue'),
+          },
+        ]
+      },
     ]
   },
 

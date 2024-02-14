@@ -29,13 +29,17 @@ async function index(params = null) {
 
 async function store(payload) {
   try {
-    console.log(payload)
     payload = companyAddressesDTO.output(payload)
-    console.log(payload)
     const { data } = await api.post('api/v1/companyaddresses', payload)
-    return data
+    return {
+      ...data,
+      requestStatus: 200
+    }
   } catch (error) {
-    console.log(error);
+    return {
+      status: 500,
+      errors: error.response.data.errors
+    }
   }
 }
 
@@ -52,9 +56,15 @@ async function update(payload) {
   try {
     payload = companyAddressesDTO.output(payload)
     const { data } = await api.put(`api/v1/companyaddresses/${payload.id}`, payload)
-    return data
+    return {
+      ...data,
+      requestStatus: 200
+    }
   } catch (error) {
-    console.log(error);
+    return {
+      status: error.response.status,
+      errors: error.response.data.errors
+    }
   }
 }
 
