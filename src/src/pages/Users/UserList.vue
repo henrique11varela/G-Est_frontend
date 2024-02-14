@@ -63,19 +63,17 @@ onMounted(() => {
         <template v-slot:top>
           <q-btn color="primary" :disable="loading" label="Adicionar" :to="`users/add`" />
           <q-space />
-          <q-input label="Name" borderless dense debounce="300" v-model="filters.name" placeholder="Search">
+          <q-input outlined="" label="Name" borderless dense debounce="300" v-model="filters.name" placeholder="Search">
             <template v-slot:append>
               <q-icon name="search" />
             </template>
           </q-input>
 
-          <q-space />
-          <q-input label="Email" borderless dense debounce="300" v-model="filters.email" placeholder="Search">
+          <q-input outlined="" label="Email" borderless dense debounce="300" v-model="filters.email" placeholder="Search">
             <template v-slot:append>
               <q-icon name="search" />
             </template>
           </q-input>
-          <q-space />
 
         </template>
         <template v-slot:top-right>

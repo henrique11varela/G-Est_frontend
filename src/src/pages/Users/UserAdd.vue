@@ -25,11 +25,15 @@ async function addUser(obj) {
     console.log(e)
   }
 }
+const valueCreated = async function (data) {
+  await router.back()
+}
+
 </script>
 <template>
   <q-page padding>
     <div class="q-pa-md">
-      <UserFrom :edit="true" @submit-User="addUser" />
+      <UserFrom @valuecreated="valueCreated" :edit="false" />
     </div>
   </q-page>
 </template>

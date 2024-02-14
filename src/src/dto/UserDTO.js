@@ -29,5 +29,16 @@ function rules() {
       val => val && val.length > 0 || "Introduza um nome",
 
     ],
+    email: [
+      val => val && val.length > 0 || "Introduza um email",
+
+    ],
+    password: [
+      val => val && val.length > 0 || "Introduza uma password",
+
+    ],
+    role: [
+      val => val && val.length > 0 || "Introduza um role",
+    ],
   }
 }

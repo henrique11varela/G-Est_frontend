@@ -21,7 +21,9 @@ const props = defineProps({
 })
 const $q = useQuasar()
 const CompanyData = ref({})
+const submitting = ref(false)
 async function onSubmit() {
+  submitting.value = true
   let data = {};
   if (!props.edit) {
     data = await CompanyAPI.store(CompanyData.value)
@@ -29,6 +31,8 @@ async function onSubmit() {
   else {
     data = await CompanyAPI.update(CompanyData.value)
   }
+
+  submitting.value = false
   if (data.requestStatus == 200) {
     if (!props.edit) {
       notify.store()
@@ -81,7 +85,7 @@ function showDeleteModal() {
       <div class="row">
         <div class="col-md-4">
           <q-input outlined class="q-ma-md" filled v-model="CompanyData.name" label="Name *" hint="Name" lazy-rules
-            :rules="CompanyDTO.rules().name" :error="errors?.hasOwnProperty('name')">
+            :rules="CompanyDTO.rules().name" :error="errors?.hasOwnProperty('name')" :disable="submitting">
             <template v-slot:error>
               <span :key="index" v-for="(title, index) in errors.name">
                 {{ title }}
@@ -91,7 +95,7 @@ function showDeleteModal() {
         </div>
         <div class="col-md-4">
           <q-input outlined class="q-ma-md" filled v-model="CompanyData.nipc" label="NIPC*" hint="NIPC" lazy-rules
-            :rules="CompanyDTO.rules().nipc" :error="errors?.hasOwnProperty('nipc')">
+            :rules="CompanyDTO.rules().nipc" :error="errors?.hasOwnProperty('nipc')" :disable="submitting">
             <template v-slot:error>
               <span :key="index" v-for="(title, index) in errors.name">
                 {{ title }}
@@ -101,7 +105,7 @@ function showDeleteModal() {
         </div>
         <div class="col-md-4">
           <q-input outlined class="q-ma-md" filled v-model="CompanyData.niss" label="NISS *" hint="NISS" lazy-rules
-            :rules="CompanyDTO.rules().niss" :error="errors?.hasOwnProperty('niss')">
+            :rules="CompanyDTO.rules().niss" :error="errors?.hasOwnProperty('niss')" :disable="submitting">
             <template v-slot:error>
               <span :key="index" v-for="(title, index) in errors.name">
                 {{ title }}
@@ -111,7 +115,7 @@ function showDeleteModal() {
         </div>
         <div class="col-md-4">
           <q-input outlined class="q-ma-md" filled v-model="CompanyData.cae" label="CAE *" hint="CAE" lazy-rules
-            :rules="CompanyDTO.rules().cae" :error="errors?.hasOwnProperty('cae')">
+            :rules="CompanyDTO.rules().cae" :error="errors?.hasOwnProperty('cae')" :disable="submitting">
             <template v-slot:error>
               <span :key="index" v-for="(title, index) in errors.name">
                 {{ title }}
@@ -120,7 +124,7 @@ function showDeleteModal() {
           </q-input>
         </div>
         <div class="col-md-12">
-          <q-btn class="q-ma-md " style="width: 70%" label="Submit" type="submit" color="primary" />
+          <q-btn class="q-ma-md " style="width: 70%" label="Submit" type="submit" color="primary" :disable="submitting" />
         </div>
       </div>
     </q-form>

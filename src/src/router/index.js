@@ -31,27 +31,27 @@ export default route(function (/* { store, ssrContext } */) {
     history: createHistory(process.env.VUE_ROUTER_BASE)
   })
 
-  Router.beforeEach(async (to, from) => {
-    const store = useLoginStore();
+  // Router.beforeEach(async (to, from) => {
+  //   const store = useLoginStore();
 
-    Loading.show({
-      backgroundColor: 'black',
-    })
+  //   Loading.show({
+  //     backgroundColor: 'black',
+  //   })
 
-    const { role } = await tokenAPI.checkRole();
+  //   const { role } = await tokenAPI.checkRole();
 
-    Loading.hide()
+  //   Loading.hide()
 
-    if (!role && to.fullPath != '/login') {
-      return 'login'
-    }
-    if (role) {
-      store.setPermission(role)
-      if (to.fullPath == '/login') {
-        return ''
-      }
-    }
-  })
+  //   if (!role && to.fullPath != '/login') {
+  //     return 'login'
+  //   }
+  //   if (role) {
+  //     store.setPermission(role)
+  //     if (to.fullPath == '/login') {
+  //       return ''
+  //     }
+  //   }
+  // })
 
   return Router
 })
