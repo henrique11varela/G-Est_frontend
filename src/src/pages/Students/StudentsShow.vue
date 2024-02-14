@@ -12,13 +12,11 @@
         <q-btn unelevated color="secondary" icon="edit" label="Editar" :to="`/students/edit/${route.params.id}`"/>
         <q-btn unelevated color="accent" icon="work" label="Criar estágio" :to="`/internships/add/${route.params.id}`"/>
       </div>
-      <StudentsInfo :student-info="student"></StudentsInfo>
     </div>
   </q-page>
 </template>
 
 <script setup>
-import StudentsInfo from 'src/components/students/StudentsInfo.vue'
 import studentsAPI from 'src/services/fetches/students'
 import { ref, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
