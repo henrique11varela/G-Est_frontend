@@ -23,7 +23,6 @@ const $q = useQuasar()
 const addressData = ref({
 })
 async function onSubmit() {
-  Loading.show();
   let data = {};
   if (!props.edit) {
     data = await companyAddressAPI.store(addressData.value)
@@ -31,7 +30,6 @@ async function onSubmit() {
   else {
     data = await companyAddressAPI.update(addressData.value)
   }
-  Loading.hide();
   if (data.requestStatus == 200) {
     if (!props.edit) {
       notify.store()
@@ -82,7 +80,7 @@ function showDeleteModal() {
     <div class="row">
       <div class="col-md-4">
         <q-input outlined class="q-ma-md" filled v-model="addressData.description" label="Description *"
-          hint="Description" lazy-rules :rules="companyAddressesDTO.rules().description"
+          hint="Description" lazy-rules :rules="companyAddressesDTO.rules().description"  :disable="submitting"
           :error="errors?.hasOwnProperty('description')">
           <template v-slot:error>
             <span :key="index" v-for="(title, index) in errors.description">
@@ -93,7 +91,7 @@ function showDeleteModal() {
       </div>
       <div class="col-md-4">
         <q-input outlined class="q-ma-md" filled v-model="addressData.address" label="Address*" hint="Name and surname"
-          lazy-rules :rules="companyAddressesDTO.rules().address" :error="errors?.hasOwnProperty('address')">
+          lazy-rules :rules="companyAddressesDTO.rules().address" :error="errors?.hasOwnProperty('address')"  :disable="submitting">
           <template v-slot:error>
             <span :key="index" v-for="(title, index) in errors.address">
               {{ title }}
@@ -103,7 +101,7 @@ function showDeleteModal() {
       </div>
       <div class="col-md-4">
         <q-input outlined class="q-ma-md" filled v-model="addressData.postalCode" label="Postal code *"
-          hint="Name and surname" lazy-rules :rules="companyAddressesDTO.rules().postalCode"
+          hint="Name and surname" lazy-rules :rules="companyAddressesDTO.rules().postalCode"  :disable="submitting"
           :error="errors?.hasOwnProperty('postalCode')">
           <template v-slot:error>
             <span :key="index" v-for="(title, index) in errors.postalCode">
@@ -114,10 +112,10 @@ function showDeleteModal() {
       </div>
       <div class="col-md-12">
         <div>
-          <q-checkbox v-model="addressData.hq" label="Sede" />
+          <q-checkbox v-model="addressData.hq" label="Sede"  :disable="submitting" />
         </div>
       </div>
-      <q-btn class="q-ma-md " style="width: 100%" label="Submit" type="submit" color="primary" />
+      <q-btn class="q-ma-md " style="width: 100%" label="Submit" type="submit" color="primary"  :disable="submitting" />
     </div>
   </q-form>
 </template>
