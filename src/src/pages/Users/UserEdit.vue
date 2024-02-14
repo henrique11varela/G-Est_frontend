@@ -4,7 +4,6 @@ import Router from 'src/router';
 
 const router = Router();
 const valueCreated = async function (data) {
-
   await router.back()
 }
 
@@ -12,7 +11,7 @@ const valueCreated = async function (data) {
 <template>
   <q-page padding>
     <div class="q-pa-md">
-      <UserFrom :edit="true" @valuecreated="valueCreated"  />
+      <UserFrom :edit="true" @valuecreated="valueCreated" />
     </div>
   </q-page>
 </template>

@@ -1,6 +1,7 @@
-<script setup>
+ <script setup>
 import { defineProps, ref, onMounted } from 'vue'
 import { Loading } from 'quasar';
+import notify from 'src/composables/notify';
 import { matEdit, matDelete } from '@quasar/extras/material-icons'
 import userAPI from "src/services/fetches/users.js";
 const emit = defineEmits(['valuecreated'])
@@ -109,7 +110,7 @@ function showDeleteModal() {
         </div>
         <div class="col-md-4">
           <q-input outlined="" :readonly="submitting" class="q-ma-md" type="password" filled v-model="UserData.password"
-            label="Password" hint="Name and surname" lazy-rules :rules="UserDTO.rules().password"
+            label="Password" hint="Name and surname" lazy-rules
             :error="errors?.hasOwnProperty('password')">
             <template v-slot:error>
               <span :key="index" v-for="(title, index) in errors.password">

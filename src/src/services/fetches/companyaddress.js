@@ -37,7 +37,7 @@ async function store(payload) {
     }
   } catch (error) {
     return {
-      status: 500,
+      requestStatus: 500,
       errors: error.response.data.errors
     }
   }
@@ -62,7 +62,7 @@ async function update(payload) {
     }
   } catch (error) {
     return {
-      status: error.response.status,
+      requestStatus: error.response.status,
       errors: error.response.data.errors
     }
   }

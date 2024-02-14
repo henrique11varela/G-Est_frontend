@@ -14,7 +14,7 @@ import notify from 'src/composables/notify'
 const router = useRouter()
 
 function postSubmit(value) {
-  notify.store()
+
   router.push('/courses')
 }
 

@@ -42,6 +42,7 @@ async function onSubmit() {
     emit('valuecreated', data)
     return
   }
+
   if (data.requestStatus == 422) {
     errors.value.name = data.errors.name
     errors.value.nipc = data.errors.nipc
@@ -97,7 +98,7 @@ function showDeleteModal() {
           <q-input outlined class="q-ma-md" filled v-model="CompanyData.nipc" label="NIPC*" hint="NIPC" lazy-rules
             :rules="CompanyDTO.rules().nipc" :error="errors?.hasOwnProperty('nipc')" :disable="submitting">
             <template v-slot:error>
-              <span :key="index" v-for="(title, index) in errors.name">
+              <span :key="index" v-for="(title, index) in errors.nipc">
                 {{ title }}
               </span>
             </template>
@@ -107,7 +108,7 @@ function showDeleteModal() {
           <q-input outlined class="q-ma-md" filled v-model="CompanyData.niss" label="NISS *" hint="NISS" lazy-rules
             :rules="CompanyDTO.rules().niss" :error="errors?.hasOwnProperty('niss')" :disable="submitting">
             <template v-slot:error>
-              <span :key="index" v-for="(title, index) in errors.name">
+              <span :key="index" v-for="(title, index) in errors.niss">
                 {{ title }}
               </span>
             </template>
@@ -117,7 +118,7 @@ function showDeleteModal() {
           <q-input outlined class="q-ma-md" filled v-model="CompanyData.cae" label="CAE *" hint="CAE" lazy-rules
             :rules="CompanyDTO.rules().cae" :error="errors?.hasOwnProperty('cae')" :disable="submitting">
             <template v-slot:error>
-              <span :key="index" v-for="(title, index) in errors.name">
+              <span :key="index" v-for="(title, index) in errors.cae">
                 {{ title }}
               </span>
             </template>
