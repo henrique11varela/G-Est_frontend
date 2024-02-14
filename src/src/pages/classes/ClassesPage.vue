@@ -1,13 +1,19 @@
 <template>
   <q-page padding>
     <div class="q-pa-md">
-      <h1 class="text-h6">Turmas</h1>
-      <q-btn unelevated color="primary" label="Adicionar" :to="'classes/add'" />
+      <div class="row items-center q-gutter-md no-wrap">
+        <div>
+          <h1 class="text-h6">Turmas</h1>
+        </div>
+        <q-btn dense unelevated color="primary" icon="add" :to="'classes/add'" />
+      </div>
+      <ClassesImport></ClassesImport>
       <ClassesList></ClassesList>
     </div>
   </q-page>
 </template>
 
 <script setup>
-import ClassesList from '../../components/classes/ClassesList.vue'
+import ClassesList from 'src/components/classes/ClassesList.vue'
+import ClassesImport from 'src/components/imports/ClassesImport.vue'
 </script>
