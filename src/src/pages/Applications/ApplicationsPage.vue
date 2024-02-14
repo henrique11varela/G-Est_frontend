@@ -1,21 +1,13 @@
 <template>
   <q-page padding>
+    <div class="q-pa-md">
       <h1 class="text-h6">Solicitações</h1>
-      <q-btn color="primary" label="Criar Solicitação" :to="'applications/add'" />
+      <q-btn color="primary" label="Adicionar" :to="'applications/add'"/>
       <ListAplications />
+    </div>
   </q-page>
 </template>
 
-<script>
-import ListAplications from 'src/components/Apllications/AplicationsList.vue';
-
-  export default {
-    components: {
-      ListAplications,
-    },
-  }
+<script setup>
+import ListAplications from "src/components/Applications/ApplicationsList.vue";
 </script>
-
-<style lang="scss" scoped>
-
-</style>

@@ -5,8 +5,9 @@
         <div class="col-md-5">
           <q-input
             outlined
-            v-model="company_name"
+            v-model="applicationData.companyName"
             label="Nome da Empresa"
+            :readonly="!edit"
             lazy-rules
             :rules="[(val) => !!val || 'Campo Obrigatório']"
           />
@@ -15,8 +16,9 @@
           <q-input
             type="number"
             outlined
-            v-model="number_of_trainees"
+            v-model="applicationData.numberStudents"
             label="Número de Estagiários"
+            :readonly="!edit"
             lazy-rules
             :rules="[(val) => !!val || 'Campo Obrigatório']"
           />
@@ -24,8 +26,9 @@
         <div class="col-md-5">
           <q-input
             outlined
-            v-model="activity_sector"
+            v-model="applicationData.activitySector"
             label="Setor de Atividade"
+            :readonly="!edit"
             lazy-rules
             :rules="[(val) => !!val || 'Campo Obrigatório']"
           />
@@ -34,13 +37,19 @@
           <q-select
             class="col-5"
             outlined
-            v-model="course_application"
+            v-model="applicationData.course_application"
+            :readonly="!edit"
             :options="course_application_options"
             label="Curso Pretendido"
           />
         </div>
         <div class="col-md-5">
-          <q-checkbox left-label v-model="partner" label="Já é Parceiro?" />
+          <q-checkbox
+            left-label
+            v-model="applicationData.isPartner"
+            disable
+            label="Já é Parceiro?"
+             />
         </div>
       </div>
 
@@ -50,8 +59,9 @@
         <div class="col-md-5">
           <q-input
             outlined
-            v-model="contact_name"
+            v-model="applicationData.contactName"
             label="Nome do Contato"
+            :readonly="!edit"
             lazy-rules
             :rules="[(val) => !!val || 'Campo Obrigatório']"
           />
@@ -59,8 +69,9 @@
         <div class="col-md-5">
           <q-input
             outlined
-            v-model="contact_telephone"
+            v-model="applicationData.contactTelephone"
             label="Telefone"
+            :readonly="!edit"
             lazy-rules
             :rules="[(val) => !!val || 'Campo Obrigatório']"
           />
@@ -68,28 +79,40 @@
         <div class="col-md-5">
           <q-input
             outlined
-            v-model="contact_email"
+            v-model="applicationData.contactEmail"
             label="Email do Contato"
+            :readonly="!edit"
             lazy-rules
             :rules="[(val) => !!val || 'Campo Obrigatório']"
           />
         </div>
         <div class="col-md-5">
-          <q-input outlined v-model="website" label="Website" />
-        </div>
-        <div class="col-md-5">
-          <q-input outlined v-model="locality" label="Localidade" />
+          <q-input
+            outlined
+            v-model="applicationData.website"
+            label="Website"
+            :readonly="!edit"
+          />
         </div>
         <div class="col-md-5">
           <q-input
             outlined
-            v-model="student_tasks"
+            v-model="applicationData.locality"
+            label="Localidade"
+            :readonly="!edit"
+          />
+        </div>
+        <div class="col-md-5">
+          <q-input
+            outlined
+            v-model="applicationData.studentTasks"
             label="Tarefas a desempenhar"
+            :readonly="!edit"
           />
         </div>
       </div>
       <hr />
-      
+
     </q-form>
   </div>
 </template>
@@ -98,6 +121,7 @@
 export default {
   data() {
     return {
+      applicationData: {
       company_name: "",
       number_of_trainees: "",
       activity_sector: "",
@@ -110,7 +134,23 @@ export default {
       website: "",
       locality: "",
       student_tasks: "",
+      },
     };
+  },
+  watch: {
+    application(val) {
+      this.applicationData = val;
+    },
+  },
+  props: {
+    application: {
+      type: Object,
+      default: () => {},
+    },
+    edit: {
+      type: Boolean,
+      default: false,
+    },
   },
 };
 </script>

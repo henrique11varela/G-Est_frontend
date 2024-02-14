@@ -1,4 +1,5 @@
-import courseDTO from "./StudentDTO"
+import courseDTO from "./CourseDTO"
+import companyDTO from "./CompanyDTO"
 export default { input, output, rules }
 
 function input(data) {
@@ -8,16 +9,31 @@ function input(data) {
     if (data.hasOwnProperty('courses')) {
       hasCoursesKey = true
       for (const course of data.courses) {
-        courses.push(new studentDTO.input(student))
+        courses.push(courseDTO.input(course))
       }
+    }
+    let company = null
+    let hasCompanyKey = false
+    if (data.hasOwnProperty('company')) {
+      hasCompanyKey = true
+      company = companyDTO.input(data.company)
     }
     //const hasCoursesKey = data.hasOwnProperty('course')
     return {
       id: data.id,
-      name: data.name,
-      startDate: data.start_date,
+      companyName: data.company_name,
+      activtySector: data.activty_sector,
+      locality: data.locality,
+      website: data.website,
+      contactName: data.contact_name,
+      contactTelephone: data.contact_telephone,
+      contactEmail: data.contact_email,
+      numberStudents: data.number_students,
+      studentProfile: data.student_profile,
+      studenTasks: data.student_tasks,
+      isPartner: data.is_partner,
       ...(hasCoursesKey && { courses }),
-      ...(hasCoursesKey && { course: data.course }),
+      ...(hasCompanyKey && { company }),
     }
   } catch (error) {
     console.error("Error:", error)

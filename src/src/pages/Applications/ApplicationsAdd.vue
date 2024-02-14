@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import ApllicationsForm from 'src/components/Apllications/ApllicationsForm.vue';
+import ApllicationsForm from 'src/components/Applications/ApplicationsForm.vue';
 
   export default {
     components: {
