@@ -42,8 +42,8 @@ onMounted(() => {
 async function getClass(id) {
   loading.value = true
   const response = await classesAPI.show(id)
-  const { name, course, startDate } = response
-  classInfo.value = { name, course: course.name, startDate}
+  const { name, course } = response
+  classInfo.value = { name, course: course.name}
   students.value = response.students
   loading.value = false
 }
