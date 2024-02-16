@@ -4,6 +4,7 @@ import { defineStore } from 'pinia';
 export const useInnerFormStore = defineStore('innerForm', () => {
 
   const innerFormComponentPath = ref("");
+  const propid = ref(null);
   const callbackFn = ref(() => {});
   const isOpen = computed(() => innerFormComponentPath.value !== "");
   let intervalId = null
@@ -13,12 +14,13 @@ export const useInnerFormStore = defineStore('innerForm', () => {
    * @param {string} formComponentPath
    * @returns {Promise}
    */
-  function openInnerForm(formComponentPath) {
+  function openInnerForm(formComponentPath, prop = null) {
     innerFormComponentPath.value = formComponentPath;
     const returnedValue = ref(null);
-
+    propid.value = prop;
     callbackFn.value = (value) => {
       innerFormComponentPath.value = "";
+      propid.value = null;
       callbackFn.value = () => {};
       returnedValue.value = value
     };
@@ -37,6 +39,7 @@ export const useInnerFormStore = defineStore('innerForm', () => {
 
   return {
     innerFormComponentPath,
+    propid,
     callbackFn,
     isOpen,
     openInnerForm,

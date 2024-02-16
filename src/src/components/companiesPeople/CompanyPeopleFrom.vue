@@ -20,7 +20,7 @@ const props = defineProps({
   }
 })
 
-const CompanyId = ref(props.propid ? props.propid : route.params.id)
+// const CompanyId = ref(props.propid ? props.propid : route.params.id)
 const submitting = ref(false)
 const errors = ref({
 
@@ -58,7 +58,7 @@ async function onSubmit() {
 
 onMounted(async () => {
   personData.value = companyPearsonDTO.input({});
-  personData.value.companyId = CompanyId.value;
+  personData.value.companyId = props.propid ? props.propid : route.params.id
   if (props.edit) {
     Loading.show();
     personData.value = await companyPeopleAPI.show(route.params.personId);

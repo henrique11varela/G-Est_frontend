@@ -3,7 +3,7 @@
     <q-dialog v-model="innerFormStore.isOpen" persistent>
       <div class="bg-white q-pa-lg" style="overflow: hidden;">
         <q-btn icon="close" color="negative" @click="innerFormStore.innerFormComponentPath = ''"></q-btn>
-        <component :is="innerFormComponent" @valuecreated="innerFormStore?.callbackFn" />
+        <component :is="innerFormComponent" :propid="innerFormStore?.propid" @valuecreated="innerFormStore?.callbackFn" />
       </div>
     </q-dialog>
   </div>
