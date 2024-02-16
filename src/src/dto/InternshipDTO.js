@@ -61,12 +61,12 @@ function input(data) {
 
     //endedInternship
     let endedInternship = null;
-    // if (data.ended_internship) {
-    //   endedInternship = {};
-    //   endedInternship.reason = data.ended_internship.reason;
-    //   endedInternship.endDate = data.ended_internship.end_date;
-    //   endedInternship.isWorkingThere = data.ended_internship.is_working_there;
-    // }
+    if (data.ended_internship) {
+      endedInternship = {};
+      endedInternship.reason = data.ended_internship.reason;
+      endedInternship.situacaoProf = data.ended_internship.situacao_prof;
+      endedInternship.comoObteveEmprego = data.ended_internship.como_obteve_emprego;
+    }
 
     return {
       id: data.id,
@@ -98,15 +98,13 @@ function output(data) {
     }
 
     let ended_internship = null;
-    // if (data.ended_internship) {
-    //   started_internship = {
-    //     meal_allowance: data.started_internship.mealAllowance,
-    //     start_date: data.started_internship.startDate,
-    //     end_date: data.started_internship.endDate,
-    //     company_address: data.started_internship.address,
-    //     company_person: data.started_internship.tutor,
-    //   };
-    // }
+    if (data.endedInternship) {
+      ended_internship = {
+        reason: data.endedInternship.reason,
+        situacao_prof: data.endedInternship.situacaoProf,
+        como_obteve_emprego: data.endedInternship.comoObteveEmprego,
+      };
+    }
 
     const outputPayload = {
       student_id: data.student.id,

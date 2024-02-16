@@ -29,9 +29,15 @@ async function index(params = null) {
 async function store(payload) {
   try {
     const { data } = await api.post('api/v1/internships', InternshipDTO.output(payload))
-    return data
+    return {
+      ...data,
+      requestStatus: 200
+    }
   } catch (error) {
-    console.log(error);
+    return {
+      status: error.response.status,
+      errors: error.response.data.errors
+    }
   }
 }
 
@@ -47,9 +53,15 @@ async function show(id) {
 async function update(payload) {
   try {
     const { data } = await api.put(`api/v1/internships/${payload.id}`, InternshipDTO.output(payload))
-    return data
+    return {
+      ...data,
+      requestStatus: 200
+    }
   } catch (error) {
-    console.log(error);
+    return {
+      status: error.response.status,
+      errors: error.response.data.errors
+    }
   }
 }
 
