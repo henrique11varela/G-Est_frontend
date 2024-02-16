@@ -7,7 +7,7 @@
       ref="tableRef"
       :rows="rows"
       :columns="columns"
-      row-key="id"
+      :row-key="row => row.id"
       v-model:pagination="pagination"
       :loading="loading"
       :filter="filter"

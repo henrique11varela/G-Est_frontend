@@ -12,11 +12,17 @@
 <script setup>
 import { ref } from 'vue'
 import importsAPI from 'src/services/fetches/imports'
+import { Loading } from 'quasar'
 const file = ref(null)
 
 async function importClasses() {
+  Loading.show()
   const response = await importsAPI.classes({ file: file.value })
   console.log(response)
+  //TODO validations
+  file.value = null
+  Loading.hide()
+
 }
 </script>
 
