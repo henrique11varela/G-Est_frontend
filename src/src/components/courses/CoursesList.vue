@@ -72,13 +72,6 @@ const columns = [
     field: row => `${row.area.areaCode} - ${row.area.name}`,
   },
   {
-    name: 'hourlyLoad',
-    required: true,
-    label: 'Carga horária',
-    align: 'left',
-    field: row => row.hourlyLoad,
-  },
-  {
     name: 'actions',
     align: 'center',
   }
