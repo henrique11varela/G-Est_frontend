@@ -69,7 +69,7 @@ onMounted(async () => {
 function showDeleteModal() {
   $q.dialog({
     title: 'Alert',
-    message: 'Deseija eleminar o Utilizador?',
+    message: 'Deseja eliminar o utilizador?',
     cancel: true,
     persistent: true
   }).onOk(async () => {
@@ -86,7 +86,7 @@ function showDeleteModal() {
     <div v-if="edit">
       <q-btn @click="showDeleteModal" color="red" :icon="matDelete" label="Delete" />
     </div>
-    <q-form action="companies" @submit.prevent="onSubmit">
+    <q-form class="q-ma-lg" action="companies" @submit.prevent="onSubmit">
 
       <div class="row">
         <div class="col-md-4">

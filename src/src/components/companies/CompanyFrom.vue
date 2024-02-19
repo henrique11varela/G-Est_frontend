@@ -64,7 +64,7 @@ onMounted(async () => {
 function showDeleteModal() {
   $q.dialog({
     title: 'Apagar',
-    message: 'Deseija eleminar a empresa?',
+    message: 'Deseja eliminar a empresa?',
     cancel: true,
     persistent: true
   }).onOk(async () => {
@@ -77,15 +77,15 @@ function showDeleteModal() {
 </script>
 <template>
   <div>
-    <!-- content -->
-    <div v-if="props.edit">
-      <q-btn @click="showDeleteModal" color="red" :icon="matDelete" label="Delete" />
-    </div>
-    <q-form action="companies" @submit.prevent="onSubmit">
+    <q-form class="q-ma-lg" action="companies" @submit.prevent="onSubmit">
 
+      <!-- content -->
+      <div v-if="props.edit">
+        <q-btn class="q-mb-md" @click="showDeleteModal" color="red" :icon="matDelete" label="Delete" />
+      </div>
       <div class="row">
         <div class="col-md-4">
-          <q-input outlined class="q-ma-md" filled v-model="CompanyData.name" label="Name *" hint="Name" lazy-rules
+          <q-input outlined class="q-mr-md  q-mb-md" filled v-model="CompanyData.name" label="Name *" hint="Name" lazy-rules
             :rules="CompanyDTO.rules().name" :error="errors?.hasOwnProperty('name')" :disable="submitting">
             <template v-slot:error>
               <span :key="index" v-for="(title, index) in errors.name">
@@ -95,7 +95,7 @@ function showDeleteModal() {
           </q-input>
         </div>
         <div class="col-md-4">
-          <q-input outlined class="q-ma-md" filled v-model="CompanyData.nipc" label="NIPC*" hint="NIPC" lazy-rules
+          <q-input outlined class="q-mx-md q-mb-md" filled v-model="CompanyData.nipc" label="NIPC*" hint="NIPC" lazy-rules
             :rules="CompanyDTO.rules().nipc" :error="errors?.hasOwnProperty('nipc')" :disable="submitting">
             <template v-slot:error>
               <span :key="index" v-for="(title, index) in errors.nipc">
@@ -105,7 +105,7 @@ function showDeleteModal() {
           </q-input>
         </div>
         <div class="col-md-4">
-          <q-input outlined class="q-ma-md" filled v-model="CompanyData.niss" label="NISS *" hint="NISS" lazy-rules
+          <q-input outlined class="q-ml-md q-mb-md" filled v-model="CompanyData.niss" label="NISS *" hint="NISS" lazy-rules
             :rules="CompanyDTO.rules().niss" :error="errors?.hasOwnProperty('niss')" :disable="submitting">
             <template v-slot:error>
               <span :key="index" v-for="(title, index) in errors.niss">
@@ -115,7 +115,7 @@ function showDeleteModal() {
           </q-input>
         </div>
         <div class="col-md-4">
-          <q-input outlined class="q-ma-md" filled v-model="CompanyData.cae" label="CAE *" hint="CAE" lazy-rules
+          <q-input outlined class="q-mr-md  q-mb-md" filled v-model="CompanyData.cae" label="CAE *" hint="CAE" lazy-rules
             :rules="CompanyDTO.rules().cae" :error="errors?.hasOwnProperty('cae')" :disable="submitting">
             <template v-slot:error>
               <span :key="index" v-for="(title, index) in errors.cae">
@@ -125,7 +125,7 @@ function showDeleteModal() {
           </q-input>
         </div>
         <div class="col-md-12">
-          <q-btn class="q-ma-md " style="width: 70%" label="Submit" type="submit" color="primary" :disable="submitting" />
+          <q-btn style="width: 100%" label="Submit" type="submit" color="primary" :disable="submitting" />
         </div>
       </div>
     </q-form>

@@ -9,11 +9,11 @@ const props = defineProps({
 })
 const emit = defineEmits(['request'])
 const columns = [
-  { name: 'name', label: 'Name', field: 'name', },
-  { name: 'phoneNumber', label: 'PhoneNumber', field: 'phoneNumber', align: 'left', },
+  { name: 'name', label: 'Nome', field: 'name', align: 'left', },
+  { name: 'phoneNumber', label: 'Número de Telefone', field: 'phoneNumber', align: 'left', },
   { name: 'email', label: 'Email', field: 'email', align: 'left', },
-  { name: 'isContact', label: 'isContact', field: 'isContact', align: 'left', },
-  { name: 'isTutor', label: 'isTutor', field: 'isTutor', align: 'left', },
+  { name: 'isContact', label: 'Contacto', field: 'isContact', align: 'left', },
+  { name: 'isTutor', label: 'Tutor', field: 'isTutor', align: 'left', },
 ];
 if (store.isAdmin) {
   columns.push({
@@ -97,26 +97,27 @@ onMounted(() => {
 })
 </script>
 <template>
-  <q-btn v-if="store.isAdmin" color="primary" label="Adicionar" :to="`/companies/show/${companyid}/contactperson/add`" />
+  <q-btn class="q-mb-md" v-if="store.isAdmin" color="primary" label="Adicionar"
+    :to="`/companies/show/${companyid}/contactperson/add`" />
   <q-table :loading="loading" @request="onRequest" flat bordered ref="tableRef" title="Treats" :rows="rows"
     :columns="columns" row-key="id" v-model:pagination="pagination" :filter="filters" binary-state-sort>
 
 
     <template v-slot:top>
       <q-space />
-      <q-input outlined label="Name" borderless dense debounce="300" v-model="filters.name" placeholder="Search">
+      <q-input class="q-ma-md" outlined label="Name" borderless dense debounce="300" v-model="filters.name" placeholder="Search">
         <template v-slot:append>
           <q-icon name="search" />
         </template>
       </q-input>
 
-      <q-input outlined label="Numero de Telemove" borderless dense debounce="300" v-model="filters.phoneNumber"
+      <q-input  class="q-ma-md"  outlined label="Numero de Telemove" borderless dense debounce="300" v-model="filters.phoneNumber"
         placeholder="Search">
         <template v-slot:append>
           <q-icon name="search" />
         </template>
       </q-input>
-      <q-input outlined label="Email" borderless dense debounce="300" v-model="filters.email" placeholder="Search">
+      <q-input  class="q-ml-md"  outlined label="Email" borderless dense debounce="300" v-model="filters.email" placeholder="Search">
         <template v-slot:append>
           <q-icon name="search" />
         </template>
@@ -125,6 +126,18 @@ onMounted(() => {
     </template>
 
 
+    <template v-slot:body-cell-isTutor="props">
+      <q-td v-if="props.row.isTutor">
+        <q-icon name="done" />
+      </q-td>
+    </template>
+
+
+    <template v-slot:body-cell-isContact="props">
+      <q-td >
+        <q-icon v-if="props.row.isContact" name="done" />
+      </q-td>
+    </template>
     <template v-slot:body-cell-Action="props">
       <q-td>
         <q-btn :to="`/companies/show/${companyId}/contactperson/edit/${props.row.id}`" unelevated text-color="secondary">

@@ -14,8 +14,11 @@ const valueCreated = async function (data) {
 
 <template>
   <q-page padding>
-    <div class="q-pa-md">
-      <CompanyPeopleFrom @valuecreated="valueCreated" />
+
+    <div class="q-ma-lg">
+      <h1 class="text-h6">Adicionar Contacto</h1>
     </div>
+    <CompanyPeopleFrom @valuecreated="valueCreated" />
+
   </q-page>
 </template>
