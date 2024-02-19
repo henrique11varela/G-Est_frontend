@@ -3,9 +3,9 @@ import UserDTO from "src/dto/UserDTO"
 import PaginationDTO from "src/dto/PaginationDTO.js"
 export default {
   index,
-  create,
-  update,
+  store,
   show,
+  update,
   destroy
 }
 async function index(
@@ -35,21 +35,33 @@ async function show(id) {
   const company = new UserDTO.input(data);
   return company
 }
-async function create(payload) {
+async function store(payload) {
   try {
     const { data } = await api.post('api/v1/users', payload)
-    return data
+    return {
+      ...data,
+      requestStatus: 200
+    }
   } catch (error) {
-    console.log(error);
+    return {
+      requestStatus: error.response.status,
+      errors: error.response.data.errors
+    }
   }
 }
 
 async function update(payload) {
   try {
     const { data } = await api.put('api/v1/users/' + payload.id, payload)
-    return data
+    return {
+      ...data,
+      requestStatus: 200
+    }
   } catch (error) {
-    console.log(error);
+    return {
+      requestStatus: 500,
+      errors: error.response.data.errors
+    }
   }
 }
 async function destroy(id) {
