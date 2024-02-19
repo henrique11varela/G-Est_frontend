@@ -12,9 +12,12 @@ const valueCreated = async function (data) {
 </script>
 <template>
   <q-page padding>
-    <div class="q-pa-md">
-      <span class="text-h5">Adicionar empresa</span>
-      <CompanyFrom :edit="false" @valuecreated="valueCreated" />
+
+
+    <div class="q-ma-lg">
+      <h1 class="text-h6">Adicionar Empresa</h1>
     </div>
+    <CompanyFrom :edit="false" @valuecreated="valueCreated" />
+
   </q-page>
 </template>

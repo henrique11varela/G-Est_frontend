@@ -14,8 +14,11 @@ const valueCreated = function (data) {
 </script>
 <template>
   <q-page padding>
-    <div class="q-pa-md">
-      <CompanyAddressesFrom :edit="true" @valuecreated="valueCreated" />
+
+    <div class="q-ma-lg">
+      <h1 class="text-h6">Editar Morada</h1>
     </div>
+      <CompanyAddressesFrom :edit="true" @valuecreated="valueCreated" />
+
   </q-page>
 </template>

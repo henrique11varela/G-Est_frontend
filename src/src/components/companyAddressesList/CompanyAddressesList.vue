@@ -9,9 +9,10 @@ const props = defineProps({
 })
 const emit = defineEmits(['request'])
 const columns = [
-  { name: 'description', label: 'Description', field: 'description', align: 'left', },
-  { name: 'address', label: 'Address', field: 'address', align: 'left', },
-  { name: 'postalCode', label: 'Postal Code', field: 'postalCode', align: 'left', },
+  { name: 'description', label: 'Descrição', field: 'description', align: 'left', },
+  { name: 'address', label: 'Morada', field: 'address', align: 'left', },
+  { name: 'postalCode', label: 'Código Postal', field: 'postalCode', align: 'left', },
+  { name: 'hq', label: 'Sede', field: 'hq', align: 'left', },
 ];
 if (store.isAdmin) {
   columns.push({
@@ -94,26 +95,26 @@ onMounted(() => {
 })
 </script>
 <template>
-  <q-btn v-if="store.isAdmin" color="primary" label="Adicionar" :to="`/companies/show/${companyid}/contactaddress/add`" />
+  <q-btn  class="q-mb-md" v-if="store.isAdmin" color="primary" label="Adicionar" :to="`/companies/show/${companyid}/contactaddress/add`" />
   <q-table :loading="loading" @request="onRequest" flat bordered ref="tableRef" title="Treats" :rows="rows"
     :columns="columns" row-key="id" v-model:pagination="pagination" :filter="filters" binary-state-sort>
 
 
     <template v-slot:top>
       <q-space />
-      <q-input outlined label="Descrição" borderless dense debounce="300" v-model="filters.name" placeholder="Search">
+      <q-input class="q-ma-md" outlined label="Descrição" borderless dense debounce="300" v-model="filters.name" placeholder="Search">
         <template v-slot:append>
           <q-icon name="search" />
         </template>
       </q-input>
 
-      <q-input outlined label="Endereço" borderless dense debounce="300" v-model="filters.address" placeholder="Search">
+      <q-input class="q-ma-md" outlined label="Endereço" borderless dense debounce="300" v-model="filters.address" placeholder="Search">
         <template v-slot:append>
           <q-icon name="search" />
         </template>
       </q-input>
 
-      <q-input outlined label="Codigo Postal" borderless dense debounce="300" v-model="filters.postalCode"
+      <q-input class="q-ml-md" outlined label="Codigo Postal" borderless dense debounce="300" v-model="filters.postalCode"
         placeholder="Search">
         <template v-slot:append>
           <q-icon name="search" />
@@ -124,6 +125,11 @@ onMounted(() => {
     <q-space />
 
 
+    <template v-slot:body-cell-hq="props">
+      <q-td >
+        <q-icon v-if="props.row.hq" name="done" />
+      </q-td>
+    </template>
     <template v-slot:body-cell-Action="props">
       <q-td>
         <q-btn :to="`/companies/show/${companyId}/contactaddress/edit/${props.row.id}`" unelevated text-color="secondary">
