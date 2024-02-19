@@ -38,18 +38,13 @@ import Router from '../router'
 const linksList = [
   {
     title: 'Solicitações',
-    icon: 'school',
+    icon: 'mail',
     link: '/applications'
   },
   {
     title: 'Turmas',
-    icon: 'school',
+    icon: 'groups',
     link: '/classes'
-  },
-  {
-    title: 'Coordenadores',
-    icon: 'school',
-    link: '/coordinators'
   },
   {
     title: 'Alunos',
@@ -57,24 +52,24 @@ const linksList = [
     link: '/students'
   },
   {
-    title: 'Estágios',
-    icon: 'school',
-    link: '/internships'
-  },
-  {
     title: 'Empresas',
-    icon: 'school',
+    icon: 'apartment',
     link: '/companies'
-  },
-  {
-    title: 'Utilizadores',
-    icon: 'school',
-    link: '/users'
   },
   {
     title: 'Cursos',
     icon: 'school',
     link: '/courses'
+  },
+  {
+    title: 'Coordenadores',
+    icon: 'person',
+    link: '/coordinators'
+  },
+  {
+    title: 'Utilizadores',
+    icon: 'people',
+    link: '/users'
   },
 
 ]
