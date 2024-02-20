@@ -1,6 +1,14 @@
 import { Notify } from 'quasar'
 
-export default { store, update, destroy }
+export default { store, update, destroy, imported, serverError }
+
+function serverError() {
+  notify('Erro no processamento do pedido', 'negative')
+}
+
+function imported() {
+  notify('Importado')
+}
 
 function store() {
   notify('Criado')
