@@ -7,7 +7,6 @@
         </div>
         <q-btn dense unelevated color="primary" icon="add" :to="'classes/add'" />
       </div>
-      <ClassesImport></ClassesImport>
       <ClassesList></ClassesList>
     </div>
   </q-page>
@@ -15,5 +14,4 @@
 
 <script setup>
 import ClassesList from 'src/components/classes/ClassesList.vue'
-import ClassesImport from 'src/components/imports/ClassesImport.vue'
 </script>

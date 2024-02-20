@@ -1,4 +1,5 @@
 <template>
+  <ClassesImport @imported="updateTable"></ClassesImport>
   <div class="q-py-md">
     <q-table
       color="primary"
@@ -50,6 +51,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import classesAPI from 'src/services/fetches/classes'
+import ClassesImport from 'src/components/imports/ClassesImport.vue'
 
 const columns = [
   {
@@ -96,7 +98,11 @@ async function onRequest (props) {
   loading.value = false
 }
 
-onMounted(() => {
+function updateTable() {
   tableRef.value.requestServerInteraction()
+}
+
+onMounted(() => {
+  updateTable()
 })
 </script>
