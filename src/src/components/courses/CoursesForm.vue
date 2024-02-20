@@ -46,17 +46,6 @@
         class="col-12 col-md-3 col-sm-7"
       />
 
-      <q-input
-        :readonly="submitting"
-        outlined
-        type="number"
-        v-model="data.hourlyLoad"
-        label="Carga horária"
-        lazy-rules="ondemand"
-        :rules="rules.hourlyLoad"
-        class="col-12 col-sm"
-      />
-
       <div class="col-12">
         <q-btn unelevated label="Guardar" type="submit" color="primary" :disabled="submitting"/>
         <q-btn unelevated label="Reset" type="reset" color="primary" flat class="q-ml-sm" :disabled="submitting"/>
@@ -110,19 +99,17 @@ async function getCourse(id) {
   data.value.name = defaults.name = output.name
   data.value.type = defaults.type = output.type
   data.value.area = defaults.area = output.area
-  data.value.hourlyLoad = defaults.hourlyLoad = output.hourlyLoad
   data.value.id = output.id
 }
 
 function defaultValues() {
-  return { name: "", type: "", area: null, hourlyLoad: "" }
+  return { name: "", type: "", area: null }
 }
 
 function onReset() {
   data.value.name = defaults.name
   data.value.type = defaults.type
   data.value.area = defaults.area
-  data.value.hourlyLoad = defaults.hourlyLoad
 }
 
 const emit = defineEmits(['valuecreated'])
