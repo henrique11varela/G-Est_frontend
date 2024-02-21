@@ -30,7 +30,7 @@ async function index(params = null) {
 
 async function store(payload) {
   try {
-    const { data } = await api.post('api/v1/applications', payload)
+    const { data } = await api.post('api/v1/applications', applicationDTO.output(payload))
     return data
   } catch (error) {
     console.log(error);
@@ -48,7 +48,7 @@ async function show(id) {
 
 async function update(payload) {
   try {
-    const { data } = await api.put(`api/v1/applications/${payload.id}`, payload)
+    const { data } = await api.put(`api/v1/applications/${payload.id}`, applicationDTO.output(payload))
     return data
   } catch (error) {
     console.log(error);
@@ -57,7 +57,7 @@ async function update(payload) {
 
 async function destroy(id) {
   try {
-    const { data } = await api.delee(`api/v1/applications/${id}`)
+    const { data } = await api.delete(`api/v1/applications/${id}`)
     return data
   } catch (error) {
     console.log(error);
