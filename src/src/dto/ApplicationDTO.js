@@ -1,39 +1,19 @@
-import courseDTO from "./CourseDTO"
-import companyDTO from "./CompanyDTO"
 export default { input, output, rules }
 
 function input(data) {
   try {
-    const courses = []
-    let hasCoursesKey = false
-    if (data.hasOwnProperty('courses')) {
-      hasCoursesKey = true
-      for (const course of data.courses) {
-        courses.push(courseDTO.input(course))
-      }
-    }
-    let company = null
-    let hasCompanyKey = false
-    if (data.hasOwnProperty('company')) {
-      hasCompanyKey = true
-      company = companyDTO.input(data.company)
-    }
-    //const hasCoursesKey = data.hasOwnProperty('course')
     return {
       id: data.id,
       companyName: data.company_name,
-      activtySector: data.activty_sector,
-      locality: data.locality,
-      website: data.website,
+      numberStudents: data.number_students,
+      activitySector: data.activity_sector,
+      isPartner: data.is_partner==1,
       contactName: data.contact_name,
       contactTelephone: data.contact_telephone,
       contactEmail: data.contact_email,
-      numberStudents: data.number_students,
-      studentProfile: data.student_profile,
-      studenTasks: data.student_tasks,
-      isPartner: data.is_partner,
-      ...(hasCoursesKey && { courses }),
-      ...(hasCompanyKey && { company }),
+      website: data.website,
+      locality: data.locality,
+      studentTasks: data.student_tasks,
     }
   } catch (error) {
     console.error("Error:", error)
@@ -44,10 +24,17 @@ function input(data) {
 function output(data) {
   try {
     return {
-      name: data.name,
-      start_date: data.startDate,
-      course_id: data.course.id,
-      Courses: data.Courses
+      id: data.id,
+      company_name: data.companyName,
+      number_students: data.numberStudents,
+      activity_sector: data.activitySector,
+      is_partner: data.isPartner,
+      contact_name: data.contactName,
+      contact_telephone: data.contactTelephone,
+      contact_email: data.contactEmail,
+      website: data.website,
+      locality: data.locality,
+      student_tasks: data.studentTasks,
     }
   } catch (error) {
     console.error("Error:", error)
@@ -57,7 +44,7 @@ function output(data) {
 
 function rules() {
   return {
-    name: [ val => val && val.length > 0 || 'Introduza um nome' ],
+    name: [ val => !!val || 'Campo Obrigatório' ],
     startDate: [ (val, rules) => rules.date(val)  || 'Introduza uma data válida' ],
     course: [ val => val || 'Selecione um curso'],
   }

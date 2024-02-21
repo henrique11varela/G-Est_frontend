@@ -1,22 +1,21 @@
 <template>
   <q-page padding>
       <h1 class="text-h6">Adicionar Solicitação</h1>
-      <ApllicationsForm />
-      <q-btn type="submit" label="Voltar" color="primary" to="/applications"/>
-      <q-btn type="submit" label="Adicionar" color="primary" />
+      <ApplicationsForm @valuecreated="postSubmit"/>
   </q-page>
 </template>
 
-<script>
-import ApllicationsForm from 'src/components/Applications/ApplicationsForm.vue';
+<script setup>
+import ApplicationsForm from 'src/components/Applications/ApplicationsForm.vue'
+import { useRoute, useRouter } from 'vue-router'
+import notify from 'src/composables/notify'
 
-  export default {
-    components: {
-      ApllicationsForm,
-    },
-  }
+const router = useRouter()
+const route = useRoute()
+
+function postSubmit(value) {
+  notify.store()
+  router.push(`/applications`)
+}
 
 </script>
-
-<style lang="scss" scoped>
-</style>

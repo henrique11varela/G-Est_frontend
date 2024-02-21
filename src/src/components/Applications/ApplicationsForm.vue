@@ -1,174 +1,165 @@
 <template>
-  <div class="q-p-md">
-    <q-form @submit="submit" @reset="onReset" class="q-gutter-md">
-      <div class="row justify-between">
-        <div class="col-md-5">
-          <q-input
-            outlined
-            v-model="applicationData.companyName"
-            label="Nome da Empresa"
-            :readonly="!edit"
-            lazy-rules
-            :rules="[(val) => !!val || 'Campo Obrigatório']"
-          />
-        </div>
-        <div class="col-md-5">
-          <q-input
-            type="number"
-            outlined
-            v-model="applicationData.numberStudents"
-            label="Número de Estagiários"
-            :readonly="!edit"
-            lazy-rules
-            :rules="[(val) => !!val || 'Campo Obrigatório']"
-          />
-        </div>
-        <div class="col-md-5">
-          <q-input
-            outlined
-            v-model="applicationData.activitySector"
-            label="Setor de Atividade"
-            :readonly="!edit"
-            lazy-rules
-            :rules="[(val) => !!val || 'Campo Obrigatório']"
-          />
-        </div>
-        <div class="col-md-5">
-          <q-select
-            class="col-5"
-            outlined
-            v-model="applicationData.course_application"
-            :readonly="!edit"
-            :options="course_application_options"
-            label="Curso Pretendido"
-          />
-        </div>
-        <div class="col-md-5">
-          <q-checkbox
-            left-label
-            v-model="applicationData.isPartner"
-            disable
-            label="Já é Parceiro?"
-             />
-        </div>
-      </div>
+  <div class="q-py-md">
+  <q-spinner
+    color="primary"
+    size="3em"
+    :thickness="2"
+    v-if="loading"
+  />
+  <q-form
+    @submit="onSubmit"
+    @reset="onReset"
+    class="q-gutter-md row"
+    v-else
+  >
+    <q-input
+      outlined
+      v-model="data.companyName"
+      label="Nome da Empresa"
+      lazy-rules="ondemand"
+      :rules="rules.name"
+      class="col-12 col-sm-auto"
+    />
 
-      <hr />
+    <q-input
+      outlined
+      v-model="data.numberStudents"
+      label="Número de Estagiários"
+      lazy-rules="ondemand"
+      :rules="rules.name"
+      class="col-12 col-sm-auto"
+    />
+    <q-input
+      outlined
+      v-model="data.activitySector"
+      label="Setor de Atividade"
+      lazy-rules="ondemand"
+      :rules="rules.name"
+      class="col-12 col-sm-auto"
+    />
+    <q-checkbox
+      left-label
+      v-model="data.isPartner"
+      label="Já é Parceiro?"
+      class="col-12 col-sm-auto"
+    />
+    <q-input
+      outlined
+      v-model="data.contactName"
+      label="Nome de Contacto"
+      lazy-rules="ondemand"
+      :rules="rules.name"
+      class="col-12 col-sm-auto"
+    />
+    <q-input
+      outlined
+      v-model="data.contactTelephone"
+      label="Telefone"
+      lazy-rules="ondemand"
+      :rules="rules.name"
+      class="col-12 col-sm-auto"
+    />
+    <q-input
+      outlined
+      v-model="data.contactEmail"
+      label="Email"
+      lazy-rules="ondemand"
+      :rules="rules.name"
+      class="col-12 col-sm-auto"
+      />
+      <q-input
+      outlined
+      v-model="data.website"
+      label="Website"
+      lazy-rules="ondemand"
+      :rules="rules.name"
+      class="col-12 col-sm-auto"
+    />
+    <q-input
+      outlined
+      v-model="data.locality"
+      label="Localidade"
+      lazy-rules="ondemand"
+      :rules="rules.name"
+      class="col-12 col-sm-auto"
+    />
+    <q-input
+      outlined
+      v-model="data.studentTasks"
+      label="Tarefas a desempenhar"
+      lazy-rules="ondemand"
+      :rules="rules.name"
+      class="col-12 col-sm-auto"
+    />
 
-      <div class="row justify-between">
-        <div class="col-md-5">
-          <q-input
-            outlined
-            v-model="applicationData.contactName"
-            label="Nome do Contato"
-            :readonly="!edit"
-            lazy-rules
-            :rules="[(val) => !!val || 'Campo Obrigatório']"
-          />
-        </div>
-        <div class="col-md-5">
-          <q-input
-            outlined
-            v-model="applicationData.contactTelephone"
-            label="Telefone"
-            :readonly="!edit"
-            lazy-rules
-            :rules="[(val) => !!val || 'Campo Obrigatório']"
-          />
-        </div>
-        <div class="col-md-5">
-          <q-input
-            outlined
-            v-model="applicationData.contactEmail"
-            label="Email do Contato"
-            :readonly="!edit"
-            lazy-rules
-            :rules="[(val) => !!val || 'Campo Obrigatório']"
-          />
-        </div>
-        <div class="col-md-5">
-          <q-input
-            outlined
-            v-model="applicationData.website"
-            label="Website"
-            :readonly="!edit"
-          />
-        </div>
-        <div class="col-md-5">
-          <q-input
-            outlined
-            v-model="applicationData.locality"
-            label="Localidade"
-            :readonly="!edit"
-          />
-        </div>
-        <div class="col-md-5">
-          <q-input
-            outlined
-            v-model="applicationData.studentTasks"
-            label="Tarefas a desempenhar"
-            :readonly="!edit"
-          />
-        </div>
-      </div>
-      <hr />
-
-    </q-form>
+    <div class="col-12">
+      <q-btn unelevated label="Guardar" type="submit" color="primary" :disabled="submitting"/>
+      <q-btn unelevated label="Reset" type="reset" color="primary" flat class="q-ml-sm" :disabled="submitting"/>
+      <hr/>
+      <q-btn type="submit" label="Voltar" color="primary" to="/applications"/>
+      <q-spinner color="primary" size="2.5em" :thickness="2" v-if="submitting"/>
+    </div>
+  </q-form>
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      applicationData: {
-      company_name: "",
-      number_of_trainees: "",
-      activity_sector: "",
-      course_application: "",
-      partner: false,
-      course_application_options: ["TPSI", "GISP"],
-      contact_name: "",
-      contact_telephone: "",
-      contact_email: "",
-      website: "",
-      locality: "",
-      student_tasks: "",
-      },
-    };
-  },
-  watch: {
-    application(val) {
-      this.applicationData = val;
-    },
-  },
-  props: {
-    application: {
-      type: Object,
-      default: () => {},
-    },
-    edit: {
-      type: Boolean,
-      default: false,
-    },
-  },
-};
+<script setup>
+import ApplicationDTO from '../../dto/ApplicationDTO'
+import { ref, onMounted, watch } from 'vue'
+import applicationsAPI from '../../services/fetches/applications'
+import { useRoute } from "vue-router"
+
+const data = ref(defaultValues())
+const defaults = defaultValues()
+const loading = ref(false)
+const submitting = ref(false)
+const rules = ApplicationDTO.rules()
+const route = useRoute();
+
+const props = defineProps({
+edit: Boolean,
+});
+
+onMounted(async () => {
+try {
+  if (props.edit)
+  {
+    loading.value = true
+    getApplication(route.params.id)
+    loading.value = false
+  }
+} catch (error) {
+  console.error(error)
+}
+})
+
+watch(
+() => route.params.id,
+async newId => getApplication(newId)
+)
+
+async function getApplication(id) {
+data.value = await applicationsAPI.show(id)
+}
+
+function defaultValues() {
+return { name: ""}
+}
+
+function onReset() {
+data.value.name = defaults.name
+}
+
+const emit = defineEmits(['valuecreated'])
+
+async function onSubmit() {
+submitting.value = true
+
+const output = props.edit ?
+await applicationsAPI.update(data.value) :
+await applicationsAPI.store(data.value)
+
+submitting.value = false
+emit('valuecreated', output)
+}
 </script>
-
-<style lang="scss" scoped></style>
-
-
-<!-- Rule to acept only letters  and accented characters-->
-          <!-- :rules="[(val) => !!val || 'Campo Obrigatório', (val) => /^[a-zA-ZÀ-ÿ\u00f1\u00d1\u0020]*$/.test(val) || 'Only letters are allowed']" -->
-
-          <!-- Rule to acept a valid email  -->
-          <!-- :rules="[(val) => !!val || 'Campo Obrigatório', (val) => /.+@.+\..+/.test(val) || 'E-mail must be valid']" -->
-
-          <!-- Rule to acept a valid phone number  -->
-          <!-- :rules="[(val) => !!val || 'Campo Obrigatório', (val) => /^\d{9}$/.test(val) || 'Phone number must be valid']" -->
-
-          <!-- Rule to acept a valid website  -->
-          <!-- :rules="[(val) => !!val || 'Campo Obrigatório', (val) => /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/.test(val) || 'Website must be valid']" -->
-
-          <!-- Rule to acept a number only between 1 and 20 -->
-          <!-- :rules="[(val) => !!val || 'Campo Obrigatório', (val) => /^[1-9]$|^[1][0-9]$|^[2][0]$/.test(val) || 'Number of trainees must be between 1 and 20']" -->
