@@ -38,11 +38,12 @@ function input(data) {
     if (data.started_internship) {
       startedInternship = {};
       startedInternship.mealAllowance = data.started_internship.meal_allowance > 0;
+      startedInternship.hourlyLoad = data.started_internship.hourly_load;
       startedInternship.startDate = data.started_internship.start_date?.split('').slice(0,10).join('').replace(/-/g, '/');
       startedInternship.endDate = data.started_internship.end_date?.split('').slice(0,10).join('').replace(/-/g, '/');
       //companyAddress
       let companyAddress = null;
-      if (data.started_internship.hasOwnProperty("company_address")) {
+      if (data.started_internship.hasOwnProperty("company_address") && data.started_internship.company_address != null) {
         companyAddress = CompanyAddressDTO.input(
           data.started_internship.company_address
         );
@@ -51,7 +52,7 @@ function input(data) {
 
       //companyPerson
       let companyPerson = null;
-      if (data.started_internship.hasOwnProperty("company_person")) {
+      if (data.started_internship.hasOwnProperty("company_person") && data.started_internship.company_person != null) {
         companyPerson = CompanyPeopleDTO.input(
           data.started_internship.company_person
         );
@@ -82,7 +83,6 @@ function input(data) {
   }
 }
 
-//TODO: missing ended internship
 function output(data) {
   try {
 
@@ -90,10 +90,11 @@ function output(data) {
     if (data.startedInternship) {
       started_internship = {
         meal_allowance: data.startedInternship.mealAllowance ? 1 : 0,
+        hourly_load: data.startedInternship.hourlyLoad,
         start_date: data.startedInternship.startDate,
         end_date: data.startedInternship.endDate,
-        company_address_id: data.startedInternship.address.id,
-        company_person_id: data.startedInternship.tutor.id,
+        company_address_id: data.startedInternship.address?.id || null,
+        company_person_id: data.startedInternship.tutor?.id || null,
       };
     }
 
