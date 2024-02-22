@@ -1,6 +1,6 @@
 <template>
   <div class="q-py-md row q-gutter-sm">
-    <q-file dense outlined v-model="file" clearable class="col-auto">
+    <q-file dense outlined v-model="file" clearable accept=".xlsx" class="col-auto">
       <template v-slot:prepend>
         <q-icon name="attach_file"/>
       </template>
@@ -35,7 +35,7 @@ function checkResponse(response) {
   //   errors.value = response.errors
   //   return
   // }
-  // notify.imported()
+  notify.imported()
   emit('imported')
 }
 </script>
