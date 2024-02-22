@@ -3,7 +3,7 @@
     <div class="q-pa-md">
       <div class="flex justify-between items-center">
         <h1 class="text-h6">Editar Coordenador</h1>
-        <div v-if="isAdmin">
+        <div v-if="loginStore.isAdmin">
           <q-btn unelevated color="negative" label="Apagar" @click="deleteCoordinator"/>
         </div>
       </div>
@@ -18,11 +18,13 @@ import coordinatorsAPI from 'src/services/fetches/coordinators'
 import { useRoute, useRouter } from 'vue-router'
 import notify from 'src/composables/notify'
 import deleteModel from 'src/composables/delete'
+import { useLoginStore } from '../../stores/login.js'
 
 const router = useRouter()
 const route = useRoute()
 
-const isAdmin = true
+
+const loginStore = useLoginStore()
 
 function postSubmit(value) {
   notify.update()
