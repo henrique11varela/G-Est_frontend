@@ -20,8 +20,9 @@
           <div class="q-mb-md col-7">
             <q-select outlined label="Empresa" v-model="internshipData.companies[numberSelect - 1]" use-input
               hide-selected fill-input input-debounce="500" :options="options.companies"
-              :readonly="isAccepted || pageState.isSubmitting || pageState.ended" :loading="pageState.loadingCompanies" option-label="name"
-              @filter="filterCompaniesFn">
+              :rules="[(val) => !!val || 'Selecione uma Empresa']"
+              :readonly="isAccepted || pageState.isSubmitting || pageState.ended" :loading="pageState.loadingCompanies"
+              option-label="name" @filter="filterCompaniesFn">
               <template v-slot:no-option>
                 <q-item>
                   <q-item-section class="text-grey">
@@ -37,8 +38,8 @@
           </div>
           <div class="q-mb-md col q-pl-lg">
             <q-select outlined label="Estado" v-model="internshipData.companies[numberSelect - 1].status"
-              :options="options.status"
-              :readonly="(isAccepted && internshipData.companies[numberSelect - 1].status != 'Aceite') || internshipData.companies[numberSelect - 1].company == '' || pageState.isSubmitting || pageState.ended">
+              :options="options.status" :rules="[(val) => !!val || 'Selecione uma opção']"
+              :readonly="(isAccepted && internshipData.companies[numberSelect - 1].status != 'Aceite') || internshipData.companies[numberSelect - 1].name == '' || pageState.isSubmitting || pageState.ended">
             </q-select>
           </div>
           <div v-if="internshipData.companies.length > 1 && !isAccepted && !pageState.isSubmitting && !pageState.started"
@@ -92,9 +93,18 @@
           </div>
         </div>
 
-        <!-- MealAllowance -->
-        <q-checkbox label="Refeição" class="q-mb-md" v-model="internshipData.startedInternship.mealAllowance"
-          :disable="pageState.isSubmitting || pageState.ended" />
+        <div class="q-mb-md row">
+
+          <!-- MealAllowance -->
+          <q-checkbox label="Refeição" class="col" v-model="internshipData.startedInternship.mealAllowance"
+            :disable="pageState.isSubmitting || pageState.ended" />
+
+          <div class="col">
+            <q-input outlined class="q-ml-sm" v-model="internshipData.startedInternship.hourlyLoad" :rules="['numeric']"
+              :readonly="pageState.isSubmitting || pageState.ended" label="Carga Horária" type="number" min="0" />
+          </div>
+
+        </div>
 
         <!-- Tutor -->
         <q-select outlined label="Tutor" v-model="internshipData.startedInternship.tutor" use-input hide-selected
@@ -135,32 +145,30 @@
       <div v-if="pageState.ended">
         <!-- reason -->
         <q-select outlined label="Situação de Aprovação" v-model="internshipData.endedInternship.reason"
-          :options="options.reason"
-          :readonly="pageState.isSubmitting" class="q-mb-md col-7">
+          :options="options.reason" :readonly="pageState.isSubmitting" class="q-mb-md col-7">
         </q-select>
         <!-- situação proficional -->
         <q-select outlined label="Situação profissional" v-model="internshipData.endedInternship.situacaoProf"
-          :options="options.situacaoProf"
-          :readonly="pageState.isSubmitting" class="q-mb-md col-7">
+          :options="options.situacaoProf" :readonly="pageState.isSubmitting" class="q-mb-md col-7">
         </q-select>
         <!-- reason -->
         <q-select outlined label="Como Obteve emprego" v-model="internshipData.endedInternship.comoObteveEmprego"
-          :options="options.comoObteveEmprego"
-          :readonly="pageState.isSubmitting" class="q-mb-md col-7">
+          :options="options.comoObteveEmprego" :readonly="pageState.isSubmitting" class="q-mb-md col-7">
         </q-select>
 
         <hr class="q-mb-md">
       </div>
 
       <!-- Observations -->
-      <q-input outlined class="q-mb-md" :readonly="pageState.isSubmitting" v-model="internshipData.observations" label="Observações" type="textarea" />
+      <q-input outlined class="q-mb-md" :readonly="pageState.isSubmitting" v-model="internshipData.observations"
+        label="Observações" type="textarea" />
 
       <div class="row">
         <q-btn color="primary" class="col-3" type="submit" :disable="pageState.isSubmitting">Salvar</q-btn>
-        <q-btn color="primary" class="col-3 offset-6" v-if="!pageState.started && pageState.readyToBeStarted"
+        <q-btn color="primary" class="col-3 offset-6" v-if="showIniciarButton"
           :disable="pageState.isSubmitting" @click="startInternship">Iniciar
           estágio</q-btn>
-        <q-btn color="primary" class="col-3 offset-6" v-if="pageState.started && pageState.edit && !pageState.ended"
+        <q-btn color="primary" class="col-3 offset-6" v-if="showTerminarButton"
           :disable="pageState.isSubmitting" @click="endInternship">Terminar
           estágio</q-btn>
       </div>
@@ -172,6 +180,7 @@
 <script setup>
 import { computed, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
+import { Loading } from 'quasar'
 import { qDateLocale } from "../../config/config.js";
 import internshipsAPI from "../../services/fetches/internships.js";
 import studentsAPI from "../../services/fetches/students.js";
@@ -181,6 +190,8 @@ import notify from '../../composables/notify.js';
 
 const route = useRoute();
 const innerFormStore = useInnerFormStore();
+
+const emit = defineEmits(['valuecreated'])
 
 // GERAL
 const internshipData = ref({
@@ -212,10 +223,18 @@ const pageState = ref({
   ended: false,
 });
 
+const showIniciarButton =computed(() => {
+  return isAccepted.value && !pageState.value.started
+
+})
+const showTerminarButton =computed(() => {
+  return pageState.value.started && !pageState.value.ended && !!internshipData.value.startedInternship?.startDate && !!internshipData.value.startedInternship?.endDate && !!internshipData.value.startedInternship?.mealAllowance && !!internshipData.value.startedInternship?.hourlyLoad && !!internshipData.value.startedInternship?.tutor && !!internshipData.value.startedInternship?.address
+})
+
 // Companies colocação
 
 const isAccepted = computed(() => {
-  return internshipData.value.companies.some(e => e.status === 'Aceite');
+  return internshipData.value.companies.some(e => e.status === 'Aceite') && internshipData.value.companies.every(e => e.name != '' && e.status != '');
 });
 
 const acceptedCompany = computed(() => {
@@ -264,6 +283,7 @@ function startInternship() {
     startDate: "",
     endDate: "",
     mealAllowance: false,
+    hourlyLoad: 0,
     tutor: "",
     address: "",
   }
@@ -284,25 +304,33 @@ async function endInternship() {
 // fetches
 async function fetchInternship() {
   pageState.value.loading = true;
-  const data = await internshipsAPI.index({
-    student_collection_id: route.params.class,
-    student_id: route.params.student,
-  })
-  if (data.data.length > 0) { //If there is any internship
-    const internship = data.data.find((item) => {
-      return item.endedInternship === null;
-    });
-    if (internship) { //if there is any internship that is not ended
-      internshipData.value = internship;
-      pageState.value.edit = true;
-      if (internshipData.value.startedInternship) {
-        pageState.value.started = true;
+  if (route.params.id) {
+    const data = await internshipsAPI.show(route.params.id)
+    internshipData.value = data;
+    pageState.value.edit = true;
+    pageState.value.started = !!data.startedInternship;
+    pageState.value.ended = !!data.endedInternship;
+  } else {
+    const data = await internshipsAPI.index({
+      student_collection_id: route.params.class,
+      student_id: route.params.student,
+    })
+    if (data.data.length > 0) { //If there is any internship
+      const internship = data.data.find((item) => {
+        return item.endedInternship === null;
+      });
+      if (internship) { //if there is any internship that is not ended
+        internshipData.value = internship;
+        pageState.value.edit = true;
+        if (internshipData.value.startedInternship) {
+          pageState.value.started = true;
+        }
       }
     }
-  }
-  if (!pageState.value.edit) {
-    internshipData.value.student = await studentsAPI.show(route.params.student);
-    internshipData.value.class = internshipData.value.student.classes.find((item) => item.id == route.params.class)
+    if (!pageState.value.edit) {
+      internshipData.value.student = await studentsAPI.show(route.params.student);
+      internshipData.value.class = internshipData.value.student.classes.find((item) => item.id == route.params.class)
+    }
   }
   pageState.value.loading = false;
 }
@@ -313,12 +341,15 @@ onMounted(() => {
 });
 
 async function onSubmit() {
+  Loading.show({
+    backgroundColor: 'black',
+  })
   pageState.value.isSubmitting = true;
-  //TOTO: validation
 
   let response = null
   if (pageState.value.edit) {
     response = await internshipsAPI.update(internshipData.value)
+    console.log('after', response);
   } else {
     response = await internshipsAPI.store(internshipData.value)
     pageState.value.edit = true;
@@ -333,6 +364,7 @@ async function onSubmit() {
   if (response.id) {
     internshipData.value = await internshipsAPI.show(response.id)
   }
+  Loading.hide()
   pageState.value.isSubmitting = false;
   emit('valuecreated', response)
 }

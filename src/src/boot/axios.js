@@ -2,7 +2,7 @@ import { boot } from 'quasar/wrappers'
 import axios from 'axios'
 
 axios.defaults.withCredentials = true
-axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+axios.defaults.headers.common['Content-Type'] = 'application/json';
 axios.defaults.headers.common['Accept'] = 'application/json';
 
 //axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://g-est_backend.test';
@@ -12,7 +12,7 @@ axios.defaults.headers.common['Accept'] = 'application/json';
 // good idea to move this instance creation inside of the
 // "export default () => {}" function below (which runs individually
 // for each client)
-const api = axios.create({ baseURL: `${import.meta.env.VITE_API_URL}:${import.meta.env.VITE_API_PORT}/` })
+const api = axios.create({ baseURL: `${import.meta.env.VITE_API_URL}/` })
 
 export default boot(({ app }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api

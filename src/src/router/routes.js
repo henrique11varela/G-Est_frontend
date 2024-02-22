@@ -148,6 +148,10 @@ const routes = [
         path: 'internships',
         children: [
           {
+            path: ':id',
+            component: () => import('pages/Internships/InternshipsPage.vue'),
+          },
+          {
             path: ':class/:student',
             component: () => import('pages/Internships/InternshipsPage.vue'),
           },
