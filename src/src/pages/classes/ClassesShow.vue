@@ -10,7 +10,10 @@
     <div class="q-pa-md" v-else>
       <q-btn unelevated color="secondary" label="Editar" :to="`/classes/edit/${route.params.id}`" v-if="isAdmin"/>
       <ClassesInfo :class-info="classInfo"></ClassesInfo>
-      <q-btn class="q-mt-md" unelevated color="secondary" label="Editar" :to="`/classes/edit/${route.params.id}/students`" v-if="isAdmin"/>
+      <div class="q-mt-md row justify-between" v-if="isAdmin">
+        <q-btn unelevated color="secondary" label="Editar" :to="`/classes/edit/${route.params.id}/students`"/>
+        <q-btn unelevated color="positive" label="Exportar" @click="exportClass(route.params.id, classInfo.name)"/>
+      </div>
       <ClassesStudentsList :class-id="route.params.id" :students="students"></ClassesStudentsList>
     </div>
   </q-page>
@@ -20,6 +23,7 @@
 import ClassesStudentsList from 'src/components/classes/ClassesStudentsList.vue'
 import ClassesInfo from 'src/components/classes/ClassesInfo.vue'
 import classesAPI from 'src/services/fetches/classes'
+import exportsAPI from 'src/services/fetches/exports'
 import { ref, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
@@ -38,6 +42,10 @@ watch(
 onMounted(() => {
   getClass(route.params.id)
 })
+
+async function exportClass(id, fileName){
+  exportsAPI.studentClass(id, fileName)
+}
 
 async function getClass(id) {
   loading.value = true
