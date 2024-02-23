@@ -11,7 +11,8 @@ const valueCreated = async function (data) {
 <template>
   <q-page padding>
     <div class="q-pa-md">
-      <UserFrom :edit="true" @valuecreated="valueCreated" />
+      <h1 class="text-h6">Editar Utilizador</h1>
     </div>
+    <UserFrom :edit="true" @valuecreated="valueCreated" />
   </q-page>
 </template>

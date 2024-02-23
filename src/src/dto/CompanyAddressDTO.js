@@ -10,6 +10,7 @@ function input(data) {
     address: data.address,
     postalCode: data.postal_code,
     companyId: data.company_id,
+    locality: data.locality,
     hq: data.hq == 1 ? true : false,
   }
 }
@@ -20,6 +21,7 @@ function output(data) {
     address: data.address,
     postal_code: data.postalCode,
     company_id: data.companyId,
+    locality: data.locality,
     hq: data.hq
   }
 }
@@ -33,6 +35,9 @@ function rules() {
     ],
     postalCode: [
       val =>  val && val.length > 0 || "Introduza um Codigo Postal",
+    ],
+    locality: [
+      val =>  val && val.length > 0 || "Introduza uma localidade",
     ]
   }
 }

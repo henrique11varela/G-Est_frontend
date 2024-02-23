@@ -81,10 +81,8 @@ function rules() {
       val => val && val.length > 0 || "Introduza um nome",
     ],
     niss: [
-      // val => val && val.length > 0 || "Introduza um Niss",
     ],
     nipc: [
-      // val => val && val.length > 0 || "Introduza um Nipc",
     ]
   }
 }

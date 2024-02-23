@@ -50,8 +50,13 @@ onMounted(() => {
 <template>
   <q-page padding>
     <div class="q-pa-md">
-      <!-- content -->
-      <h1>Users</h1>
+      <div class="row items-center q-gutter-md no-wrap">
+        <div>
+          <h1 class="text-h6">Utilizadores</h1>
+        </div>
+        <q-btn dense unelevated color="primary" icon="add" :to="'users/add'" />
+      </div>
+
       <q-table flat bordered ref="tableRef" title="Treats" :rows="rows" :columns="columns" row-key="id"
         v-model:pagination="pagination" :loading="loading" :filter="filters" binary-state-sort @request="onRequest">
 
@@ -61,7 +66,6 @@ onMounted(() => {
 
 
         <template v-slot:top>
-          <q-btn color="primary" :disable="loading" label="Adicionar" :to="`users/add`" />
           <q-space />
           <q-input outlined="" label="Name" borderless dense debounce="300" v-model="filters.name" placeholder="Search">
             <template v-slot:append>

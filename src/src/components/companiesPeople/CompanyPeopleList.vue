@@ -17,7 +17,7 @@ const columns = [
 ];
 if (store.isAdmin) {
   columns.push({
-    name: 'Action', label: 'Action', field: 'action',
+    name: 'Action', label: '', field: 'action',
   })
 }
 const tableRef = ref()
@@ -85,7 +85,7 @@ function onRequest(props) {
     pagination.value.rowsPerPage = rowsPerPage
     pagination.value.sortBy = sortBy
     pagination.value.descending = descending
-
+    pagination.value.rowsNumber = returnedData.length
     // ...and turn of loading indicator
     loading.value = false;
   }, 1500)
@@ -97,27 +97,33 @@ onMounted(() => {
 })
 </script>
 <template>
-  <q-btn class="q-mb-md" v-if="store.isAdmin" color="primary" label="Adicionar"
-    :to="`/companies/show/${companyid}/contactperson/add`" />
+  <div class="row items-center q-gutter-md no-wrap">
+    <div>
+      <h1 class="text-h6">Lista de Contactos e Tutores</h1>
+    </div>
+    <q-btn dense unelevated color="primary" icon="add" :to="`/companies/show/${companyid}/contactperson/add`" />
+  </div>
   <q-table :loading="loading" @request="onRequest" flat bordered ref="tableRef" title="Treats" :rows="rows"
     :columns="columns" row-key="id" v-model:pagination="pagination" :filter="filters" binary-state-sort>
 
 
     <template v-slot:top>
       <q-space />
-      <q-input class="q-ma-md" outlined label="Name" borderless dense debounce="300" v-model="filters.name" placeholder="Search">
-        <template v-slot:append>
-          <q-icon name="search" />
-        </template>
-      </q-input>
-
-      <q-input  class="q-ma-md"  outlined label="Numero de Telemove" borderless dense debounce="300" v-model="filters.phoneNumber"
+      <q-input class="q-ma-md" outlined label="Name" borderless dense debounce="300" v-model="filters.name"
         placeholder="Search">
         <template v-slot:append>
           <q-icon name="search" />
         </template>
       </q-input>
-      <q-input  class="q-ml-md"  outlined label="Email" borderless dense debounce="300" v-model="filters.email" placeholder="Search">
+
+      <q-input class="q-ma-md" outlined label="Numero de Telemove" borderless dense debounce="300"
+        v-model="filters.phoneNumber" placeholder="Search">
+        <template v-slot:append>
+          <q-icon name="search" />
+        </template>
+      </q-input>
+      <q-input class="q-ml-md" outlined label="Email" borderless dense debounce="300" v-model="filters.email"
+        placeholder="Search">
         <template v-slot:append>
           <q-icon name="search" />
         </template>
@@ -127,14 +133,14 @@ onMounted(() => {
 
 
     <template v-slot:body-cell-isTutor="props">
-      <q-td v-if="props.row.isTutor">
-        <q-icon name="done" />
+      <q-td>
+        <q-icon v-if="props.row.isTutor" name="done" />
       </q-td>
     </template>
 
 
     <template v-slot:body-cell-isContact="props">
-      <q-td >
+      <q-td>
         <q-icon v-if="props.row.isContact" name="done" />
       </q-td>
     </template>

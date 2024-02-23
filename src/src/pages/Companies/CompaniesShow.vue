@@ -43,11 +43,9 @@ onMounted(async () => {
 
       <CompanyInfo :company="company" />
       <div>
-        <h1 class="text-h6">Lista de Contactos e Tutores</h1>
         <CompanyPeopleList :people="people" :companyid="id" />
       </div>
       <div>
-        <h1 class="text-h6">Lista de Moradas</h1>
         <CompanyAddressesList :addresses="addresses" :companyid="id" />
       </div>
     </div>

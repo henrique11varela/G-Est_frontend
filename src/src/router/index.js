@@ -38,15 +38,16 @@ export default route(function (/* { store, ssrContext } */) {
       backgroundColor: 'black',
     })
 
-    const { role } = await tokenAPI.checkRole();
+    const userInfo  = await tokenAPI.checkRole();
 
     Loading.hide()
 
-    if (!role && to.fullPath != '/login') {
+    if (!userInfo.role && to.fullPath != '/login') {
       return 'login'
     }
-    if (role) {
-      store.setPermission(role)
+    if (userInfo.role) {
+      store.setPermission(userInfo.role)
+      store.setUserInfo(userInfo)
       if (to.fullPath == '/login') {
         return ''
       }
