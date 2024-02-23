@@ -8,7 +8,7 @@
           G-est
         </q-toolbar-title>
 
-        <div>Data</div>
+        <q-btn :to="`/users/${store.userInfo.id}`">{{ store.userInfo.name }}</q-btn>
         <q-btn @click="logout">Logout</q-btn>
       </q-toolbar>
     </q-header>
@@ -16,7 +16,6 @@
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
       <q-list>
         <q-item-label header>
-          Essential Links
         </q-item-label>
 
         <EssentialLink v-for="link in essentialLinks" :key="link.title" v-bind="link" />
@@ -29,13 +28,15 @@
   </q-layout>
 </template>
 
-<script>
+<script setup>
 import { defineComponent, ref } from 'vue'
 import EssentialLink from 'components/EssentialLink.vue'
 import tokenAPI from "../services/fetches/token.js";
 import Router from '../router'
+import { useLoginStore } from "src/stores/login.js";
 
-const linksList = [
+const store = useLoginStore()
+const essentialLinks = [
   {
     title: 'Solicitações',
     icon: 'mail',
@@ -45,11 +46,6 @@ const linksList = [
     title: 'Turmas',
     icon: 'groups',
     link: '/classes'
-  },
-  {
-    title: 'Alunos',
-    icon: 'school',
-    link: '/students'
   },
   {
     title: 'Empresas',
@@ -66,39 +62,27 @@ const linksList = [
     icon: 'person',
     link: '/coordinators'
   },
-  {
+]
+if(store.isAdmin){
+  essentialLinks.push({
     title: 'Utilizadores',
     icon: 'people',
     link: '/users'
-  },
+  })
+}
 
-]
 
-export default defineComponent({
-  name: 'MainLayout',
+const leftDrawerOpen = ref(false)
+const router = Router()
 
-  components: {
-    EssentialLink
-  },
+async function logout() {
+  await tokenAPI.logout()
+  await router.push({path: 'login'})
+  router.go()
+}
 
-  setup() {
-    const leftDrawerOpen = ref(false)
-    const router = Router()
+function toggleLeftDrawer() {
+  leftDrawerOpen.value = !leftDrawerOpen.value
+}
 
-    async function logout() {
-      await tokenAPI.logout()
-      await router.push({path: 'login'})
-      router.go()
-    }
-
-    return {
-      essentialLinks: linksList,
-      leftDrawerOpen,
-      logout,
-      toggleLeftDrawer() {
-        leftDrawerOpen.value = !leftDrawerOpen.value
-      }
-    }
-  }
-})
 </script>
