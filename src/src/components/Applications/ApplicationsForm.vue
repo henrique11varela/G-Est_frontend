@@ -21,6 +21,7 @@
           label="Número de Estagiários"
           lazy-rules="ondemand"
           :rules="rules.name"
+          mask="##"
         ></q-input>
 
         <q-input
@@ -69,6 +70,7 @@
           label="Email"
           lazy-rules="ondemand"
           :rules="rules.name"
+          type="email"
         ></q-input>
       </div>
       <div class="col-12 row">
