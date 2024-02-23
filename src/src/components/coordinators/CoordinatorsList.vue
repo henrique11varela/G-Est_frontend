@@ -43,6 +43,8 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import coordinatorsAPI from 'src/services/fetches/coordinators'
+import { useLoginStore } from 'src/stores/login'
+const loginStore = useLoginStore()
 
 const columns = [
   {
@@ -65,10 +67,6 @@ const columns = [
     label: 'Telefone',
     align: 'left',
     field: row => row.phoneNumber,
-  },
-  {
-    name: 'actions',
-    align: 'center',
   }
 ]
 
@@ -99,5 +97,9 @@ async function onRequest (props) {
 
 onMounted(() => {
   tableRef.value.requestServerInteraction()
+  if (loginStore.isAdmin) columns.push({
+    name: 'actions',
+    align: 'center',
+  })
 })
 </script>

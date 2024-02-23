@@ -3,7 +3,7 @@
     <div class="q-pa-md">
       <div class="flex justify-between items-center">
         <h1 class="text-h6">Editar turma</h1>
-        <div v-if="isAdmin">
+        <div v-if="loginStore.isAdmin">
           <q-btn unelevated color="negative" label="Apagar" @click="deleteClass"/>
         </div>
       </div>
@@ -18,6 +18,8 @@ import classesAPI from 'src/services/fetches/classes'
 import { useRoute, useRouter } from 'vue-router'
 import notify from 'src/composables/notify'
 import deleteModel from 'src/composables/delete'
+import { useLoginStore } from 'src/stores/login'
+const loginStore = useLoginStore()
 
 const router = useRouter()
 const route = useRoute()

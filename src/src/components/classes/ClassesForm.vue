@@ -13,7 +13,7 @@
       v-else
     >
       <q-input
-        :readonly="submitting"
+        :readonly="submitting || !loginStore.isAdmin"
         outlined
         v-model="data.name"
         label="Turma"
@@ -29,7 +29,7 @@
         use-input hide-selected fill-input
         input-debounce="500"
         :options="courses"
-        :readonly="submitting"
+        :readonly="submitting || !loginStore.isAdmin"
         :loading="loading.courses"
         :option-label="course => course.name"
         @filter="filterCoursesFn"
@@ -45,9 +45,9 @@
         </template>
       </q-select>
 
-      <div class="col-12">
-        <q-btn unelevated label="Guardar" type="submit" color="primary" :disabled="submitting"/>
-        <q-btn unelevated label="Reset" type="reset" color="primary" flat class="q-ml-sm" :disabled="submitting"/>
+      <div class="col-12" v-if="loginStore.isAdmin">
+        <q-btn unelevated label="Guardar" type="submit" color="primary" :disabled="submitting" />
+        <q-btn unelevated label="Reset" type="reset" color="primary" flat class="q-ml-sm" :disabled="submitting" />
         <q-spinner color="primary" size="2.5em" :thickness="2" v-if="submitting"/>
       </div>
     </q-form>
@@ -60,6 +60,8 @@ import { ref, onMounted, watch } from 'vue'
 import coursesAPI from '../../services/fetches/courses'
 import classesAPI from '../../services/fetches/classes'
 import { useRoute } from "vue-router"
+import { useLoginStore } from 'src/stores/login'
+const loginStore = useLoginStore()
 
 const data = ref(defaultValues())
 const defaults = defaultValues()

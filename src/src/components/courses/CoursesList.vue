@@ -48,6 +48,8 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import coursesAPI from 'src/services/fetches/courses'
+import { useLoginStore } from 'src/stores/login'
+const loginStore = useLoginStore()
 
 const columns = [
   {
@@ -71,10 +73,6 @@ const columns = [
     align: 'left',
     field: row => `${row.area.areaCode} - ${row.area.name}`,
   },
-  {
-    name: 'actions',
-    align: 'center',
-  }
 ]
 
 const tableRef = ref()
@@ -104,5 +102,9 @@ async function onRequest (props) {
 
 onMounted(() => {
   tableRef.value.requestServerInteraction()
+  if (loginStore.isAdmin) columns.push({
+    name: 'actions',
+    align: 'center',
+  })
 })
 </script>
