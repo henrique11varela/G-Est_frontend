@@ -118,7 +118,7 @@
             </q-item>
           </template>
           <template v-slot:append>
-            <q-btn flat round icon="add" class="cursor-pointer" @click.stop="openTutorForm" v-if="loginStore.isAdmin"></q-btn>
+            <q-btn flat round icon="add" class="cursor-pointer" @click.stop="openTutorForm" v-if="!pageState.isSubmitting && !pageState.ended && loginStore.isAdmin"></q-btn>
           </template>
         </q-select>
 
@@ -134,12 +134,10 @@
             </q-item>
           </template>
           <template v-slot:append>
-            <q-btn flat round icon="add" class="cursor-pointer" @click.stop="openAddressForm" v-if="loginStore.isAdmin"></q-btn>
+            <q-btn flat round icon="add" class="cursor-pointer" @click.stop="openAddressForm" v-if="!pageState.isSubmitting && !pageState.ended && loginStore.isAdmin"></q-btn>
           </template>
         </q-select>
-
         <hr class="q-mb-md">
-
       </div>
       <!-- ended -->
       <div v-if="pageState.ended">

@@ -97,25 +97,26 @@ onMounted(() => {
 <template>
   <q-btn  class="q-mb-md" v-if="store.isAdmin" color="primary" label="Adicionar" :to="`/companies/show/${companyid}/contactaddress/add`" />
   <q-table :loading="loading" @request="onRequest" flat bordered ref="tableRef" title="Treats" :rows="rows"
-    :columns="columns" row-key="id" v-model:pagination="pagination" :filter="filters" binary-state-sort>
+    :columns="columns" row-key="id" v-model:pagination="pagination" :filter="filters" binary-state-sort :rows-per-page-options="[5, 10, 15, 20, 25, 30, 50, 100]"
+      rows-per-page-label="Registos por página">
 
 
     <template v-slot:top>
       <q-space />
-      <q-input class="q-ma-md" outlined label="Descrição" borderless dense debounce="300" v-model="filters.name" placeholder="Search">
+      <q-input class="q-ma-md" outlined label="Descrição" borderless dense debounce="300" v-model="filters.name" placeholder="Procurar">
         <template v-slot:append>
           <q-icon name="search" />
         </template>
       </q-input>
 
-      <q-input class="q-ma-md" outlined label="Endereço" borderless dense debounce="300" v-model="filters.address" placeholder="Search">
+      <q-input class="q-ma-md" outlined label="Endereço" borderless dense debounce="300" v-model="filters.address" placeholder="Procurar">
         <template v-slot:append>
           <q-icon name="search" />
         </template>
       </q-input>
 
       <q-input class="q-ml-md" outlined label="Codigo Postal" borderless dense debounce="300" v-model="filters.postalCode"
-        placeholder="Search">
+        placeholder="Procurar">
         <template v-slot:append>
           <q-icon name="search" />
         </template>

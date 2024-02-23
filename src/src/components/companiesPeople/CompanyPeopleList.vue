@@ -100,24 +100,25 @@ onMounted(() => {
   <q-btn class="q-mb-md" v-if="store.isAdmin" color="primary" label="Adicionar"
     :to="`/companies/show/${companyid}/contactperson/add`" />
   <q-table :loading="loading" @request="onRequest" flat bordered ref="tableRef" title="Treats" :rows="rows"
-    :columns="columns" row-key="id" v-model:pagination="pagination" :filter="filters" binary-state-sort>
+    :columns="columns" row-key="id" v-model:pagination="pagination" :filter="filters" binary-state-sort :rows-per-page-options="[5, 10, 15, 20, 25, 30, 50, 100]"
+      rows-per-page-label="Registos por página">
 
 
     <template v-slot:top>
       <q-space />
-      <q-input class="q-ma-md" outlined label="Name" borderless dense debounce="300" v-model="filters.name" placeholder="Search">
+      <q-input class="q-ma-md" outlined label="Nome" borderless dense debounce="300" v-model="filters.name" placeholder="Procurar">
         <template v-slot:append>
           <q-icon name="search" />
         </template>
       </q-input>
 
-      <q-input  class="q-ma-md"  outlined label="Numero de Telemove" borderless dense debounce="300" v-model="filters.phoneNumber"
-        placeholder="Search">
+      <q-input  class="q-ma-md"  outlined label="Numero de Telefone" borderless dense debounce="300" v-model="filters.phoneNumber"
+        placeholder="Procurar">
         <template v-slot:append>
           <q-icon name="search" />
         </template>
       </q-input>
-      <q-input  class="q-ml-md"  outlined label="Email" borderless dense debounce="300" v-model="filters.email" placeholder="Search">
+      <q-input  class="q-ml-md"  outlined label="Email" borderless dense debounce="300" v-model="filters.email" placeholder="Procurar">
         <template v-slot:append>
           <q-icon name="search" />
         </template>
