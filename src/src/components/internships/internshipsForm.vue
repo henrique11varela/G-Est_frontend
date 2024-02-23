@@ -203,6 +203,9 @@ import companiesAPI from "../../services/fetches/companies.js";
 import { useInnerFormStore } from "../../stores/innerForm.js";
 import notify from '../../composables/notify.js';
 import { useLoginStore } from "../../stores/login.js";
+import CompanyFormComponent from "../companies/CompanyFrom.vue";
+import CompanyPeopleFormComponent from "../companiesPeople/CompanyPeopleFrom.vue";
+import CompanyAddressFormComponent from "../companyAddressesList/CompanyAddressesFrom.vue";
 
 const route = useRoute();
 const innerFormStore = useInnerFormStore();
@@ -426,22 +429,25 @@ function filterMoradaFn(val, update, abort) {
 }
 
 function moradaDisplay(item) {
-  return item.description + ' --- ' + item.address
+  if (item.description && item.address) {
+    return item.description + ' --- ' + item.address
+  }
+  return ''
 }
 
 async function openCompanyForm(index) {
-  internshipData.value.companies[index] = await innerFormStore.openInnerForm('companies/CompanyFrom')
+  internshipData.value.companies[index] = await innerFormStore.openInnerForm(CompanyFormComponent)
 }
 
 async function openTutorForm() {
-  const tempTutor = await innerFormStore.openInnerForm('companiesPeople/CompanyPeopleFrom', acceptedCompany.value.id)
+  const tempTutor = await innerFormStore.openInnerForm(CompanyPeopleFormComponent, acceptedCompany.value.id)
   if (tempTutor.isTutor) {
     internshipData.value.startedInternship.tutor = tempTutor
   }
 }
 
 async function openAddressForm() {
-  internshipData.value.startedInternship.address = await innerFormStore.openInnerForm('companyAddressesList/CompanyAddressesFrom', acceptedCompany.value.id)
+  internshipData.value.startedInternship.address = await innerFormStore.openInnerForm(CompanyAddressFormComponent, acceptedCompany.value.id)
 }
 
 </script>

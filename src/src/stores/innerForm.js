@@ -1,25 +1,25 @@
-import { computed, ref } from "vue";
+import { computed, ref, shallowRef } from "vue";
 import { defineStore } from 'pinia';
 
 export const useInnerFormStore = defineStore('innerForm', () => {
 
-  const innerFormComponentPath = ref("");
+  const innerFormComponent = shallowRef(null);
   const propid = ref(null);
   const callbackFn = ref(() => {});
-  const isOpen = computed(() => innerFormComponentPath.value !== "");
+  const isOpen = computed(() => innerFormComponent.value !== null);
   let intervalId = null
 
   /**
    * Opens a form inside a Dialog and returns a promise that resolves when the form is closed
-   * @param {string} formComponentPath
+   * @param {object} formComponent
    * @returns {Promise}
    */
-  function openInnerForm(formComponentPath, prop = null) {
-    innerFormComponentPath.value = formComponentPath;
+  function openInnerForm(formComponent, prop = null) {
+    innerFormComponent.value = formComponent;
     const returnedValue = ref(null);
     propid.value = prop;
     callbackFn.value = (value) => {
-      innerFormComponentPath.value = "";
+      innerFormComponent.value = null;
       propid.value = null;
       callbackFn.value = () => {};
       returnedValue.value = value
@@ -38,7 +38,7 @@ export const useInnerFormStore = defineStore('innerForm', () => {
   }
 
   return {
-    innerFormComponentPath,
+    innerFormComponent,
     propid,
     callbackFn,
     isOpen,
