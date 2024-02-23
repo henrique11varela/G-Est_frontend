@@ -14,7 +14,7 @@ import {
   QSpinnerGears
 } from 'quasar'
 const route = useRoute();
-const id = ref(route.params.id);
+const id = ref(Number(route.params.id));
 const company = ref(false)
 const people = ref(false)
 const addresses = ref(false)
@@ -38,7 +38,7 @@ onMounted(async () => {
   <q-page padding>
     <div class="q-pa-md" v-if="load">
 
-      <q-btn v-if="store.isAdmin" unelevated color="primary" :to="`/companies/edit/${id}`" :icon="matEdit" label="Edit" />
+      <q-btn v-if="store.isAdmin" unelevated color="primary" :to="`/companies/edit/${id}`" label="Edit" />
       <h1 class="text-h5">Empresa {{ company.name }}</h1>
 
       <CompanyInfo :company="company" />
