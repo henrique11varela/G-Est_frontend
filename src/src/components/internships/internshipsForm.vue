@@ -119,7 +119,7 @@
 
         <!-- Address -->
         <q-select outlined label="Morada" v-model="internshipData.startedInternship.address" use-input hide-selected
-          fill-input input-debounce="500" :options="optionsAddresses" option-label="description"
+          fill-input input-debounce="500" :options="optionsAddresses" :option-label="moradaDisplay"
           :readonly="pageState.isSubmitting || pageState.ended || !loginStore.isAdmin" @filter="filterMoradaFn"
           class="q-mb-md col-7">
           <template v-slot:no-option>
@@ -417,12 +417,16 @@ function filterMoradaFn(val, update, abort) {
     pageState.value.loadingCompanies = true;
     const needle = val.toLowerCase()
     const response = await companiesAPI.show(acceptedCompany.value.id)
-    console.log(response);
+
     optionsAddresses.value = response.addresses?.filter((item) => {
       return item.description.toLowerCase().indexOf(needle) > -1 || item.address.toLowerCase().indexOf(needle) > -1;
     })
     pageState.value.loadingCompanies = false;
   })
+}
+
+function moradaDisplay(item) {
+  return item.description + ' --- ' + item.address
 }
 
 async function openCompanyForm(index) {
