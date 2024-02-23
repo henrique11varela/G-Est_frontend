@@ -31,7 +31,7 @@
         :options="courses"
         :readonly="submitting || !loginStore.isAdmin"
         :loading="loading.courses"
-        :option-label="course => course.name"
+        :option-label="course => `${course.name} - ${course.type}`"
         @filter="filterCoursesFn"
         lazy-rules="ondemand"
         :rules="rules.course"
