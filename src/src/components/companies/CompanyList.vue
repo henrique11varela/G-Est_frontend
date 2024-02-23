@@ -24,11 +24,13 @@ const columns = [
     name: 'PhoneContact', label: 'Numero de Contacto', field: 'PhoneContact',
     align: 'left',
   },
-  {
-    name: 'Action', label: 'Action', field: 'action',
-  }
 
 ];
+if (store.isAdmin) {
+  columns.push({
+    name: 'Action', label: '', field: 'action', align: 'center',
+  })
+}
 const tableRef = ref()
 const rows = ref([])
 const loading = ref(true)
@@ -113,7 +115,7 @@ onMounted(() => {
           </span>
         </q-td>
       </template>
-      <template v-slot:body-cell-Action="props" >
+      <template v-slot:body-cell-Action="props">
         <q-td :props="props">
           <q-btn :to="`companies/show/${props.row.id}`" unelevated text-color="primary">
             <q-icon name="visibility"></q-icon>

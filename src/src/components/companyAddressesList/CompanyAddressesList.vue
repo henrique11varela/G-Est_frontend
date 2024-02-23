@@ -17,7 +17,7 @@ const columns = [
 ];
 if (store.isAdmin) {
   columns.push({
-    name: 'Action', label: '', field: 'action', align: 'left'
+    name: 'Action', label: '', field: 'action', align: 'center',
   })
 }
 const tableRef = ref()
@@ -141,7 +141,7 @@ onMounted(() => {
     </template>
     <template v-slot:body-cell-Action="props">
       <q-td>
-        <q-btn :to="`/companies/show/${companyId}/contactaddress/edit/${props.row.id}`" unelevated text-color="secondary">
+        <q-btn :to="`/companies/show/${companyid}/contactaddress/edit/${props.row.id}`" unelevated text-color="secondary">
           <q-icon name="edit"></q-icon>
         </q-btn>
       </q-td>

@@ -4,11 +4,10 @@ import userAPI from "src/services/fetches/users.js";
 
 import { matEdit, matDelete } from '@quasar/extras/material-icons'
 const columns = [
-  { name: 'id', align: 'center', label: 'Id', field: 'id', },
-  { name: 'name', label: 'Name', field: 'name', },
-  { name: 'email', label: 'Email', field: 'email', },
-  { name: 'role', label: 'Role', field: 'role', },
-  { name: 'action', label: 'Action', field: 'action', }
+  { name: 'name', label: 'Name', field: 'name', align: 'left', },
+  { name: 'email', label: 'Email', field: 'email', align: 'left', },
+  { name: 'role', label: 'Role', field: 'role', align: 'left', },
+  { name: 'action', label: '', field: 'action', align: 'center', }
 ];
 
 
