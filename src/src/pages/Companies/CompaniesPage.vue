@@ -9,10 +9,11 @@ const store = useLoginStore()
 <template>
   <q-page padding>
     <div class="q-pa-md">
-      <!-- content -->
-      <h1>Empresas</h1>
-      <div>
-        <q-btn v-if="store.isAdmin" unelevated color="primary" label="Adicionar" :to="`companies/add`" />
+      <div class="row items-center q-gutter-md no-wrap">
+        <div>
+          <h1 class="text-h6">Empresas</h1>
+        </div>
+        <q-btn dense unelevated color="primary" icon="add" :to="'companies/add'" />
       </div>
       <CompaniesList />
     </div>

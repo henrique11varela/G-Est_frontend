@@ -88,8 +88,8 @@ function showDeleteModal() {
       <q-btn class="q-mb-md" @click="showDeleteModal" color="red" :icon="matDelete" label="Delete" />
     </div>
     <div class="row">
-      <div class="col-md-4">
-        <q-input outlined class="q-mb-md q-mr-md" filled v-model="personData.name" label="Name *" hint="Name" lazy-rules
+      <div class="col-md-6">
+        <q-input outlined class="q-mb-md q-mr-md" v-model="personData.name" label="Name *" lazy-rules
           :rules="companyPearsonDTO.rules().name" :error="errors?.hasOwnProperty('name')" :disable="submitting">
           <template v-slot:error>
             <span :key="index" v-for="(title, index) in errors.name">
@@ -98,8 +98,8 @@ function showDeleteModal() {
           </template>
         </q-input>
       </div>
-      <div class="col-md-4">
-        <q-input outlined class="q-mx-md q-mr-md" filled v-model="personData.email" label="Email*" hint="Email" lazy-rules
+      <div class="col-md-6">
+        <q-input outlined class="q-mb-md q-ml-md" v-model="personData.email" label="Email*" lazy-rules
           :rules="companyPearsonDTO.rules().email" :error="errors?.hasOwnProperty('email')" :disable="submitting">
           <template v-slot:error>
             <span :key="index" v-for="(title, index) in errors.email">
@@ -108,9 +108,9 @@ function showDeleteModal() {
           </template>
         </q-input>
       </div>
-      <div class="col-md-4">
-        <q-input outlined class="q-mb-md q-ml-md" filled v-model="personData.phoneNumber" label="Phone *" hint="Phone"
-          lazy-rules :rules="companyPearsonDTO.rules().phoneNumber" :error="errors?.hasOwnProperty('phoneNumber')"
+      <div class="col-md-6">
+        <q-input outlined class="q-mb-md q-mr-md" v-model="personData.phoneNumber" label="Phone *" lazy-rules
+          :rules="companyPearsonDTO.rules().phoneNumber" :error="errors?.hasOwnProperty('phoneNumber')"
           :disable="submitting">
           <template v-slot:error>
             <span :key="index" v-for="(title, index) in errors.phoneNumber">
@@ -120,12 +120,14 @@ function showDeleteModal() {
         </q-input>
       </div>
 
-      <div class="col-md-12 q-mb-md">
-        <div>
-          <q-checkbox v-model="personData.isTutor" label="Tutor" :disable="submitting" />
-        </div>
-        <div>
-          <q-checkbox v-model="personData.isContact" label="Contact" :disable="submitting" />
+      <div class="col-md-6 q-mb-md ">
+        <div class=" q-ml-md">
+          <div>
+            <q-checkbox v-model="personData.isTutor" label="Tutor" :disable="submitting" />
+          </div>
+          <div>
+            <q-checkbox v-model="personData.isContact" label="Contact" :disable="submitting" />
+          </div>
         </div>
       </div>
 

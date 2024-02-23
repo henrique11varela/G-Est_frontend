@@ -84,8 +84,8 @@ function showDeleteModal() {
         <q-btn class="q-mb-md" @click="showDeleteModal" color="red" :icon="matDelete" label="Delete" />
       </div>
       <div class="row">
-        <div class="col-md-4">
-          <q-input outlined class="q-mr-md  q-mb-md" filled v-model="CompanyData.name" label="Name *" hint="Name" lazy-rules
+        <div class="col-md-6">
+          <q-input outlined class="q-mr-md  q-mb-md" v-model="CompanyData.name" label="Name" lazy-rules
             :rules="CompanyDTO.rules().name" :error="errors?.hasOwnProperty('name')" :disable="submitting">
             <template v-slot:error>
               <span :key="index" v-for="(title, index) in errors.name">
@@ -94,9 +94,10 @@ function showDeleteModal() {
             </template>
           </q-input>
         </div>
-        <div class="col-md-4">
-          <q-input outlined class="q-mx-md q-mb-md" filled v-model="CompanyData.nipc" label="NIPC*" hint="NIPC" lazy-rules
-            :rules="CompanyDTO.rules().nipc" :error="errors?.hasOwnProperty('nipc')" :disable="submitting">
+        <div class="col-md-6">
+          <q-input outlined class="q-ml-md q-mb-md" v-model="CompanyData.nipc" label="NIPC" lazy-rules
+            :rules="CompanyDTO.rules().nipc" :error="errors?.hasOwnProperty('nipc')" mask="####################"
+            :disable="submitting">
             <template v-slot:error>
               <span :key="index" v-for="(title, index) in errors.nipc">
                 {{ title }}
@@ -104,9 +105,10 @@ function showDeleteModal() {
             </template>
           </q-input>
         </div>
-        <div class="col-md-4">
-          <q-input outlined class="q-ml-md q-mb-md" filled v-model="CompanyData.niss" label="NISS *" hint="NISS" lazy-rules
-            :rules="CompanyDTO.rules().niss" :error="errors?.hasOwnProperty('niss')" :disable="submitting">
+        <div class="col-md-6">
+          <q-input outlined class="q-mr-md q-mb-md" v-model="CompanyData.niss" label="NISS" lazy-rules
+            :rules="CompanyDTO.rules().niss" :error="errors?.hasOwnProperty('niss')" mask="####################"
+            :disable="submitting">
             <template v-slot:error>
               <span :key="index" v-for="(title, index) in errors.niss">
                 {{ title }}
@@ -114,8 +116,8 @@ function showDeleteModal() {
             </template>
           </q-input>
         </div>
-        <div class="col-md-4">
-          <q-input outlined class="q-mr-md  q-mb-md" filled v-model="CompanyData.cae" label="CAE *" hint="CAE" lazy-rules
+        <div class="col-md-6">
+          <q-input outlined class="q-ml-md  q-mb-md" v-model="CompanyData.cae" label="CAE" lazy-rules
             :rules="CompanyDTO.rules().cae" :error="errors?.hasOwnProperty('cae')" :disable="submitting">
             <template v-slot:error>
               <span :key="index" v-for="(title, index) in errors.cae">
