@@ -13,7 +13,7 @@
     >
       <div class="row q-col-gutter-md q-mb-md">
         <q-input
-          :readonly="submitting"
+          :readonly="submitting || !loginStore.isAdmin"
           outlined
           v-model="data.name"
           label="Nome"
@@ -23,7 +23,7 @@
         />
 
         <q-select
-          :readonly="submitting"
+          :readonly="submitting || !loginStore.isAdmin"
           outlined
           v-model="data.hardSkills"
           :options="skillValues"
@@ -34,7 +34,7 @@
         />
 
         <q-select
-          :readonly="submitting"
+          :readonly="submitting || !loginStore.isAdmin"
           outlined
           v-model="data.softSkills"
           :options="skillValues"
@@ -47,7 +47,7 @@
 
       <div class="row q-col-gutter-md q-mb-md">
         <q-input
-          :readonly="submitting"
+          :readonly="submitting || !loginStore.isAdmin"
           outlined
           v-model="data.address"
           label="Morada"
@@ -57,7 +57,7 @@
         />
 
         <q-input
-          :readonly="submitting"
+          :readonly="submitting || !loginStore.isAdmin"
           outlined
           v-model="data.postalCode"
           label="Código Postal"
@@ -67,7 +67,7 @@
           class="col-12 col-sm"
         />
         <q-input
-          :readonly="submitting"
+          :readonly="submitting || !loginStore.isAdmin"
           outlined
           v-model="data.locality"
           label="Localidade"
@@ -79,7 +79,7 @@
 
       <div class="row q-col-gutter-md q-mb-md">
         <q-input
-          :readonly="submitting"
+          :readonly="submitting || !loginStore.isAdmin"
           outlined
           v-model="data.atecEmail"
           label="Email institucional"
@@ -89,7 +89,7 @@
         />
 
         <q-input
-          :readonly="submitting"
+          :readonly="submitting || !loginStore.isAdmin"
           outlined
           v-model="data.personalEmail"
           label="Email pessoal"
@@ -99,7 +99,7 @@
         />
 
         <q-input
-          :readonly="submitting"
+          :readonly="submitting || !loginStore.isAdmin"
           outlined
           v-model="data.phoneNumber"
           label="Telefone"
@@ -109,7 +109,7 @@
         />
       </div>
 
-      <div class="col-12">
+      <div class="col-12" v-if="loginStore.isAdmin">
         <q-btn unelevated label="Guardar" type="submit" color="primary" :disabled="submitting"/>
         <q-btn unelevated label="Reset" type="reset" color="primary" flat class="q-ml-sm" :disabled="submitting"/>
         <q-spinner color="primary" size="2.5em" :thickness="2" v-if="submitting"/>
@@ -123,6 +123,8 @@ import studentDTO from 'src/dto/StudentDTO'
 import studentsAPI from 'src/services/fetches/students'
 import { useRoute } from "vue-router"
 import { ref, onMounted, watch } from 'vue'
+import { useLoginStore } from 'src/stores/login'
+const loginStore = useLoginStore()
 
 const props = defineProps({
   edit: Boolean,
