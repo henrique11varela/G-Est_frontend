@@ -66,27 +66,18 @@ onMounted(() => {
 
         <template v-slot:top>
           <q-space />
-          <q-input outlined="" label="Name" borderless dense debounce="300" v-model="filters.name" placeholder="Search">
+          <q-input outlined="" label="Nome" borderless dense debounce="300" v-model="filters.name" placeholder="Procurar">
             <template v-slot:append>
               <q-icon name="search" />
             </template>
           </q-input>
 
-          <q-input outlined="" label="Email" borderless dense debounce="300" v-model="filters.email" placeholder="Search">
-            <template v-slot:append>
-              <q-icon name="search" />
-            </template>
-          </q-input>
-
-        </template>
-        <template v-slot:top-right>
-          <q-input outlined bg-color="white" borderless dense debounce="300" v-model="filter" placeholder="Search">
+          <q-input outlined="" label="Email" borderless dense debounce="300" v-model="filters.email" placeholder="Procurar">
             <template v-slot:append>
               <q-icon name="search" />
             </template>
           </q-input>
         </template>
-
 
         <template v-slot:body-cell-action="props">
           <q-td :props="props">

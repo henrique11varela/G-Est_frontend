@@ -13,15 +13,15 @@ const columns = [
     align: 'left',
   },
   {
-    name: 'NameContact', label: 'Nome de Contatos', field: 'NameContact',
+    name: 'NameContact', label: 'Nome do Contato', field: 'NameContact',
     align: 'left',
   },
   {
-    name: 'EmailContact', label: 'Email de Contatos', field: 'EmailContact',
+    name: 'EmailContact', label: 'Email do Contato', field: 'EmailContact',
     align: 'left',
   },
   {
-    name: 'PhoneContact', label: 'Numero de Contacto', field: 'PhoneContact',
+    name: 'PhoneContact', label: 'Numero do Contacto', field: 'PhoneContact',
     align: 'left',
   },
 
@@ -69,7 +69,8 @@ onMounted(() => {
 <template>
   <div class="q-py-md">
     <q-table flat bordered ref="tableRef" title="Treats" :rows="rows" :columns="columns" row-key="id"
-      v-model:pagination="pagination" :loading="loading" :filter="filters" binary-state-sort @request="onRequest">
+      v-model:pagination="pagination" :loading="loading" :filter="filters" binary-state-sort @request="onRequest" :rows-per-page-options="[5, 10, 15, 20, 25, 30, 50, 100]"
+      rows-per-page-label="Registos por página">
       <template v-slot:loading>
         <q-inner-loading showing color="primary" />
       </template>
@@ -77,22 +78,12 @@ onMounted(() => {
 
       <template v-slot:top>
         <q-space />
-        <q-input outlined label="Name" borderless dense debounce="300" v-model="filters.name" placeholder="Search">
-          <template v-slot:append>
-            <q-icon name="search" />
-          </template>
-        </q-input>
-
-
-      </template>
-      <template v-slot:top-right>
-        <q-input outlined bg-color="white" borderless dense debounce="300" v-model="filter" placeholder="Search">
+        <q-input outlined label="Nome" borderless dense debounce="300" v-model="filters.name" placeholder="Procurar">
           <template v-slot:append>
             <q-icon name="search" />
           </template>
         </q-input>
       </template>
-
 
       <template v-slot:body-cell-NameContact="props">
         <q-td :props="props">

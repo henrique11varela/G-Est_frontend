@@ -15,6 +15,7 @@
       @request="onRequest"
       hide-no-data
       :rows-per-page-options="[5, 10, 15, 20, 25, 30, 50, 100]"
+      rows-per-page-label="Registos por página"
     >
       <template v-slot:loading>
         <q-inner-loading showing>
@@ -29,7 +30,7 @@
 
       <template v-slot:top-right>
         <div>
-          <q-input outlined bg-color="white" borderless dense debounce="500" v-model="filter" placeholder="Search">
+          <q-input outlined bg-color="white" borderless dense debounce="500" v-model="filter" placeholder="Procurar">
             <template v-slot:append>
               <q-icon name="search" />
             </template>
