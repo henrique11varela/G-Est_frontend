@@ -21,8 +21,8 @@
             <q-select outlined label="Empresa" v-model="internshipData.companies[numberSelect - 1]" use-input
               hide-selected fill-input input-debounce="500" :options="options.companies"
               :rules="[(val) => !!val || 'Selecione uma Empresa']"
-              :readonly="isAccepted || pageState.isSubmitting || pageState.ended || !loginStore.isAdmin" :loading="pageState.loadingCompanies"
-              option-label="name" @filter="filterCompaniesFn">
+              :readonly="isAccepted || pageState.isSubmitting || pageState.ended || !loginStore.isAdmin"
+              :loading="pageState.loadingCompanies" option-label="name" @filter="filterCompaniesFn">
               <template v-slot:no-option>
                 <q-item>
                   <q-item-section class="text-grey">
@@ -31,7 +31,8 @@
                 </q-item>
               </template>
               <template v-slot:append>
-                <q-btn flat round icon="add" class="cursor-pointer" v-if="!isAccepted && !pageState.isSubmitting && loginStore.isAdmin"
+                <q-btn flat round icon="add" class="cursor-pointer"
+                  v-if="!isAccepted && !pageState.isSubmitting && loginStore.isAdmin"
                   @click.stop="openCompanyForm(numberSelect - 1)"></q-btn>
               </template>
             </q-select>
@@ -42,13 +43,14 @@
               :readonly="(isAccepted && internshipData.companies[numberSelect - 1].status != 'Aceite') || internshipData.companies[numberSelect - 1].name == '' || pageState.isSubmitting || pageState.ended || !loginStore.isAdmin">
             </q-select>
           </div>
-          <div v-if="internshipData.companies.length > 1 && !isAccepted && !pageState.isSubmitting && !pageState.started && loginStore.isAdmin"
+          <div
+            v-if="internshipData.companies.length > 1 && !isAccepted && !pageState.isSubmitting && !pageState.started && loginStore.isAdmin"
             class="q-mb-md col-1 flex justify-center items-center">
             <q-btn color="primary" class="q-mb-md" round icon="remove" @click="removeCompany(numberSelect - 1)"></q-btn>
           </div>
         </div>
-        <q-btn color="primary" v-if="!isAccepted && !pageState.isSubmitting && !pageState.started && loginStore.isAdmin" round class="q-mb-md"
-          icon="add" @click="addCompany"></q-btn>
+        <q-btn color="primary" v-if="!isAccepted && !pageState.isSubmitting && !pageState.started && loginStore.isAdmin"
+          round class="q-mb-md" icon="add" @click="addCompany"></q-btn>
       </div>
 
       <!-- Started -->
@@ -96,15 +98,42 @@
         <div class="q-mb-md row">
 
           <!-- MealAllowance -->
-          <q-checkbox label="Refeição" class="col" v-model="internshipData.startedInternship.mealAllowance"
-            :disable="pageState.isSubmitting || pageState.ended || !loginStore.isAdmin" />
+          <div class="col-3">
+            <q-checkbox label="Refeição" v-model="internshipData.startedInternship.mealAllowance"
+              :disable="pageState.isSubmitting || pageState.ended || !loginStore.isAdmin" />
+          </div>
 
-          <div class="col">
+          <div class="col-3">
+            <q-checkbox label="Morada de envio é sede" class="col-3"
+              v-model="internshipData.startedInternship.hqShippingAddress"
+              :disable="pageState.isSubmitting || pageState.ended || !loginStore.isAdmin" />
+          </div>
+
+          <div class="col-6">
             <q-input outlined class="q-ml-sm" v-model="internshipData.startedInternship.hourlyLoad" :rules="['numeric']"
-              :readonly="pageState.isSubmitting || pageState.ended || !loginStore.isAdmin" label="Carga Horária" type="number" min="0" />
+              :readonly="pageState.isSubmitting || pageState.ended || !loginStore.isAdmin" label="Carga Horária"
+              type="number" min="0" />
           </div>
 
         </div>
+
+        <!-- Address -->
+        <q-select outlined label="Morada" v-model="internshipData.startedInternship.address" use-input hide-selected
+          fill-input input-debounce="500" :options="optionsAddresses" option-label="description"
+          :readonly="pageState.isSubmitting || pageState.ended || !loginStore.isAdmin" @filter="filterMoradaFn"
+          class="q-mb-md col-7">
+          <template v-slot:no-option>
+            <q-item>
+              <q-item-section class="text-grey">
+                No results
+              </q-item-section>
+            </q-item>
+          </template>
+          <template v-slot:append>
+            <q-btn flat round icon="add" class="cursor-pointer" @click.stop="openAddressForm"
+              v-if="loginStore.isAdmin"></q-btn>
+          </template>
+        </q-select>
 
         <!-- Tutor -->
         <q-select outlined label="Tutor" v-model="internshipData.startedInternship.tutor" use-input hide-selected
@@ -118,23 +147,8 @@
             </q-item>
           </template>
           <template v-slot:append>
-            <q-btn flat round icon="add" class="cursor-pointer" @click.stop="openTutorForm" v-if="loginStore.isAdmin"></q-btn>
-          </template>
-        </q-select>
-
-        <!-- Address -->
-        <q-select outlined label="Morada" v-model="internshipData.startedInternship.address" use-input hide-selected
-          fill-input input-debounce="500" :options="optionsAddresses" option-label="description"
-          :readonly="pageState.isSubmitting || pageState.ended || !loginStore.isAdmin" @filter="filterMoradaFn" class="q-mb-md col-7">
-          <template v-slot:no-option>
-            <q-item>
-              <q-item-section class="text-grey">
-                No results
-              </q-item-section>
-            </q-item>
-          </template>
-          <template v-slot:append>
-            <q-btn flat round icon="add" class="cursor-pointer" @click.stop="openAddressForm" v-if="loginStore.isAdmin"></q-btn>
+            <q-btn flat round icon="add" class="cursor-pointer" @click.stop="openTutorForm"
+              v-if="loginStore.isAdmin"></q-btn>
           </template>
         </q-select>
 
@@ -153,23 +167,24 @@
         </q-select>
         <!-- reason -->
         <q-select outlined label="Como Obteve emprego" v-model="internshipData.endedInternship.comoObteveEmprego"
-          :options="options.comoObteveEmprego" :readonly="pageState.isSubmitting || !loginStore.isAdmin" class="q-mb-md col-7">
+          :options="options.comoObteveEmprego" :readonly="pageState.isSubmitting || !loginStore.isAdmin"
+          class="q-mb-md col-7">
         </q-select>
 
         <hr class="q-mb-md">
       </div>
 
       <!-- Observations -->
-      <q-input outlined class="q-mb-md" :readonly="pageState.isSubmitting || !loginStore.isAdmin" v-model="internshipData.observations"
-        label="Observações" type="textarea" />
+      <q-input outlined class="q-mb-md" :readonly="pageState.isSubmitting || !loginStore.isAdmin"
+        v-model="internshipData.observations" label="Observações" type="textarea" />
 
       <div class="row" v-if="loginStore.isAdmin">
         <q-btn color="primary" class="col-3" type="submit" :disable="pageState.isSubmitting">Salvar</q-btn>
-        <q-btn color="primary" class="col-3 offset-6" v-if="showIniciarButton"
-          :disable="pageState.isSubmitting" @click="startInternship">Iniciar
+        <q-btn color="primary" class="col-3 offset-6" v-if="showIniciarButton" :disable="pageState.isSubmitting"
+          @click="startInternship">Iniciar
           estágio</q-btn>
-        <q-btn color="primary" class="col-3 offset-6" v-if="showTerminarButton"
-          :disable="pageState.isSubmitting" @click="endInternship">Terminar
+        <q-btn color="primary" class="col-3 offset-6" v-if="showTerminarButton" :disable="pageState.isSubmitting"
+          @click="endInternship">Terminar
           estágio</q-btn>
       </div>
       <!-- {{ internshipData }} -->
@@ -225,11 +240,11 @@ const pageState = ref({
   ended: false,
 });
 
-const showIniciarButton =computed(() => {
+const showIniciarButton = computed(() => {
   return isAccepted.value && !pageState.value.started
 
 })
-const showTerminarButton =computed(() => {
+const showTerminarButton = computed(() => {
   return pageState.value.started && !pageState.value.ended && !!internshipData.value.startedInternship?.startDate && !!internshipData.value.startedInternship?.endDate && !!internshipData.value.startedInternship?.hourlyLoad && !!internshipData.value.startedInternship?.tutor && !!internshipData.value.startedInternship?.address
 })
 
@@ -285,6 +300,7 @@ function startInternship() {
     startDate: "",
     endDate: "",
     mealAllowance: false,
+    hqShippingAddress: false,
     hourlyLoad: 0,
     tutor: "",
     address: "",
