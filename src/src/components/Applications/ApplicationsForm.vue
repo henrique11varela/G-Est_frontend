@@ -160,6 +160,8 @@ const props = defineProps({
   edit: Boolean,
 });
 
+data.value.isPartner = false;
+
 onMounted(async () => {
   try {
     if (props.edit) {
