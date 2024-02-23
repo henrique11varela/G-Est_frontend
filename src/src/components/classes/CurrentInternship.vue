@@ -16,24 +16,28 @@ const props = defineProps({
   }
 })
 
+const statusOptions = ['Aceite', 'Em Colocação', 'Opção', 'Não Aceite']
+
 function setInternshipStatus(internship) {
   if (internship.endedInternship) {
-    const company = internship.companies.find(c => c.status === 'Aceite')
+    const company = internship.companies.find(c => c.status === statusOptions[0])
     const append = internship.endedInternship.reason
     return `${company?.name} - Terminado (${append})`
   }
 
   if (internship.startedInternship) {
-    const company = internship.companies.find(c => c.status === 'Aceite')
+    const company = internship.companies.find(c => c.status === statusOptions[0])
     const now = new Date()
     const startDate = new Date(internship.startedInternship.startDate)
     const append = startDate <= now ? 'Iniciado' : 'Colocado'
     return `${company?.name} - ${append}`
   }
 
-  let company = internship.companies.find(c => c.status === 'Em Colocação')
-  if (!company) company = internship.companies.find(c => c.status === 'Opção')
-  if (!company) company = internship.companies.find(c => c.status === 'Não Aceite')
+  let company = null
+  for (const option of statusOptions) {
+    if (!company) company = internship.companies.find(c => c.status === option)
+    else break
+  }
   return `${company?.name} - ${company?.status}`
 }
 </script>
