@@ -33,6 +33,8 @@
         :loading="loading.courses"
         :option-label="course => course.name"
         @filter="filterCoursesFn"
+        lazy-rules="ondemand"
+        :rules="rules.course"
         class="col-12 col-sm">
         <template v-slot:no-option>
           <q-item>
