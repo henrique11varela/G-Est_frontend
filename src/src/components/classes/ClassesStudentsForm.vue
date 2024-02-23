@@ -12,6 +12,7 @@
         :loading="loading"
         placeholder="Procurar formando"
         @update:model-value="fetchStudent"
+        v-if="loginStore.isAdmin"
       >
         <template v-slot:append>
           <q-icon name="search" />
@@ -31,7 +32,7 @@
       </div>
     </div>
     <ClassesStudentsList @remove-student="removeStudent" edit :students="editList"></ClassesStudentsList>
-    <div>
+    <div v-if="loginStore.isAdmin">
       <q-btn unelevated label="Guardar" color="primary" @click="$emit('submitStudents', editList)" :disabled="submitting"/>
       <q-btn unelevated label="Reset" color="primary" flat class="q-ml-sm" @click="setDefaultList()" :disabled="submitting"/>
       <q-spinner color="primary" size="2.5em" :thickness="2" v-if="submitting"/>
@@ -44,6 +45,8 @@ import AssociateStudentsInfo from 'src/components/students/AssociateStudentsInfo
 import ClassesStudentsList from './ClassesStudentsList.vue'
 import studentsAPI from 'src/services/fetches/students'
 import { ref, onMounted } from 'vue'
+import { useLoginStore } from 'src/stores/login'
+const loginStore = useLoginStore()
 
 const editList = ref([])
 const filter = ref("")

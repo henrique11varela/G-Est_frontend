@@ -3,7 +3,7 @@
     <div class="q-pa-md">
       <div class="flex justify-between items-center">
         <h1 class="text-h6">Editar curso</h1>
-        <div v-if="isAdmin">
+        <div v-if="loginStore.isAdmin">
           <q-btn unelevated color="negative" label="Apagar" @click="deleteCourse"/>
         </div>
       </div>
@@ -18,6 +18,8 @@ import coursesAPI from 'src/services/fetches/courses'
 import { useRoute, useRouter } from 'vue-router'
 import notify from 'src/composables/notify'
 import deleteModel from 'src/composables/delete'
+import { useLoginStore } from 'src/stores/login'
+const loginStore = useLoginStore()
 
 const router = useRouter()
 const route = useRoute()

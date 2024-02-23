@@ -8,10 +8,10 @@
       />
     </div>
     <div class="q-pa-md" v-else>
-      <q-btn unelevated color="secondary" label="Editar" :to="`/classes/edit/${route.params.id}`" v-if="isAdmin"/>
+      <q-btn unelevated color="secondary" label="Editar" :to="`/classes/edit/${route.params.id}`" v-if="loginStore.isAdmin"/>
       <ClassesInfo :class-info="classInfo"></ClassesInfo>
-      <div class="q-mt-md row justify-between" v-if="isAdmin">
-        <q-btn unelevated color="secondary" label="Editar" :to="`/classes/edit/${route.params.id}/students`"/>
+      <div class="q-mt-md row justify-between">
+        <q-btn unelevated color="secondary" label="Editar" :to="`/classes/edit/${route.params.id}/students`" v-if="loginStore.isAdmin"/>
         <q-btn unelevated color="positive" label="Exportar" @click="exportClass(route.params.id, classInfo.name)"/>
       </div>
       <ClassesStudentsList :class-id="route.params.id" :students="students"></ClassesStudentsList>
@@ -26,6 +26,8 @@ import classesAPI from 'src/services/fetches/classes'
 import exportsAPI from 'src/services/fetches/exports'
 import { ref, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import { useLoginStore } from 'src/stores/login'
+const loginStore = useLoginStore()
 
 const classInfo = ref({})
 const students = ref([])

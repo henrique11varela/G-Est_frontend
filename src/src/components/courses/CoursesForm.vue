@@ -13,7 +13,7 @@
       v-else
     >
       <q-input
-        :readonly="submitting"
+        :readonly="submitting || !loginStore.isAdmin"
         outlined
         v-model="data.name"
         label="Curso"
@@ -27,7 +27,7 @@
         v-model="data.type"
         :options="['APZ', 'EFA', 'CET']"
         label="Tipo"
-        :readonly="submitting"
+        :readonly="submitting || !loginStore.isAdmin"
         lazy-rules="ondemand"
         :rules="rules.type"
         class="col-12 col-sm"
@@ -38,7 +38,7 @@
         v-model="data.area"
         :options="areas"
         label="Área"
-        :readonly="submitting"
+        :readonly="submitting || !loginStore.isAdmin"
         :loading="loading.areas"
         :option-label="area => `${area.areaCode} - ${area.name}`"
         lazy-rules="ondemand"
@@ -46,9 +46,9 @@
         class="col-12 col-md-3 col-sm-7"
       />
 
-      <div class="col-12">
-        <q-btn unelevated label="Guardar" type="submit" color="primary" :disabled="submitting"/>
-        <q-btn unelevated label="Reset" type="reset" color="primary" flat class="q-ml-sm" :disabled="submitting"/>
+      <div class="col-12" v-if="loginStore.isAdmin">
+        <q-btn unelevated label="Guardar" type="submit" color="primary" :disabled="submitting" />
+        <q-btn unelevated label="Reset" type="reset" color="primary" flat class="q-ml-sm" :disabled="submitting" />
         <q-spinner color="primary" size="2.5em" :thickness="2" v-if="submitting"/>
       </div>
     </q-form>
@@ -61,6 +61,9 @@ import { ref, onMounted, watch } from 'vue'
 import coursesAPI from '../../services/fetches/courses'
 import { useRoute } from "vue-router"
 import areasAPI from 'src/services/fetches/areas'
+import { useLoginStore } from 'src/stores/login'
+const loginStore = useLoginStore()
+
 
 const data = ref(defaultValues())
 const areas = ref([])
