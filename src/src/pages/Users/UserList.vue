@@ -4,11 +4,10 @@ import userAPI from "src/services/fetches/users.js";
 
 import { matEdit, matDelete } from '@quasar/extras/material-icons'
 const columns = [
-  { name: 'id', align: 'center', label: 'Id', field: 'id', },
-  { name: 'name', label: 'Name', field: 'name', },
-  { name: 'email', label: 'Email', field: 'email', },
-  { name: 'role', label: 'Role', field: 'role', },
-  { name: 'action', label: 'Action', field: 'action', }
+  { name: 'name', label: 'Name', field: 'name', align: 'left', },
+  { name: 'email', label: 'Email', field: 'email', align: 'left', },
+  { name: 'role', label: 'Role', field: 'role', align: 'left', },
+  { name: 'action', label: '', field: 'action', align: 'center', }
 ];
 
 
@@ -50,8 +49,13 @@ onMounted(() => {
 <template>
   <q-page padding>
     <div class="q-pa-md">
-      <!-- content -->
-      <h1>Users</h1>
+      <div class="row items-center q-gutter-md no-wrap">
+        <div>
+          <h1 class="text-h6">Utilizadores</h1>
+        </div>
+        <q-btn dense unelevated color="primary" icon="add" :to="'users/add'" />
+      </div>
+
       <q-table flat bordered ref="tableRef" title="Treats" :rows="rows" :columns="columns" row-key="id"
         v-model:pagination="pagination" :loading="loading" :filter="filters" binary-state-sort @request="onRequest">
 
@@ -61,7 +65,6 @@ onMounted(() => {
 
 
         <template v-slot:top>
-          <q-btn color="primary" :disable="loading" label="Adicionar" :to="`users/add`" />
           <q-space />
           <q-input outlined="" label="Nome" borderless dense debounce="300" v-model="filters.name" placeholder="Procurar">
             <template v-slot:append>

@@ -39,17 +39,19 @@
             {{ col.value }}
           </q-td>
           <CurrentInternship :internships="props.row.internships"></CurrentInternship>
-          <q-td v-if="isAdmin">
-            <q-btn unelevated text-color="negative" @click="$emit('removeStudent', props.row.id)" v-if="edit">
-              <q-icon name="remove"></q-icon>
-            </q-btn>
-            <div v-else>
-              <q-btn unelevated text-color="secondary" :to="`/students/edit/${props.row.id}`">
-                <q-icon name="edit"></q-icon>
+          <q-td>
+            <div v-if="loginStore.isAdmin">
+              <q-btn unelevated text-color="negative" @click="$emit('removeStudent', props.row.id)" v-if="edit">
+                <q-icon name="remove"></q-icon>
               </q-btn>
-              <q-btn unelevated text-color="accent" :to="`/internships/${classId}/${props.row.id}`">
-                <q-icon name="work"></q-icon>
-              </q-btn>
+              <div v-else>
+                <q-btn unelevated text-color="secondary" :to="`/students/edit/${props.row.id}`">
+                  <q-icon name="edit"></q-icon>
+                </q-btn>
+                <q-btn unelevated text-color="accent" :to="`/internships/${classId}/${props.row.id}`">
+                  <q-icon name="work"></q-icon>
+                </q-btn>
+              </div>
             </div>
           </q-td>
         </q-tr>
@@ -68,6 +70,8 @@
 <script setup>
 import CurrentInternship from './CurrentInternship.vue'
 import StudentsContacts from '../students/StudentsContacts.vue'
+import { useLoginStore } from 'src/stores/login'
+const loginStore = useLoginStore()
 
 const props = defineProps({
   students: Object,

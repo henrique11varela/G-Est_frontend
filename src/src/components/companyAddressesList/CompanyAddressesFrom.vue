@@ -89,9 +89,9 @@ function showDeleteModal() {
       <q-btn class="q-mb-md" @click="showDeleteModal" color="red" :icon="matDelete" label="Delete" />
     </div>
     <div class="row">
-      <div class="col-md-4">
-        <q-input outlined class="q-mb-md q-mr-md" filled v-model="addressData.description" label="Description *"
-          hint="Description" lazy-rules :rules="companyAddressesDTO.rules().description" :disable="submitting"
+      <div class="col-md-6">
+        <q-input outlined class="q-mb-md q-mr-md" v-model="addressData.description" label="Descrição" lazy-rules
+          :rules="companyAddressesDTO.rules().description"
           :error="errors?.hasOwnProperty('description')">
           <template v-slot:error>
             <span :key="index" v-for="(title, index) in errors.description">
@@ -100,10 +100,9 @@ function showDeleteModal() {
           </template>
         </q-input>
       </div>
-      <div class="col-md-4">
-        <q-input outlined class="q-mb-md q-mx-md" filled v-model="addressData.address" label="Address*"
-          hint="Name and surname" lazy-rules :rules="companyAddressesDTO.rules().address"
-          :error="errors?.hasOwnProperty('address')" :disable="submitting">
+      <div class="col-md-6">
+        <q-input outlined class="q-mb-md q-ml-md" v-model="addressData.address" label="Morada" lazy-rules
+          :rules="companyAddressesDTO.rules().address" :error="errors?.hasOwnProperty('address')" >
           <template v-slot:error>
             <span :key="index" v-for="(title, index) in errors.address">
               {{ title }}
@@ -111,9 +110,9 @@ function showDeleteModal() {
           </template>
         </q-input>
       </div>
-      <div class="col-md-4">
-        <q-input outlined class="q-mb-md q-ml-md" filled v-model="addressData.postalCode" label="Postal code *"
-          hint="Name and surname" lazy-rules :rules="companyAddressesDTO.rules().postalCode" :disable="submitting"
+      <div class="col-md-6">
+        <q-input outlined class="q-mb-md q-mr-md" v-model="addressData.postalCode" label="Codigo Postal" lazy-rules
+          :rules="companyAddressesDTO.rules().postalCode"
           :error="errors?.hasOwnProperty('postalCode')">
           <template v-slot:error>
             <span :key="index" v-for="(title, index) in errors.postalCode">
@@ -122,13 +121,23 @@ function showDeleteModal() {
           </template>
         </q-input>
       </div>
+      <div class="col-md-6">
+        <q-input outlined class="q-mb-md q-ml-md" v-model="addressData.locality" label="Localidade" lazy-rules
+          :rules="companyAddressesDTO.rules().locality"  :error="errors?.hasOwnProperty('locality')">
+          <template v-slot:error>
+            <span :key="index" v-for="(title, index) in errors.locality">
+              {{ title }}
+            </span>
+          </template>
+        </q-input>
+      </div>
       <div class="col-md-12 q-mb-md ">
         <div>
-          <q-checkbox v-model="addressData.hq" label="Sede" :disable="submitting" />
+          <q-checkbox v-model="addressData.hq" label="Sede"  />
         </div>
       </div>
       <div class="col-md-12">
-        <q-btn style="width: 100%;" label="Submit" type="submit" color="primary" :disable="submitting" />
+        <q-btn style="width: 100%;" label="Submit" type="submit" color="primary"  />
       </div>
     </div>
   </q-form>

@@ -24,11 +24,13 @@ const columns = [
     name: 'PhoneContact', label: 'Numero do Contacto', field: 'PhoneContact',
     align: 'left',
   },
-  {
-    name: 'Action', label: 'Action', field: 'action',
-  }
 
 ];
+if (store.isAdmin) {
+  columns.push({
+    name: 'Action', label: '', field: 'action', align: 'center',
+  })
+}
 const tableRef = ref()
 const rows = ref([])
 const loading = ref(true)

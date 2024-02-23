@@ -5,7 +5,7 @@
         <div>
           <h1 class="text-h6">Turmas</h1>
         </div>
-        <q-btn dense unelevated color="primary" icon="add" :to="'classes/add'" />
+        <q-btn dense unelevated color="primary" icon="add" :to="'classes/add'" v-if='loginStore.isAdmin'/>
       </div>
       <ClassesList></ClassesList>
     </div>
@@ -14,4 +14,6 @@
 
 <script setup>
 import ClassesList from 'src/components/classes/ClassesList.vue'
+import { useLoginStore } from 'src/stores/login'
+const loginStore = useLoginStore()
 </script>

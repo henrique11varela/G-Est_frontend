@@ -1,5 +1,5 @@
 <template>
-  <ClassesImport @imported="updateTable"></ClassesImport>
+  <ClassesImport @imported="updateTable" v-if="loginStore.isAdmin"></ClassesImport>
   <div class="q-py-md">
     <q-table
       color="primary"
@@ -53,6 +53,8 @@
 import { ref, onMounted } from 'vue'
 import classesAPI from 'src/services/fetches/classes'
 import ClassesImport from 'src/components/imports/ClassesImport.vue'
+import { useLoginStore } from 'src/stores/login'
+const loginStore = useLoginStore()
 
 const columns = [
   {

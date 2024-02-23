@@ -12,11 +12,12 @@ const columns = [
   { name: 'description', label: 'Descrição', field: 'description', align: 'left', },
   { name: 'address', label: 'Morada', field: 'address', align: 'left', },
   { name: 'postalCode', label: 'Código Postal', field: 'postalCode', align: 'left', },
+  { name: 'locality', label: 'Localidade', field: 'locality', align: 'left', },
   { name: 'hq', label: 'Sede', field: 'hq', align: 'left', },
 ];
 if (store.isAdmin) {
   columns.push({
-    name: 'Action', label: 'Action', field: 'action',
+    name: 'Action', label: '', field: 'action', align: 'center',
   })
 }
 const tableRef = ref()
@@ -33,7 +34,7 @@ const pagination = ref({
   descending: false,
   page: 1,
   rowsPerPage: 15,
-  rowsNumber: 15
+  rowsNumber: 1
 })
 function fetchFromServer(startRow, count, sortBy, descending) {
   const data = filters.value
@@ -83,7 +84,7 @@ function onRequest(props) {
     pagination.value.rowsPerPage = rowsPerPage
     pagination.value.sortBy = sortBy
     pagination.value.descending = descending
-
+    pagination.value.rowsNumber = returnedData.length
     // ...and turn of loading indicator
     loading.value = false;
   }, 1500)
@@ -95,7 +96,13 @@ onMounted(() => {
 })
 </script>
 <template>
-  <q-btn  class="q-mb-md" v-if="store.isAdmin" color="primary" label="Adicionar" :to="`/companies/show/${companyid}/contactaddress/add`" />
+  <div class="row items-center q-gutter-md no-wrap">
+    <div>
+      <h1 class="text-h6">Lista de Moradas</h1>
+    </div>
+    <q-btn dense unelevated color="primary" icon="add" :to="`/companies/show/${companyid}/contactaddress/add`" />
+  </div>
+
   <q-table :loading="loading" @request="onRequest" flat bordered ref="tableRef" title="Treats" :rows="rows"
     :columns="columns" row-key="id" v-model:pagination="pagination" :filter="filters" binary-state-sort :rows-per-page-options="[5, 10, 15, 20, 25, 30, 50, 100]"
       rows-per-page-label="Registos por página">
@@ -127,17 +134,16 @@ onMounted(() => {
 
 
     <template v-slot:body-cell-hq="props">
-      <q-td >
+      <q-td>
         <q-icon v-if="props.row.hq" name="done" />
       </q-td>
     </template>
     <template v-slot:body-cell-Action="props">
       <q-td>
-        <q-btn :to="`/companies/show/${companyId}/contactaddress/edit/${props.row.id}`" unelevated text-color="secondary">
+        <q-btn :to="`/companies/show/${companyid}/contactaddress/edit/${props.row.id}`" unelevated text-color="secondary">
           <q-icon name="edit"></q-icon>
         </q-btn>
       </q-td>
     </template>
 
-  </q-table>
-</template>
+  </q-table></template>

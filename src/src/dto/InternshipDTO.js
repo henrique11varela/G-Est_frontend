@@ -38,6 +38,7 @@ function input(data) {
     if (data.started_internship) {
       startedInternship = {};
       startedInternship.mealAllowance = data.started_internship.meal_allowance > 0;
+      startedInternship.hqShippingAddress = data.started_internship.hq_shipping_address > 0;
       startedInternship.hourlyLoad = data.started_internship.hourly_load;
       startedInternship.startDate = data.started_internship.start_date?.split('').slice(0,10).join('').replace(/-/g, '/');
       startedInternship.endDate = data.started_internship.end_date?.split('').slice(0,10).join('').replace(/-/g, '/');
@@ -91,6 +92,7 @@ function output(data) {
       started_internship = {
         meal_allowance: data.startedInternship.mealAllowance ? 1 : 0,
         hourly_load: data.startedInternship.hourlyLoad,
+        hq_shipping_address: data.startedInternship.hqShippingAddress,
         start_date: data.startedInternship.startDate,
         end_date: data.startedInternship.endDate,
         company_address_id: data.startedInternship.address?.id || null,

@@ -92,7 +92,7 @@ onMounted(async () => {
   try {
     if (props.edit) {
       loading.value = true;
-      getCoordinator(route.params.id);
+      await getCoordinator(route.params.id);
       loading.value = false;
     }
   } catch (error) {
@@ -114,7 +114,7 @@ async function getCoordinator(id) {
 }
 
 function defaultValues() {
-  return { name: "", emailAtec: "", phoneNumber: "" };
+  return { name: "", emailAtec: "", phoneNumber: "220400500" };
 }
 
 function onReset() {
