@@ -1,5 +1,6 @@
 import { api } from "src/boot/axios"
 import AreaDTO from "src/dto/AreaDTO"
+import PaginationDTO from "src/dto/PaginationDTO"
 
 export default {
   index,
@@ -8,14 +9,17 @@ export default {
   destroy
 }
 
-async function index() {
+async function index(params = null) {
   try {
-    const { data } = await api.get('api/v1/areas')
+    const { data } = await api.get('api/v1/areas', { params })
     const areas = []
-    for (const area of data) {
+    for (const area of data.data) {
       areas.push(AreaDTO.input(area))
     }
-    return areas
+    return {
+      data: areas,
+      pagination: PaginationDTO.input(data)
+    }
   } catch (error) {
     console.log(error);
   }

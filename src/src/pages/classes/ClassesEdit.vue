@@ -3,8 +3,8 @@
     <div class="q-pa-md">
       <div class="flex justify-between items-center">
         <h1 class="text-h6">Editar turma</h1>
-        <div v-if="loginStore.isAdmin">
-          <q-btn unelevated color="negative" label="Apagar" @click="deleteClass"/>
+        <div>
+          <q-btn unelevated color="negative" label="Apagar" @click="deleteClass" v-if="loginStore.isAdmin"/>
         </div>
       </div>
       <ClassesForm edit @valuecreated="postSubmit"></ClassesForm>

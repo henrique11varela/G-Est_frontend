@@ -25,7 +25,6 @@
           :key="index"
           :student="student"
           :associate="!isStudentDuplicate(student)"
-          :submitting="submitting"
           @studentPicked="addStudent"
         >
         </AssociateStudentsInfo>
@@ -33,9 +32,8 @@
     </div>
     <ClassesStudentsList @remove-student="removeStudent" edit :students="editList"></ClassesStudentsList>
     <div v-if="loginStore.isAdmin">
-      <q-btn unelevated label="Guardar" color="primary" @click="$emit('submitStudents', editList)" :disabled="submitting"/>
-      <q-btn unelevated label="Reset" color="primary" flat class="q-ml-sm" @click="setDefaultList()" :disabled="submitting"/>
-      <q-spinner color="primary" size="2.5em" :thickness="2" v-if="submitting"/>
+      <q-btn unelevated label="Guardar" color="primary" @click="$emit('submitStudents', editList)"/>
+      <q-btn unelevated label="Reset" color="primary" flat class="q-ml-sm" @click="setDefaultList()"/>
     </div>
   </div>
 </template>
@@ -55,10 +53,12 @@ const loading = ref(false)
 
 const props = defineProps({
   students: {
-    type: Object,
-    required: true
-  },
-  submitting: Boolean
+    type: Array,
+    required: true,
+    default() {
+      return []
+    },
+  }
 })
 
 onMounted(async () => {

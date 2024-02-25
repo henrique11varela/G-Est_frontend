@@ -1,7 +1,6 @@
 <template>
   <div class="q-py-md">
-    <q-spinner color="primary" size="3em" :thickness="2" v-if="loading" />
-    <q-form @submit="onSubmit" @reset="onReset" class="q-ma-lg row" v-else>
+    <q-form @submit="onSubmit" @reset="onReset" class="q-ma-lg row">
       <div class="col-12 row">
         <q-input class="col q-mr-sm"
           :readonly="!loginStore.isAdmin"
@@ -38,7 +37,6 @@
           label="Guardar"
           type="submit"
           color="primary"
-          :disabled="submitting"
         />
         <q-btn
           unelevated
@@ -47,13 +45,6 @@
           color="primary"
           flat
           class="q-ml-sm"
-          :disabled="submitting"
-        />
-        <q-spinner
-          color="primary"
-          size="2.5em"
-          :thickness="2"
-          v-if="submitting"
         />
       </div>
       <div class="col-12">
@@ -75,11 +66,10 @@ import { ref, onMounted, watch } from "vue";
 import coordinatorsAPI from "../../services/fetches/coordinators";
 import { useRoute } from "vue-router";
 import { useLoginStore } from "../../stores/login.js";
+import { Loading } from "quasar";
 
 const data = ref(defaultValues());
 const defaults = defaultValues();
-const loading = ref(false);
-const submitting = ref(false);
 const rules = CoordinatorDTO.rules();
 const route = useRoute();
 const loginStore = useLoginStore();
@@ -91,12 +81,12 @@ const props = defineProps({
 onMounted(async () => {
   try {
     if (props.edit) {
-      loading.value = true;
+      Loading.show()
       await getCoordinator(route.params.id);
-      loading.value = false;
+      Loading.hide()
     }
   } catch (error) {
-    console.error(error);
+    console.error(error)
   }
 });
 
@@ -126,13 +116,13 @@ function onReset() {
 const emit = defineEmits(["valuecreated"]);
 
 async function onSubmit() {
-  submitting.value = true;
+  Loading.show()
 
   const output = props.edit
     ? await coordinatorsAPI.update(data.value)
     : await coordinatorsAPI.store(data.value);
 
-  submitting.value = false;
+  Loading.hide()
   emit("valuecreated", output);
 }
 </script>

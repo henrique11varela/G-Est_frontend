@@ -1,19 +1,12 @@
 <template>
   <div class="q-py-md">
-    <q-spinner
-      color="primary"
-      size="3em"
-      :thickness="2"
-      v-if="loading"
-    />
     <q-form
       @submit="onSubmit"
       @reset="onReset"
-      v-else
     >
       <div class="row q-col-gutter-md q-mb-md">
         <q-input
-          :readonly="submitting || !loginStore.isAdmin"
+          :readonly="!loginStore.isAdmin"
           outlined
           v-model="data.name"
           label="Nome"
@@ -23,7 +16,7 @@
         />
 
         <q-select
-          :readonly="submitting || !loginStore.isAdmin"
+          :readonly="!loginStore.isAdmin"
           outlined
           v-model="data.hardSkills"
           :options="skillValues"
@@ -34,7 +27,7 @@
         />
 
         <q-select
-          :readonly="submitting || !loginStore.isAdmin"
+          :readonly="!loginStore.isAdmin"
           outlined
           v-model="data.softSkills"
           :options="skillValues"
@@ -47,7 +40,7 @@
 
       <div class="row q-col-gutter-md q-mb-md">
         <q-input
-          :readonly="submitting || !loginStore.isAdmin"
+          :readonly="!loginStore.isAdmin"
           outlined
           v-model="data.address"
           label="Morada"
@@ -57,7 +50,7 @@
         />
 
         <q-input
-          :readonly="submitting || !loginStore.isAdmin"
+          :readonly="!loginStore.isAdmin"
           outlined
           v-model="data.postalCode"
           label="Código Postal"
@@ -67,7 +60,7 @@
           class="col-12 col-sm"
         />
         <q-input
-          :readonly="submitting || !loginStore.isAdmin"
+          :readonly="!loginStore.isAdmin"
           outlined
           v-model="data.locality"
           label="Localidade"
@@ -79,7 +72,7 @@
 
       <div class="row q-col-gutter-md q-mb-md">
         <q-input
-          :readonly="submitting || !loginStore.isAdmin"
+          :readonly="!loginStore.isAdmin"
           outlined
           v-model="data.atecEmail"
           label="Email institucional"
@@ -89,7 +82,7 @@
         />
 
         <q-input
-          :readonly="submitting || !loginStore.isAdmin"
+          :readonly="!loginStore.isAdmin"
           outlined
           v-model="data.personalEmail"
           label="Email pessoal"
@@ -99,7 +92,7 @@
         />
 
         <q-input
-          :readonly="submitting || !loginStore.isAdmin"
+          :readonly="!loginStore.isAdmin"
           outlined
           v-model="data.phoneNumber"
           label="Telefone"
@@ -110,9 +103,8 @@
       </div>
 
       <div class="col-12" v-if="loginStore.isAdmin">
-        <q-btn unelevated label="Guardar" type="submit" color="primary" :disabled="submitting"/>
-        <q-btn unelevated label="Reset" type="reset" color="primary" flat class="q-ml-sm" :disabled="submitting"/>
-        <q-spinner color="primary" size="2.5em" :thickness="2" v-if="submitting"/>
+        <q-btn unelevated label="Guardar" type="submit" color="primary"/>
+        <q-btn unelevated label="Reset" type="reset" color="primary" flat class="q-ml-sm"/>
       </div>
     </q-form>
   </div>
@@ -124,6 +116,7 @@ import studentsAPI from 'src/services/fetches/students'
 import { useRoute } from "vue-router"
 import { ref, onMounted, watch } from 'vue'
 import { useLoginStore } from 'src/stores/login'
+import { Loading } from 'quasar'
 const loginStore = useLoginStore()
 
 const props = defineProps({
@@ -133,8 +126,6 @@ const props = defineProps({
 const data = ref(defaultValues())
 const defaults = defaultValues()
 const skillValues = ['Muito Fraco', 'Fraco', 'Razoável', 'Bom', 'Muito Bom']
-const loading = ref(false)
-const submitting = ref(false)
 const rules = studentDTO.rules()
 const route = useRoute()
 
@@ -146,9 +137,9 @@ watch(
 onMounted(async () => {
   try {
     if (props.edit) {
-      loading.value = true
+      Loading.show()
       await getStudent(route.params.id)
-      loading.value = false
+      Loading.hide()
     }
   } catch (error) {
     console.error(error)
@@ -198,13 +189,13 @@ function onReset() {
 const emit = defineEmits(['valuecreated'])
 
 async function onSubmit() {
-  submitting.value = true
+  Loading.show()
 
   const output = props.edit ?
   await studentsAPI.update(data.value) :
   await studentsAPI.store(data.value)
 
-  submitting.value = false
+  Loading.hide()
   emit('valuecreated', output)
 }
 </script>
