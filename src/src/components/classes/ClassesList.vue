@@ -18,14 +18,7 @@
       rows-per-page-label="Registos por página"
     >
       <template v-slot:loading>
-        <q-inner-loading showing>
-          <q-spinner
-            color="primary"
-            size="3em"
-            :thickness="2"
-            v-if="loading"
-          />
-        </q-inner-loading>
+        <q-inner-loading showing color="primary" />
       </template>
 
       <template v-slot:top-right>
@@ -69,7 +62,14 @@ const columns = [
     required: true,
     label: 'Curso',
     align: 'left',
-    field: row => row.course.name,
+    field: row => `${row.course?.name} - ${row.course?.type}`,
+  },
+  {
+    name: 'coordinator',
+    required: true,
+    label: 'Coordenador',
+    align: 'left',
+    field: row => row.coordinator?.name,
   },
   {
     name: 'actions',

@@ -46,8 +46,8 @@ async function getClass(id) {
   loading.value = true
   Loading.show()
   const response = await classesAPI.show(id)
-  const { name, course } = response
-  classInfo.value = { name, course: course.name}
+  const { name, course, coordinator } = response
+  classInfo.value = { name, course, coordinator: coordinator.name}
   students.value = response.students
   Loading.hide()
   loading.value = false

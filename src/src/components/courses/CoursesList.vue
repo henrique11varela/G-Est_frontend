@@ -17,14 +17,7 @@
       rows-per-page-label="Registos por página"
     >
       <template v-slot:loading>
-        <q-inner-loading showing>
-          <q-spinner
-            color="primary"
-            size="3em"
-            :thickness="2"
-            v-if="loading"
-          />
-        </q-inner-loading>
+        <q-inner-loading showing color="primary" />
       </template>
 
       <template v-slot:top-right>
