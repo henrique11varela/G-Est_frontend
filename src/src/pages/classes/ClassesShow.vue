@@ -34,8 +34,6 @@ const students = ref([])
 const loading = ref(false)
 const route = useRoute()
 
-const isAdmin = true
-
 watch(
   () => route.params.id,
   newId => getClass(newId)
@@ -52,8 +50,8 @@ async function exportClass(id, fileName){
 async function getClass(id) {
   loading.value = true
   const response = await classesAPI.show(id)
-  const { name, course } = response
-  classInfo.value = { name, course: course.name}
+  const { name, course, coordinator } = response
+  classInfo.value = { name, course, coordinator: coordinator.name}
   students.value = response.students
   loading.value = false
 }

@@ -45,6 +45,29 @@
         </template>
       </q-select>
 
+      <q-select
+        outlined
+        label="Coordenador"
+        v-model="data.coordinator"
+        use-input hide-selected fill-input
+        input-debounce="500"
+        :options="coordinators"
+        :readonly="submitting || !loginStore.isAdmin"
+        :loading="loading.coordinators"
+        :option-label="coordinator => coordinator.name"
+        @filter="filterCoordinatorsFn"
+        lazy-rules="ondemand"
+        :rules="rules.coordinator"
+        class="col-12 col-sm">
+        <template v-slot:no-option>
+          <q-item>
+            <q-item-section class="text-grey" v-if="!loading.coordinators">
+              Sem resultados
+            </q-item-section>
+          </q-item>
+        </template>
+      </q-select>
+
       <div class="col-12" v-if="loginStore.isAdmin">
         <q-btn unelevated label="Guardar" type="submit" color="primary" :disabled="submitting" />
         <q-btn unelevated label="Reset" type="reset" color="primary" flat class="q-ml-sm" :disabled="submitting" />
@@ -59,6 +82,7 @@ import classDTO from '../../dto/ClassDTO'
 import { ref, onMounted, watch } from 'vue'
 import coursesAPI from '../../services/fetches/courses'
 import classesAPI from '../../services/fetches/classes'
+import coordinatorsAPI from '../../services/fetches/coordinators'
 import { useRoute } from "vue-router"
 import { useLoginStore } from 'src/stores/login'
 const loginStore = useLoginStore()
@@ -66,9 +90,11 @@ const loginStore = useLoginStore()
 const data = ref(defaultValues())
 const defaults = defaultValues()
 const courses = ref([])
+const coordinators = ref([])
 const loading = ref({
   studentClass: false,
-  courses: false
+  courses: false,
+  coordinators: false
 })
 const submitting = ref(false)
 const rules = classDTO.rules()
@@ -100,6 +126,18 @@ function filterCoursesFn(val, update, abort) {
   })
 }
 
+function filterCoordinatorsFn(val, update, abort) {
+  update(async () => {
+    loading.value.coordinators = true
+    const response = await coordinatorsAPI.index({
+      name: val,
+    })
+    console.log(response)
+    coordinators.value = response.data
+    loading.value.coordinators = false
+  })
+}
+
 watch(
   () => route.params.id,
   async newId => getClass(newId)
@@ -109,16 +147,18 @@ async function getClass(id) {
   const output = await classesAPI.show(id)
   data.value.name = defaults.name = output.name
   data.value.course = defaults.course = output.course
+  data.value.coordinator = defaults.coordinator = output.coordinator
   data.value.id = output.id
 }
 
 function defaultValues() {
-  return { name: "", course: null }
+  return { name: "", course: null, coordinator: null }
 }
 
 function onReset() {
   data.value.name = defaults.name
   data.value.course = defaults.course
+  data.value.coordinator = defaults.coordinator
 }
 
 const emit = defineEmits(['valuecreated'])
