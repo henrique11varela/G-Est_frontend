@@ -51,6 +51,9 @@ export default route(function (/* { store, ssrContext } */) {
       if (to.fullPath == '/login') {
         return ''
       }
+      if (to.meta.adminOnly && !store.isAdmin) {
+        return ''
+      }
     }
   })
 
