@@ -44,6 +44,9 @@ import ClassesStudentsList from './ClassesStudentsList.vue'
 import studentsAPI from 'src/services/fetches/students'
 import { ref, onMounted } from 'vue'
 import { useLoginStore } from 'src/stores/login'
+import { useErrorHandling } from 'src/composables/useErrorHandling'
+
+const { isValid, checkResponseErrors } = useErrorHandling()
 const loginStore = useLoginStore()
 
 const editList = ref([])
@@ -88,7 +91,8 @@ async function fetchStudent(value) {
   loading.value = true
   const args = { name: value, atec_email: value }
   const response = await studentsAPI.index(args)
-  filteredStudents.value = response.data
+  checkResponseErrors(response)
+  if (isValid) filteredStudents.value = response.data
   loading.value = false
 }
 </script>

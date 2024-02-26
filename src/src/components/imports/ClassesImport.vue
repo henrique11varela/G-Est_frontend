@@ -7,36 +7,35 @@
     </q-file>
     <q-btn unelevated color="primary" label="Importar" @click="importClasses" :disabled="!file" class="col-auto"/>
   </div>
+  <div class="text-negative">
+    <div :key="index" v-for="(error, index) in errors">
+      {{ error }}
+    </div>
+  </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import importsAPI from 'src/services/fetches/imports'
 import { Loading } from 'quasar'
 import notify from 'src/composables/notify'
+import { useErrorHandling } from 'src/composables/useErrorHandling'
+
+const { errors, hasError, isValid, checkResponseErrors } = useErrorHandling()
 
 const file = ref(null)
-const errors = ref([])
 const emit = defineEmits(['imported'])
-
-const hasImportError = computed(() => errors.value.length > 0 ? true : null)
 
 async function importClasses() {
   Loading.show()
   const response = await importsAPI.classes({ file: file.value })
-  console.log(response)
-  checkResponse(response)
-  file.value = null
+  checkResponseErrors(response)
   Loading.hide()
-}
-
-function checkResponse(response) {
-  // if (response.errors) {
-  //   errors.value = response.errors
-  //   return
-  // }
-  notify.imported()
-  emit('imported')
+  if (isValid.value) {
+    notify.imported()
+    file.value = null
+    emit('imported')
+  }
 }
 </script>
 

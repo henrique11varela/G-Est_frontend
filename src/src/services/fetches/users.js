@@ -23,17 +23,30 @@ async function index(
       users.push(new UserDTO.input(user));
     }
     return {
-      "Data": users,
-      "Pagination": new PaginationDTO.input(data)
+      data: users,
+      pagination: new PaginationDTO.input(data),
+      requestStatus: 200
     }
   } catch (error) {
-    console.log(error);
+    return {
+      requestStatus: error.response.status,
+      errors: error.response.data.errors
+    }
   }
 }
 async function show(id) {
-  const { data } = await api.get('/api/v1/users/' + id)
-  const company = new UserDTO.input(data);
-  return company
+  try {
+    const { data } = await api.get('/api/v1/users/' + id)
+    return {
+      ...UserDTO.input(data),
+      requestStatus: 200
+    }
+  } catch (error) {
+    return {
+      requestStatus: error.response.status,
+      errors: error.response.data.errors,
+    }
+  }
 }
 async function store(payload) {
   try {
@@ -59,7 +72,7 @@ async function update(payload) {
     }
   } catch (error) {
     return {
-      requestStatus: 500,
+      requestStatus: error.response.status,
       errors: error.response.data.errors
     }
   }
@@ -67,8 +80,14 @@ async function update(payload) {
 async function destroy(id) {
   try {
     const { data } = await api.delete('api/v1/users/' + id)
-    return data
+    return {
+      ...data,
+      requestStatus: 200
+    }
   } catch (error) {
-    console.log(error);
+    return {
+      requestStatus: error.response.status,
+      errors: error.response.data.errors
+    }
   }
 }

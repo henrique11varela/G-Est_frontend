@@ -20,10 +20,14 @@ async function index(params = null) {
     }
     return {
       data: peoples,
-      pagination: PaginationDTO.input(data)
+      pagination: PaginationDTO.input(data),
+      requestStatus: 200
     }
   } catch (error) {
-    console.log(error);
+    return {
+      requestStatus: error.response.status,
+      errors: error.response.data.errors,
+    }
   }
 }
 
@@ -37,8 +41,8 @@ async function store(payload) {
     }
   } catch (error) {
     return {
-      requestStatus: 500,
-      errors: error.response.data.errors
+      requestStatus: error.response.status,
+      errors: error.response.data.errors,
     }
   }
 }
@@ -46,9 +50,15 @@ async function store(payload) {
 async function show(id) {
   try {
     const { data } = await api.get(`api/v1/companyaddresses/${id}`)
-    return companyAddressesDTO.input(data)
+    return {
+      ...companyAddressesDTO.input(data),
+      requestStatus: 200
+    }
   } catch (error) {
-    console.log(error);
+    return {
+      requestStatus: error.response.status,
+      errors: error.response.data.errors,
+    }
   }
 }
 
@@ -70,9 +80,15 @@ async function update(payload) {
 
 async function destroy(id) {
   try {
-    const { data } = await api.delee(`api/v1/companyaddresses/${id}`)
-    return data
+    const { data } = await api.delete(`api/v1/companyaddresses/${id}`)
+    return {
+      ...data,
+      requestStatus: 200
+    }
   } catch (error) {
-    console.log(error);
+    return {
+      requestStatus: error.response.status,
+      errors: error.response.data.errors,
+    }
   }
 }

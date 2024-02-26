@@ -46,6 +46,7 @@ import { ref, onMounted } from 'vue'
 import coordinatorsAPI from 'src/services/fetches/coordinators'
 import { useLoginStore } from 'src/stores/login'
 const loginStore = useLoginStore()
+const { isValid, checkResponseErrors } = useErrorHandling()
 
 const columns = [
   {
@@ -89,9 +90,11 @@ async function onRequest (props) {
 
   const params = { page, quantity: rowsPerPage, name: filter }
   const response = await coordinatorsAPI.index(params)
-  console.log(response)
-  rows.value = response.data
-  pagination.value = response.pagination
+  checkResponseErrors(response)
+  if (isValid.value) {
+    rows.value = response.data
+    pagination.value = response.pagination
+  }
 
   loading.value = false
 }

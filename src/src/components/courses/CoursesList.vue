@@ -43,7 +43,7 @@
 import { ref, onMounted } from 'vue'
 import coursesAPI from 'src/services/fetches/courses'
 import { useLoginStore } from 'src/stores/login'
-const loginStore = useLoginStore()
+import { useErrorHandling } from 'src/composables/useErrorHandling'
 
 const columns = [
   {
@@ -69,6 +69,9 @@ const columns = [
   },
 ]
 
+const { isValid, checkResponseErrors } = useErrorHandling()
+const loginStore = useLoginStore()
+
 const tableRef = ref()
 const rows = ref([])
 const filter = ref('')
@@ -86,11 +89,11 @@ async function onRequest (props) {
 
   loading.value = true
   const response = await coursesAPI.index(params)
-
-  //validations go here
-
-  rows.value = response.data
-  pagination.value = response.pagination
+  checkResponseErrors(response)
+  if (isValid.value) {
+    rows.value = response.data
+    pagination.value = response.pagination
+  }
   loading.value = false
 }
 

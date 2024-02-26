@@ -1,5 +1,5 @@
 <template>
-  <div class="q-py-md" v-if="!loading.studentClass">
+  <div class="q-py-md">
     <q-form
       @submit="onSubmit"
       @reset="onReset"
@@ -12,8 +12,14 @@
         label="Turma"
         lazy-rules="ondemand"
         :rules="rules.name"
-        class="col-12 col-sm-4"
-      />
+        :error="hasError('name')"
+        class="col-12 col-sm-4">
+        <template v-slot:error>
+          <span :key="index" v-for="(message, index) in errors.name">
+            {{ message }}
+          </span>
+        </template>
+      </q-input>
 
       <q-select
         outlined
@@ -25,16 +31,22 @@
         :readonly="!loginStore.isAdmin"
         :loading="loading.courses"
         :option-label="course => `${course.name} - ${course.type}`"
+        :error="hasError('course_id')"
         @filter="filterCoursesFn"
         lazy-rules="ondemand"
         :rules="rules.course"
         class="col-12 col-sm">
         <template v-slot:no-option>
           <q-item>
-            <q-item-section class="text-grey" v-if="!loading.courses">
+            <q-item-section class="text-grey" v-if="loading.courses">
               Sem resultados
             </q-item-section>
           </q-item>
+        </template>
+        <template v-slot:error>
+          <span :key="index" v-for="(message, index) in errors.course_id">
+            {{ message }}
+          </span>
         </template>
       </q-select>
 
@@ -45,19 +57,25 @@
         use-input hide-selected fill-input
         input-debounce="500"
         :options="coordinators"
-        :readonly="submitting || !loginStore.isAdmin"
+        :readonly="!loginStore.isAdmin"
         :loading="loading.coordinators"
         :option-label="coordinator => coordinator.name"
+        :error="hasError('coordinator_id')"
         @filter="filterCoordinatorsFn"
         lazy-rules="ondemand"
         :rules="rules.coordinator"
         class="col-12 col-sm">
         <template v-slot:no-option>
           <q-item>
-            <q-item-section class="text-grey" v-if="!loading.coordinators">
+            <q-item-section class="text-grey" v-if="loading.coordinators">
               Sem resultados
             </q-item-section>
           </q-item>
+        </template>
+        <template v-slot:error>
+          <span :key="index" v-for="(message, index) in errors.coordinator_id">
+            {{ message }}
+          </span>
         </template>
       </q-select>
 
@@ -78,19 +96,21 @@ import coordinatorsAPI from '../../services/fetches/coordinators'
 import { useRoute } from "vue-router"
 import { useLoginStore } from 'src/stores/login'
 import { Loading } from 'quasar'
-const loginStore = useLoginStore()
+import { useErrorHandling } from 'src/composables/useErrorHandling'
+import notify from 'src/composables/notify'
 
 const data = ref(defaultValues())
 const defaults = defaultValues()
 const courses = ref([])
 const coordinators = ref([])
 const loading = ref({
-  studentClass: false,
   courses: false,
   coordinators: false
 })
 const rules = classDTO.rules()
 const route = useRoute()
+const loginStore = useLoginStore()
+const { errors, hasError, isValid, checkResponseErrors } = useErrorHandling()
 
 const props = defineProps({
   edit: Boolean,
@@ -99,14 +119,13 @@ const props = defineProps({
 onMounted(async () => {
   try {
     if (props.edit) {
-      loading.value.studentClass = true
       Loading.show()
       await getClass(route.params.id)
       Loading.hide()
-      loading.value.studentClass = false
     }
   } catch (error) {
-    console.error(error)
+    notify.serverError()
+    Loading.hide()
   }
 })
 
@@ -116,7 +135,8 @@ function filterCoursesFn(val, update, abort) {
     const response = await coursesAPI.index({
       name: val,
     })
-    courses.value = response.data
+    checkResponseErrors(response)
+    if (isValid.value) courses.value = response.data
     loading.value.courses = false
   })
 }
@@ -127,8 +147,8 @@ function filterCoordinatorsFn(val, update, abort) {
     const response = await coordinatorsAPI.index({
       name: val,
     })
-    console.log(response)
-    coordinators.value = response.data
+    checkResponseErrors(response)
+    if (isValid.value) coordinators.value = response.data
     loading.value.coordinators = false
   })
 }
@@ -140,10 +160,13 @@ watch(
 
 async function getClass(id) {
   const output = await classesAPI.show(id)
-  data.value.name = defaults.name = output.name
-  data.value.course = defaults.course = output.course
-  data.value.coordinator = defaults.coordinator = output.coordinator
-  data.value.id = output.id
+  checkResponseErrors(output)
+  if (isValid.value) {
+    data.value.name = defaults.name = output.name
+    data.value.course = defaults.course = output.course
+    data.value.coordinator = defaults.coordinator = output.coordinator
+    data.value.id = output.id
+  }
 }
 
 function defaultValues() {
@@ -163,7 +186,12 @@ async function onSubmit() {
   const output = props.edit ?
   await classesAPI.update(data.value) :
   await classesAPI.store(data.value)
+  checkResponseErrors(output)
   Loading.hide()
-  emit('valuecreated', output)
+
+  if (isValid.value) {
+    props.edit ? notify.update() : notify.store()
+    emit('valuecreated', output)
+  }
 }
 </script>

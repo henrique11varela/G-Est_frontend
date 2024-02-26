@@ -35,7 +35,7 @@ async function onRequest(props) {
     quantity: rowsPerPage,
     page: page,
   });
-  rows.value.splice(0, rows.value.length, ...usersRequest.Data);
+  rows.value.splice(0, rows.value.length, ...usersRequest.data);
 
   pagination.value = usersRequest.pagination;
   loading.value = false

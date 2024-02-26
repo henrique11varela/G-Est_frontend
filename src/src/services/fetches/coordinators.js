@@ -19,45 +19,73 @@ async function index(params) {
     }
     return {
       data: coordinators,
-      pagination: paginationDTO.input(data)
+      pagination: paginationDTO.input(data),
+      requestStatus: 200
     }
   } catch (error) {
-    console.log(error);
+    return {
+      requestStatus: error.response.status,
+      errors: error.response.data.errors,
+    }
   }
 }
 
 async function store(payload) {
   try {
     const { data } = await api.post('api/v1/coordinators', coordinatorDTO.output(payload))
-    return data
+    return {
+      ...data,
+      requestStatus: 200
+    }
   } catch (error) {
-    console.log(error);
+    return {
+      requestStatus: error.response.status,
+      errors: error.response.data.errors,
+    }
   }
 }
 
 async function show(id) {
   try {
     const { data } = await api.get(`api/v1/coordinators/${id}`)
-    return coordinatorDTO.input(data)
+    return {
+      ...coordinatorDTO.input(data),
+      requestStatus: 200
+    }
   } catch (error) {
-    console.log(error);
+    return {
+      requestStatus: error.response.status,
+      errors: error.response.data.errors,
+    }
   }
 }
 
 async function update(payload) {
   try {
     const { data } = await api.put(`api/v1/coordinators/${payload.id}`, coordinatorDTO.output(payload))
-    return data
+    return {
+      ...data,
+      requestStatus: 200
+    }
   } catch (error) {
-    console.log(error);
+    return {
+      requestStatus: error.response.status,
+      errors: error.response.data.errors,
+    }
   }
 }
 
 async function destroy(id) {
   try {
     const { data } = await api.delete(`api/v1/coordinators/${id}`)
-    return data
+    return {
+      ...data,
+      requestStatus: 200
+    }
   } catch (error) {
-    console.log(error);
+    return {
+      requestStatus: error.response.status,
+      errors: error.response.data.errors,
+    }
   }
 }

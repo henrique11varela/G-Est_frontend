@@ -11,8 +11,14 @@ async function classes(payload) {
         'Content-Type': 'multipart/form-data'
       }
     })
-    return data
+    return {
+      ...data,
+      requestStatus: 200
+    }
   } catch (error) {
-    console.log(error);
+    return {
+      requestStatus: error.response.status,
+      errors: error.response.data.errors
+    }
   }
 }
