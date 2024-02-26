@@ -16,7 +16,6 @@
 import CoursesForm from 'src/components/courses/CoursesForm.vue'
 import coursesAPI from 'src/services/fetches/courses'
 import { useRoute, useRouter } from 'vue-router'
-import notify from 'src/composables/notify'
 import deleteModel from 'src/composables/delete'
 import { useLoginStore } from 'src/stores/login'
 const loginStore = useLoginStore()
@@ -24,10 +23,7 @@ const loginStore = useLoginStore()
 const router = useRouter()
 const route = useRoute()
 
-const isAdmin = true
-
 function postSubmit(value) {
-  notify.update()
   router.push('/courses')
 }
 

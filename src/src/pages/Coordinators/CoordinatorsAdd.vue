@@ -11,13 +11,11 @@
 import CoordinatorsForm from 'src/components/coordinators/CoordinatorsForm.vue'
 import { useQuasar } from 'quasar'
 import { useRouter } from 'vue-router'
-import notify from 'src/composables/notify'
 
 const $q = useQuasar()
 const router = useRouter()
 
 function postSubmit(value) {
-  notify.store()
   router.push(`/coordinators/`)
 }
 
