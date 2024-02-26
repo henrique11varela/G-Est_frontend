@@ -45,8 +45,7 @@
 import { ref, onMounted } from 'vue'
 import coordinatorsAPI from 'src/services/fetches/coordinators'
 import { useLoginStore } from 'src/stores/login'
-const loginStore = useLoginStore()
-const { isValid, checkResponseErrors } = useErrorHandling()
+import { useErrorHandling } from 'src/composables/useErrorHandling'
 
 const columns = [
   {
@@ -81,6 +80,9 @@ const pagination = ref({
   rowsPerPage: 15,
   rowsNumber: 0
 })
+
+const loginStore = useLoginStore()
+const { isValid, checkResponseErrors } = useErrorHandling()
 
 async function onRequest (props) {
   const { page, rowsPerPage } = props.pagination
