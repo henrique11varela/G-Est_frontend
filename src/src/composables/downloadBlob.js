@@ -10,7 +10,6 @@ export default function downloadBlob(blob, fileName) {
     link.click()
     URL.revokeObjectURL(fileURL)
   } catch (error) {
-    console.error(error)
     notify.serverError()
   }
 }

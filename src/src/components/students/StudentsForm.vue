@@ -13,7 +13,14 @@
           lazy-rules="ondemand"
           :rules="rules.name"
           class="col-12 col-lg-8 col-md-6"
-        />
+          :error="hasError('name')"
+        >
+        <template v-slot:error>
+          <span :key="index" v-for="(message, index) in errors.name">
+            {{ message }}
+          </span>
+        </template>
+        </q-input>
 
         <q-select
           :readonly="!loginStore.isAdmin"
@@ -24,7 +31,14 @@
           lazy-rules="ondemand"
           :rules="rules.skills('hard')"
           class="col-12 col-sm"
-        />
+          :error="hasError('hard_skills')"
+        >
+        <template v-slot:error>
+          <span :key="index" v-for="(message, index) in errors.hard_skills">
+            {{ message }}
+          </span>
+        </template>
+        </q-select>
 
         <q-select
           :readonly="!loginStore.isAdmin"
@@ -35,7 +49,14 @@
           lazy-rules="ondemand"
           :rules="rules.skills('soft')"
           class="col-12 col-sm"
-        />
+          :error="hasError('soft_skills')"
+        >
+        <template v-slot:error>
+          <span :key="index" v-for="(message, index) in errors.soft_skills">
+            {{ message }}
+          </span>
+        </template>
+        </q-select>
       </div>
 
       <div class="row q-col-gutter-md q-mb-md">
@@ -47,7 +68,14 @@
           lazy-rules="ondemand"
           :rules="rules.address"
           class="col-12 col-lg-8 col-md-6"
-        />
+          :error="hasError('address')"
+        >
+        <template v-slot:error>
+          <span :key="index" v-for="(message, index) in errors.address">
+            {{ message }}
+          </span>
+        </template>
+        </q-input>
 
         <q-input
           :readonly="!loginStore.isAdmin"
@@ -58,7 +86,14 @@
           lazy-rules="ondemand"
           :rules="rules.postalCode"
           class="col-12 col-sm"
-        />
+          :error="hasError('postal_code')"
+        >
+        <template v-slot:error>
+          <span :key="index" v-for="(message, index) in errors.postal_code">
+            {{ message }}
+          </span>
+        </template>
+        </q-input>
         <q-input
           :readonly="!loginStore.isAdmin"
           outlined
@@ -67,7 +102,14 @@
           lazy-rules="ondemand"
           :rules="rules.locality"
           class="col-12 col-sm"
-        />
+          :error="hasError('locality')"
+        >
+        <template v-slot:error>
+          <span :key="index" v-for="(message, index) in errors.locality">
+            {{ message }}
+          </span>
+        </template>
+        </q-input>
       </div>
 
       <div class="row q-col-gutter-md q-mb-md">
@@ -79,7 +121,14 @@
           lazy-rules="ondemand"
           :rules="rules.email"
           class="col-12 col-md col-sm-6"
-        />
+          :error="hasError('atec_email')"
+        >
+        <template v-slot:error>
+          <span :key="index" v-for="(message, index) in errors.atec_email">
+            {{ message }}
+          </span>
+        </template>
+        </q-input>
 
         <q-input
           :readonly="!loginStore.isAdmin"
@@ -89,7 +138,14 @@
           lazy-rules="ondemand"
           :rules="rules.email"
           class="col-12 col-md col-sm-6"
-        />
+          :error="hasError('personal_email')"
+        >
+        <template v-slot:error>
+          <span :key="index" v-for="(message, index) in errors.personal_email">
+            {{ message }}
+          </span>
+        </template>
+        </q-input>
 
         <q-input
           :readonly="!loginStore.isAdmin"
@@ -99,7 +155,14 @@
           lazy-rules="ondemand"
           :rules="rules.phoneNumber"
           class="col-12 col-sm"
-        />
+          :error="hasError('phone_number')"
+        >
+        <template v-slot:error>
+          <span :key="index" v-for="(message, index) in errors.phone_number">
+            {{ message }}
+          </span>
+        </template>
+        </q-input>
       </div>
 
       <div class="col-12" v-if="loginStore.isAdmin">
@@ -117,7 +180,8 @@ import { useRoute } from "vue-router"
 import { ref, onMounted, watch } from 'vue'
 import { useLoginStore } from 'src/stores/login'
 import { Loading } from 'quasar'
-const loginStore = useLoginStore()
+import { useErrorHandling } from 'src/composables/useErrorHandling'
+import notify from 'src/composables/notify'
 
 const props = defineProps({
   edit: Boolean,
@@ -128,6 +192,8 @@ const defaults = defaultValues()
 const skillValues = ['Muito Fraco', 'Fraco', 'Razoável', 'Bom', 'Muito Bom']
 const rules = studentDTO.rules()
 const route = useRoute()
+const loginStore = useLoginStore()
+const { errors, hasError, isValid, checkResponseErrors } = useErrorHandling()
 
 watch(
   () => route.params.id,
@@ -142,22 +208,26 @@ onMounted(async () => {
       Loading.hide()
     }
   } catch (error) {
-    console.error(error)
+    notify.serverError()
+    Loading.hide()
   }
 })
 
 async function getStudent(id) {
   const output = await studentsAPI.show(id)
-  data.value.name = defaults.name = output.name
-  data.value.personalEmail = defaults.personalEmail = output.personalEmail
-  data.value.atecEmail = defaults.atecEmail = output.atecEmail
-  data.value.phoneNumber = defaults.phoneNumber = output.phoneNumber
-  data.value.address = defaults.address = output.address
-  data.value.postalCode = defaults.postalCode = output.postalCode
-  data.value.locality = defaults.locality = output.locality
-  data.value.hardSkills = defaults.hardSkills = output.hardSkills
-  data.value.softSkills = defaults.softSkills = output.softSkills
-  data.value.id = output.id
+  checkResponseErrors(output)
+  if (isValid.value) {
+    data.value.name = defaults.name = output.name
+    data.value.personalEmail = defaults.personalEmail = output.personalEmail
+    data.value.atecEmail = defaults.atecEmail = output.atecEmail
+    data.value.phoneNumber = defaults.phoneNumber = output.phoneNumber
+    data.value.address = defaults.address = output.address
+    data.value.postalCode = defaults.postalCode = output.postalCode
+    data.value.locality = defaults.locality = output.locality
+    data.value.hardSkills = defaults.hardSkills = output.hardSkills
+    data.value.softSkills = defaults.softSkills = output.softSkills
+    data.value.id = output.id
+  }
 }
 
 function defaultValues() {
@@ -190,12 +260,15 @@ const emit = defineEmits(['valuecreated'])
 
 async function onSubmit() {
   Loading.show()
-
   const output = props.edit ?
   await studentsAPI.update(data.value) :
   await studentsAPI.store(data.value)
-
+  checkResponseErrors(output)
   Loading.hide()
-  emit('valuecreated', output)
+
+  if (isValid.value) {
+    props.edit ? notify.update() : notify.store()
+    emit('valuecreated', output)
+  }
 }
 </script>

@@ -43,6 +43,7 @@ function input(data) {
 function output(data) {
   try {
     return {
+      id: data.id,
       name: data.name,
       personal_email: data.personalEmail,
       atec_email: data.atecEmail,

@@ -22,6 +22,7 @@ import { useRoute } from 'vue-router'
 import { useLoginStore } from 'src/stores/login'
 import { Loading } from 'quasar'
 import downloadBlob from 'src/composables/downloadBlob'
+import { useErrorHandling } from 'src/composables/useErrorHandling'
 
 const loginStore = useLoginStore()
 
@@ -29,6 +30,7 @@ const classInfo = ref({})
 const students = ref([])
 const loading = ref(false)
 const route = useRoute()
+const { isValid, checkResponseErrors } = useErrorHandling()
 
 watch(
   () => route.params.id,
@@ -42,7 +44,10 @@ onMounted(() => {
 async function exportClass(id, fileName){
   Loading.show()
   const data = await exportsAPI.studentClass(id)
-  downloadBlob(data.blob, fileName)
+  checkResponseErrors(data)
+  if (isValid.value) {
+    downloadBlob(data.blob, fileName)
+  }
   Loading.hide()
 }
 
@@ -50,9 +55,12 @@ async function getClass(id) {
   loading.value = true
   Loading.show()
   const response = await classesAPI.show(id)
-  const { name, course, coordinator } = response
-  classInfo.value = { name, course, coordinator: coordinator.name}
-  students.value = response.students
+  checkResponseErrors(response)
+  if (isValid.value) {
+    const { name, course, coordinator } = response
+    classInfo.value = { name, course, coordinator: coordinator?.name}
+    students.value = response.students
+  }
   Loading.hide()
   loading.value = false
 }

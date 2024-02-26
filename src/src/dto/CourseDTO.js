@@ -17,6 +17,7 @@ function input(data) {
 function output(data) {
   try {
     return {
+      id: data.id,
       name: data.name,
       type: data.type,
       area_id: data.area.id,

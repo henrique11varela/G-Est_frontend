@@ -47,7 +47,7 @@ import { ref, onMounted } from 'vue'
 import classesAPI from 'src/services/fetches/classes'
 import ClassesImport from 'src/components/imports/ClassesImport.vue'
 import { useLoginStore } from 'src/stores/login'
-const loginStore = useLoginStore()
+import { useErrorHandling } from 'src/composables/useErrorHandling'
 
 const columns = [
   {
@@ -77,6 +77,9 @@ const columns = [
   }
 ]
 
+const loginStore = useLoginStore()
+const { isValid, checkResponseErrors } = useErrorHandling()
+
 const tableRef = ref()
 const rows = ref([])
 const filter = ref('')
@@ -95,8 +98,11 @@ async function onRequest (props) {
 
   const params = { page, quantity: rowsPerPage, name: filter }
   const response = await classesAPI.index(params)
-  rows.value = response.data
-  pagination.value = response.pagination
+  checkResponseErrors(response)
+  if (isValid.value) {
+    rows.value = response.data
+    pagination.value = response.pagination
+  }
 
   loading.value = false
 }

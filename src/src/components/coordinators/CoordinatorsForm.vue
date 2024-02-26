@@ -9,8 +9,15 @@
           label="Nome"
           lazy-rules="ondemand"
           :rules="rules.name"
+          :error="hasError('name')"
+        >
+        <template v-slot:error>
+          <span :key="index" v-for="(message, index) in errors.name">
+            {{ message }}
+          </span>
+        </template>
+        </q-input>
 
-        />
         <q-input class="col q-mx-sm"
           :readonly="!loginStore.isAdmin"
           outlined
@@ -18,8 +25,15 @@
           label="Email"
           lazy-rules="ondemand"
           :rules="rules.email"
+          :error="hasError('email_atec')"
+        >
+        <template v-slot:error>
+          <span :key="index" v-for="(message, index) in errors.email_atec">
+            {{ message }}
+          </span>
+        </template>
+        </q-input>
 
-        />
         <q-input class="col q-ml-sm"
           :readonly="!loginStore.isAdmin"
           outlined
@@ -27,8 +41,14 @@
           label="Telefone"
           lazy-rules="ondemand"
           :rules="rules.phoneNumber"
-
-        />
+          :error="hasError('phone_number')"
+        >
+        <template v-slot:error>
+          <span :key="index" v-for="(message, index) in errors.phone_number">
+            {{ message }}
+          </span>
+        </template>
+        </q-input>
       </div>
 
       <div v-if="loginStore.isAdmin" class="col-12">
@@ -67,12 +87,14 @@ import coordinatorsAPI from "../../services/fetches/coordinators";
 import { useRoute } from "vue-router";
 import { useLoginStore } from "../../stores/login.js";
 import { Loading } from "quasar";
+import { useErrorHandling } from 'src/composables/useErrorHandling'
 
 const data = ref(defaultValues());
 const defaults = defaultValues();
 const rules = CoordinatorDTO.rules();
 const route = useRoute();
 const loginStore = useLoginStore();
+const { errors, hasError, isValid, checkResponseErrors } = useErrorHandling()
 
 const props = defineProps({
   edit: Boolean,
@@ -86,7 +108,8 @@ onMounted(async () => {
       Loading.hide()
     }
   } catch (error) {
-    console.error(error)
+    notify.serverError()
+    Loading.hide()
   }
 });
 
@@ -97,10 +120,13 @@ watch(
 
 async function getCoordinator(id) {
   const output = await coordinatorsAPI.show(id);
-  data.value.name = defaults.name = output.name;
-  data.value.emailAtec = defaults.emailAtec = output.emailAtec;
-  data.value.phoneNumber = defaults.phoneNumber = output.phoneNumber;
-  data.value.id = id;
+  checkResponseErrors(output)
+  if (isValid.value) {
+    data.value.name = defaults.name = output.name;
+    data.value.emailAtec = defaults.emailAtec = output.emailAtec;
+    data.value.phoneNumber = defaults.phoneNumber = output.phoneNumber;
+    data.value.id = id;
+  }
 }
 
 function defaultValues() {
@@ -121,8 +147,11 @@ async function onSubmit() {
   const output = props.edit
     ? await coordinatorsAPI.update(data.value)
     : await coordinatorsAPI.store(data.value);
-
+  checkResponseErrors(output)
   Loading.hide()
-  emit("valuecreated", output);
+  if (isValid.value) {
+    props.edit ? notify.update() : notify.store()
+    emit('valuecreated', output)
+  }
 }
 </script>

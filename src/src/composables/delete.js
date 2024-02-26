@@ -1,7 +1,10 @@
 import { Dialog } from 'quasar'
 import notify from './notify'
+import { useErrorHandling } from './useErrorHandling'
 
 export default deleteModel
+
+const { isValid, checkResponseErrors } = useErrorHandling()
 
 /**
    * @param callback destroy function from whatever api file
@@ -20,10 +23,12 @@ function deleteModel (callback, id, router, appendedMessage = '', routeTo = '') 
     })
     .onOk(async () => {
       const response = await callback(id)
-      // if (response.message === 'deleted')
-      notify.destroy()
-      if (routeTo) router.push(routeTo)
-      else router.back()
+      checkResponseErrors(response)
+      if(isValid.value) {
+        notify.destroy()
+        if (routeTo) router.push(routeTo)
+        else router.back()
+      }
     })
   } catch (error) {
     console.error("Error:", error)
