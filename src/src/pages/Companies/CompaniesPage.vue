@@ -13,7 +13,7 @@ const store = useLoginStore()
         <div>
           <h1 class="text-h6">Empresas</h1>
         </div>
-        <q-btn dense unelevated color="primary" icon="add" :to="'companies/add'" />
+        <q-btn v-if="store.isAdmin" dense unelevated color="primary" icon="add" :to="'companies/add'" />
       </div>
       <CompaniesList />
     </div>

@@ -26,11 +26,9 @@ const columns = [
   },
 
 ];
-if (store.isAdmin) {
-  columns.push({
-    name: 'Action', label: '', field: 'action', align: 'center',
-  })
-}
+columns.push({
+  name: 'Action', label: '', field: 'action', align: 'center',
+})
 const tableRef = ref()
 const rows = ref([])
 const loading = ref(true)
@@ -69,8 +67,8 @@ onMounted(() => {
 <template>
   <div class="q-py-md">
     <q-table flat bordered ref="tableRef" title="Treats" :rows="rows" :columns="columns" row-key="id"
-      v-model:pagination="pagination" :loading="loading" :filter="filters" binary-state-sort @request="onRequest" :rows-per-page-options="[5, 10, 15, 20, 25, 30, 50, 100]"
-      rows-per-page-label="Registos por página">
+      v-model:pagination="pagination" :loading="loading" :filter="filters" binary-state-sort @request="onRequest"
+      :rows-per-page-options="[5, 10, 15, 20, 25, 30, 50, 100]" rows-per-page-label="Registos por página">
       <template v-slot:loading>
         <q-inner-loading showing color="primary" />
       </template>

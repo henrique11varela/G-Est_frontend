@@ -105,7 +105,7 @@ const routes = [
                 component: () => import('pages/Companies/CompaniesShow.vue'),
               },
               {
-                path: 'contactperson',
+                path: 'companiesperson',
                 children: [
                   {
                     path: 'add',
@@ -121,7 +121,7 @@ const routes = [
                 }
               },
               {
-                path: 'contactaddress',
+                path: 'companiesaddress',
                 children: [
                   {
                     path: 'add',
