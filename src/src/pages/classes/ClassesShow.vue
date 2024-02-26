@@ -21,6 +21,7 @@ import { ref, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useLoginStore } from 'src/stores/login'
 import { Loading } from 'quasar'
+import downloadBlob from 'src/composables/downloadBlob'
 
 const loginStore = useLoginStore()
 
@@ -39,7 +40,10 @@ onMounted(() => {
 })
 
 async function exportClass(id, fileName){
-  exportsAPI.studentClass(id, fileName)
+  Loading.show()
+  const data = await exportsAPI.studentClass(id)
+  downloadBlob(data.blob, fileName)
+  Loading.hide()
 }
 
 async function getClass(id) {
