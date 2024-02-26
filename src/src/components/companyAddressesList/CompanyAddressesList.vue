@@ -100,13 +100,15 @@ onMounted(() => {
     <div>
       <h1 class="text-h6">Lista de Moradas</h1>
     </div>
-    <q-btn dense unelevated color="primary" icon="add" :to="`/companies/show/${companyid}/contactaddress/add`" />
+    <q-btn dense unelevated color="primary" icon="add" :to="`/companies/show/${companyid}/companiesaddress/add`" />
   </div>
 
   <q-table :loading="loading" @request="onRequest" flat bordered ref="tableRef" title="Treats" :rows="rows"
     :columns="columns" row-key="id" v-model:pagination="pagination" :filter="filters" binary-state-sort :rows-per-page-options="[5, 10, 15, 20, 25, 30, 50, 100]"
       rows-per-page-label="Registos por página">
-
+      <template v-slot:loading>
+        <q-inner-loading showing color="primary" />
+      </template>
 
     <template v-slot:top>
       <q-space />
@@ -140,7 +142,7 @@ onMounted(() => {
     </template>
     <template v-slot:body-cell-Action="props">
       <q-td>
-        <q-btn :to="`/companies/show/${companyid}/contactaddress/edit/${props.row.id}`" unelevated text-color="secondary">
+        <q-btn :to="`/companies/show/${companyid}/companiesaddress/edit/${props.row.id}`" unelevated text-color="secondary">
           <q-icon name="edit"></q-icon>
         </q-btn>
       </q-td>
