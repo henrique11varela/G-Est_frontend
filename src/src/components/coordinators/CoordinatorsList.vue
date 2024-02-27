@@ -32,7 +32,7 @@
 
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
-          <q-btn unelevated text-color="secondary" :to="`/coordinators/${props.row.id}`">
+          <q-btn unelevated text-color="secondary" :to="`/coordinators/${props?.row?.id}`">
             <q-icon name="edit" />
           </q-btn>
         </q-td>
@@ -53,21 +53,21 @@ const columns = [
     required: true,
     label: 'Coordenador',
     align: 'left',
-    field: row => row.name,
+    field: row => row?.name,
   },
   {
     name: 'email',
     required: true,
     label: 'Email',
     align: 'left',
-    field: row => row.emailAtec,
+    field: row => row?.emailAtec,
   },
   {
     name: 'phoneNumber',
     required: true,
     label: 'Telefone',
     align: 'left',
-    field: row => row.phoneNumber,
+    field: row => row?.phoneNumber,
   }
 ]
 

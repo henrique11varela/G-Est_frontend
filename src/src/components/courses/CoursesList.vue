@@ -7,7 +7,7 @@
       ref="tableRef"
       :rows="rows"
       :columns="columns"
-      :row-key="row => row.id"
+      :row-key="row => row?.id"
       v-model:pagination="pagination"
       :loading="loading"
       :filter="filter"
@@ -51,21 +51,21 @@ const columns = [
     required: true,
     label: 'Curso',
     align: 'left',
-    field: row => row.name,
+    field: row => row?.name,
   },
   {
     name: 'type',
     required: true,
     label: 'Tipo',
     align: 'left',
-    field: row => row.type,
+    field: row => row?.type,
   },
   {
     name: 'area',
     required: true,
     label: 'Área',
     align: 'left',
-    field: row => `${row.area.areaCode} - ${row.area.name}`,
+    field: row => `${row?.area?.areaCode} - ${row?.area?.name}`,
   },
 ]
 

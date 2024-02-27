@@ -33,7 +33,7 @@
 
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
-          <q-btn unelevated text-color="primary" :to="`/classes/show/${props.row.id}`">
+          <q-btn unelevated text-color="primary" :to="`/classes/show/${props?.row?.id}`">
             <q-icon name="visibility" />
           </q-btn>
         </q-td>
@@ -55,21 +55,21 @@ const columns = [
     required: true,
     label: 'Turmas',
     align: 'left',
-    field: row => row.name,
+    field: row => row?.name,
   },
   {
     name: 'course',
     required: true,
     label: 'Curso',
     align: 'left',
-    field: row => `${row.course?.name} - ${row.course?.type}`,
+    field: row => `${row?.course?.name} - ${row?.course?.type}`,
   },
   {
     name: 'coordinator',
     required: true,
     label: 'Coordenador',
     align: 'left',
-    field: row => row.coordinator?.name,
+    field: row => row?.coordinator?.name,
   },
   {
     name: 'actions',

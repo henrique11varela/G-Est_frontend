@@ -136,19 +136,19 @@ onMounted(() => {
 
     <template v-slot:body-cell-isTutor="props">
       <q-td>
-        <q-icon v-if="props.row.isTutor" name="done" />
+        <q-icon v-if="props?.row?.isTutor" name="done" />
       </q-td>
     </template>
 
 
     <template v-slot:body-cell-isContact="props">
       <q-td>
-        <q-icon v-if="props.row.isContact" name="done" />
+        <q-icon v-if="props?.row?.isContact" name="done" />
       </q-td>
     </template>
     <template v-slot:body-cell-Action="props">
       <q-td>
-        <q-btn :to="`/companies/show/${companyid}/companiesperson/edit/${props.row.id}`" unelevated text-color="secondary">
+        <q-btn :to="`/companies/show/${companyid}/companiesperson/edit/${props?.row?.id}`" unelevated text-color="secondary">
           <q-icon name="edit"></q-icon>
         </q-btn>
       </q-td>

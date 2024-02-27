@@ -21,7 +21,7 @@ import { Loading } from 'quasar'
 import notify from 'src/composables/notify'
 import { useErrorHandling } from 'src/composables/useErrorHandling'
 
-const { errors, hasError, isValid, checkResponseErrors } = useErrorHandling()
+const { errors, isValid, checkResponseErrors } = useErrorHandling()
 
 const file = ref(null)
 const emit = defineEmits(['imported'])
