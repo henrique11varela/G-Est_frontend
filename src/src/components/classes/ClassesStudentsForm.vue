@@ -36,7 +36,6 @@
     <ClassesStudentsList @remove-student="removeStudent" edit :students="editList"></ClassesStudentsList>
     <div v-if="loginStore.isAdmin">
       <q-btn unelevated label="Guardar" color="primary" @click="$emit('submitStudents', editList)"/>
-      <q-btn unelevated label="Reset" color="primary" flat class="q-ml-sm" @click="setDefaultList()"/>
     </div>
   </div>
 </template>
