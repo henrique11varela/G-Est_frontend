@@ -4,13 +4,13 @@
       <div class="row q-mb-md">
         <!-- Class -->
         <div class="col q-pr-lg">
-          <q-input outlined readonly class="q-mb-md col-4" v-model="internshipData.class.name" label="Turma" type="text"
-            :loading="pageState.loading" />
+          <q-input outlined readonly class="q-mb-md col-4" :error="hasError('student_collection_id')"
+            v-model="internshipData.class.name" label="Turma" type="text" :loading="pageState.loading" />
         </div>
         <!-- student -->
         <div class="col-8">
-          <q-input outlined readonly class="q-mb-md offset-1 col-7" v-model="internshipData.student.name" label="Aluno"
-            type="text" :loading="pageState.loading" />
+          <q-input outlined readonly class="q-mb-md offset-1 col-7" :error="hasError('student_id')"
+            v-model="internshipData.student.name" label="Aluno" type="text" :loading="pageState.loading" />
         </div>
       </div>
 
@@ -19,7 +19,7 @@
         <div v-for="numberSelect in internshipData.companies.length" :key="numberSelect" class="row">
           <div class="q-mb-md col-7">
             <q-select outlined label="Empresa" v-model="internshipData.companies[numberSelect - 1]" use-input
-              hide-selected fill-input input-debounce="500" :options="options.companies"
+              hide-selected fill-input input-debounce="500" :options="options.companies" :error="hasError('companies')"
               :rules="[(val) => !!val || 'Selecione uma Empresa']"
               :readonly="isAccepted || pageState.isSubmitting || pageState.ended || !loginStore.isAdmin"
               :loading="pageState.loadingCompanies" option-label="name" @filter="filterCompaniesFn">
@@ -39,7 +39,7 @@
           </div>
           <div class="q-mb-md col q-pl-lg">
             <q-select outlined label="Estado" v-model="internshipData.companies[numberSelect - 1].status"
-              :options="options.status" :rules="[(val) => !!val || 'Selecione uma opção']"
+              :options="options.status" :error="hasError('companies')" :rules="[(val) => !!val || 'Selecione uma opção']"
               :readonly="(isAccepted && internshipData.companies[numberSelect - 1].status != 'Aceite') || internshipData.companies[numberSelect - 1].name == '' || pageState.isSubmitting || pageState.ended || !loginStore.isAdmin">
             </q-select>
           </div>
@@ -59,12 +59,14 @@
         <!-- Dates -->
         <div class="row">
           <div class="col q-pr-sm">
-            <q-input outlined v-model="internshipData.startedInternship.startDate" mask="date" :rules="['date']"
+            <q-input outlined v-model="internshipData.startedInternship.startDate" mask="date"
+              :error="hasError('started_internship.start_date')" :rules="['date']"
               :readonly="pageState.isSubmitting || pageState.ended || !loginStore.isAdmin" label="Data de Inicio">
               <template v-slot:append>
                 <q-icon name="event" class="cursor-pointer">
                   <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                    <q-date v-model="internshipData.startedInternship.startDate" :locale="qDateLocale"
+                    <q-date v-model="internshipData.startedInternship.startDate"
+                      :error="hasError('started_internship.start_date')" :locale="qDateLocale"
                       :readonly="pageState.isSubmitting || pageState.ended || !loginStore.isAdmin">
                       <div class="row items-center justify-end">
                         <q-btn v-close-popup label="Fechar" color="primary" flat />
@@ -78,11 +80,13 @@
 
           <div class="col q-pl-sm">
             <q-input outlined v-model="internshipData.startedInternship.endDate" mask="date" :rules="['date']"
+              :error="hasError('started_internship.end_date')"
               :readonly="pageState.isSubmitting || pageState.ended || !loginStore.isAdmin" label="Data de Fim">
               <template v-slot:append>
                 <q-icon name="event" class="cursor-pointer">
                   <q-popup-proxy cover transition-show="scale" transition-hide="scale">
                     <q-date v-model="internshipData.startedInternship.endDate" :locale="qDateLocale"
+                      :error="hasError('started_internship.end_date')"
                       :readonly="pageState.isSubmitting || pageState.ended || !loginStore.isAdmin">
                       <div class="row items-center justify-end">
                         <q-btn v-close-popup label="Fechar" color="primary" flat />
@@ -100,19 +104,36 @@
           <!-- MealAllowance -->
           <div class="col-3">
             <q-checkbox label="Refeição" v-model="internshipData.startedInternship.mealAllowance"
+              :error="hasError('started_internship.meal_allowance')"
               :disable="pageState.isSubmitting || pageState.ended || !loginStore.isAdmin" />
+            <div class="text-negative" :key="index"
+              v-for="(message, index) in errors['started_internship.meal_allowance']">
+              {{ message }}
+            </div>
           </div>
 
           <div class="col-3">
             <q-checkbox label="Morada de envio é sede" class="col-3"
+              :error="hasError('started_internship.hq_shipping_address')"
               v-model="internshipData.startedInternship.hqShippingAddress"
               :disable="pageState.isSubmitting || pageState.ended || !loginStore.isAdmin" />
+            <div class="text-negative" :key="index"
+              v-for="(message, index) in errors['started_internship.hq_shipping_address']">
+              {{ message }}
+            </div>
           </div>
 
           <div class="col-6">
-            <q-input outlined class="q-ml-sm" v-model="internshipData.startedInternship.hourlyLoad" :rules="['numeric']"
+            <q-input outlined class="q-ml-sm" v-model="internshipData.startedInternship.hourlyLoad"
+              :error="hasError('started_internship.hourly_load')" :rules="['numeric']"
               :readonly="pageState.isSubmitting || pageState.ended || !loginStore.isAdmin" label="Carga Horária"
-              type="number" min="0" />
+              type="number" min="0">
+              <template v-slot:error>
+                <span :key="index" v-for="(message, index) in errors['started_internship.hourly_load']">
+                  {{ message }}
+                </span>
+              </template>
+            </q-input>
           </div>
 
         </div>
@@ -130,7 +151,8 @@
             </q-item>
           </template>
           <template v-slot:append>
-            <q-btn flat round icon="add" class="cursor-pointer" @click.stop="openAddressForm" v-if="!pageState.isSubmitting && !pageState.ended && loginStore.isAdmin"></q-btn>
+            <q-btn flat round icon="add" class="cursor-pointer" @click.stop="openAddressForm"
+              v-if="!pageState.isSubmitting && !pageState.ended && loginStore.isAdmin"></q-btn>
           </template>
         </q-select>
 
@@ -146,7 +168,8 @@
             </q-item>
           </template>
           <template v-slot:append>
-            <q-btn flat round icon="add" class="cursor-pointer" @click.stop="openTutorForm" v-if="!pageState.isSubmitting && !pageState.ended && loginStore.isAdmin"></q-btn>
+            <q-btn flat round icon="add" class="cursor-pointer" @click.stop="openTutorForm"
+              v-if="!pageState.isSubmitting && !pageState.ended && loginStore.isAdmin"></q-btn>
           </template>
         </q-select>
         <hr class="q-mb-md">
@@ -202,10 +225,12 @@ import { useLoginStore } from "../../stores/login.js";
 import CompanyFormComponent from "../companies/CompanyFrom.vue";
 import CompanyPeopleFormComponent from "../companiesPeople/CompanyPeopleFrom.vue";
 import CompanyAddressFormComponent from "../companyAddressesList/CompanyAddressesFrom.vue";
+import { useErrorHandling } from 'src/composables/useErrorHandling'
 
 const route = useRoute();
 const innerFormStore = useInnerFormStore();
 const loginStore = useLoginStore();
+const { errors, hasError, isValid, checkResponseErrors } = useErrorHandling()
 
 const emit = defineEmits(['valuecreated'])
 
@@ -295,6 +320,7 @@ const optionsAddresses = ref([]);
 // started
 
 function startInternship() {
+  internshipData.value.companies = internshipData.value.companies.filter((item) => item.id != null);
   internshipData.value.startedInternship = {
     startDate: "",
     endDate: "",
@@ -366,11 +392,12 @@ async function onSubmit() {
   let response = null
   if (pageState.value.edit) {
     response = await internshipsAPI.update(internshipData.value)
-    console.log('after', response);
   } else {
     response = await internshipsAPI.store(internshipData.value)
     pageState.value.edit = true;
   }
+  checkResponseErrors(response)
+  console.log(errors.value);
   if (response.requestStatus == 200) {
     if (!pageState.value.edit) {
       notify.store()

@@ -82,7 +82,7 @@ onMounted(() => {
 
         <template v-slot:body-cell-action="props">
           <q-td :props="props">
-            <q-btn :to="`users/${props.row.id}`" unelevated :icon="matEdit" text-color="secondary"></q-btn>
+            <q-btn :to="`users/${props?.row?.id}`" unelevated :icon="matEdit" text-color="secondary"></q-btn>
           </q-td>
         </template>
 

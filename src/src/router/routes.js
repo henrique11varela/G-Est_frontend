@@ -15,9 +15,8 @@ const routes = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/IndexPage.vue') },
-
-
+      {
+        path: '', component: () => import('pages/Classes/ClassesPage.vue') },
       {
         path: 'applications',
         children: [
@@ -28,19 +27,16 @@ const routes = [
           {
             path: 'add',
             component: () => import('pages/Applications/ApplicationsAdd.vue'),
+            meta: {
+              adminOnly: true
+            }
           },
           {
             path: 'edit/:id',
             component: () => import('pages/Applications/ApplicationsEdit.vue'),
-          },
-          {
-            path: 'show/:id',
-            component: () => import('pages/Applications/ApplicationsShow.vue'),
-          },
+          }
         ]
       },
-
-
       {
         path: 'classes',
         children: [
@@ -51,6 +47,9 @@ const routes = [
           {
             path: 'add',
             component: () => import('pages/Classes/ClassesAdd.vue'),
+            meta: {
+              adminOnly: true
+            }
           },
           {
             path: 'edit/:id',
@@ -58,10 +57,16 @@ const routes = [
               {
                 path: '',
                 component: () => import('pages/Classes/ClassesEdit.vue'),
+                meta: {
+                  adminOnly: true
+                }
               },
               {
                 path: 'students',
                 component: () => import('pages/Classes/ClassesStudentsEdit.vue'),
+                meta: {
+                  adminOnly: true
+                }
               },
             ]
           },
@@ -81,10 +86,16 @@ const routes = [
           {
             path: 'add',
             component: () => import('pages/Companies/CompaniesAdd.vue'),
+            meta: {
+              adminOnly: true
+            }
           },
           {
             path: 'edit/:id',
             component: () => import('pages/Companies/CompaniesEdit.vue'),
+            meta: {
+              adminOnly: true
+            }
           },
           {
             path: 'show/:id',
@@ -104,7 +115,10 @@ const routes = [
                     path: 'edit/:personId',
                     component: () => import('pages/CompaniesPerson/CompaniesPersonEdit.vue'),
                   },
-                ]
+                ],
+                meta: {
+                  adminOnly: true
+                }
               },
               {
                 path: 'companiesaddress',
@@ -117,7 +131,10 @@ const routes = [
                     path: 'edit/:addressId',
                     component: () => import('pages/CompaniesAddresses/CompaniesAddressesEdit.vue'),
                   },
-                ]
+                ],
+                meta: {
+                  adminOnly: true
+                }
               },
             ]
           },
@@ -133,10 +150,16 @@ const routes = [
           {
             path: 'add',
             component: () => import('pages/Students/StudentsAdd.vue'),
+            meta: {
+              adminOnly: true
+            }
           },
           {
             path: 'edit/:id',
             component: () => import('pages/Students/StudentsEdit.vue'),
+            meta: {
+              adminOnly: true
+            }
           },
           {
             path: 'show/:id',
@@ -168,6 +191,9 @@ const routes = [
           {
             path: 'add',
             component: () => import('pages/Users/UserAdd.vue'),
+            meta: {
+              adminOnly: true
+            }
           },
           {
             path: ':id',
@@ -185,10 +211,16 @@ const routes = [
           {
             path:'add',
             component: () => import('pages/Coordinators/CoordinatorsAdd.vue'),
+            meta: {
+              adminOnly: true
+            }
           },
           {
             path:':id',
             component: () => import('pages/Coordinators/CoordinatorsEdit.vue'),
+            meta: {
+              adminOnly: true
+            }
           }
         ]
       },
@@ -202,10 +234,16 @@ const routes = [
           {
             path: 'add',
             component: () => import('pages/Courses/CoursesAdd.vue'),
+            meta: {
+              adminOnly: true
+            }
           },
           {
             path: 'edit/:id',
             component: () => import('pages/Courses/CoursesEdit.vue'),
+            meta: {
+              adminOnly: true
+            }
           },
         ]
       },

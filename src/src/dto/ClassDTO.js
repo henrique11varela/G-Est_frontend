@@ -49,9 +49,10 @@ function output(data) {
       }
     }
     return {
+      id: data.id,
       name: data.name,
-      course_id: data.course.id,
-      coordinator_id: data.coordinator.id,
+      course_id: data.course?.id,
+      coordinator_id: data.coordinator?.id,
       ...(hasStudentsKey && { students }),
     }
   } catch (error) {

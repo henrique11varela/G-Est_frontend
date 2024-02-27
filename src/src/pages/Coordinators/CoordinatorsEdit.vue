@@ -16,7 +16,6 @@
 import CoordinatorsForm from 'src/components/coordinators/CoordinatorsForm.vue'
 import coordinatorsAPI from 'src/services/fetches/coordinators'
 import { useRoute, useRouter } from 'vue-router'
-import notify from 'src/composables/notify'
 import deleteModel from 'src/composables/delete'
 import { useLoginStore } from '../../stores/login.js'
 
@@ -27,7 +26,6 @@ const route = useRoute()
 const loginStore = useLoginStore()
 
 function postSubmit(value) {
-  notify.update()
   router.push(`/coordinators`)
 }
 

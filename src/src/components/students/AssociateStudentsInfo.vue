@@ -3,14 +3,14 @@
     <q-item class="col-12 col-sm">
       <q-item-section>
         <q-item-label overline>Nome</q-item-label>
-        <q-item-label >{{ student.name }}</q-item-label>
+        <q-item-label >{{ student?.name }}</q-item-label>
       </q-item-section>
     </q-item>
 
     <q-item class="col-12 col-sm">
       <q-item-section>
         <q-item-label overline>Email institucional</q-item-label>
-        <q-item-label>{{ student.atecEmail }}</q-item-label>
+        <q-item-label>{{ student?.atecEmail }}</q-item-label>
       </q-item-section>
     </q-item>
 

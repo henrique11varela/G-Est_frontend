@@ -13,7 +13,14 @@
         lazy-rules="ondemand"
         :rules="rules.name"
         class="col-12 col-md-5"
-      />
+        :error="hasError('name')"
+      >
+      <template v-slot:error>
+        <span :key="index" v-for="(message, index) in errors?.name">
+          {{ message }}
+        </span>
+      </template>
+      </q-input>
 
       <q-select
         outlined
@@ -24,7 +31,14 @@
         lazy-rules="ondemand"
         :rules="rules.type"
         class="col-12 col-sm"
-      />
+        :error="hasError('type')"
+      >
+      <template v-slot:error>
+        <span :key="index" v-for="(message, index) in errors?.type">
+          {{ message }}
+        </span>
+      </template>
+      </q-select>
 
       <q-select
         outlined
@@ -35,16 +49,22 @@
         input-debounce="500"
         :readonly="!loginStore.isAdmin"
         :loading="loading.areas"
-        :option-label="area => `${area.areaCode} - ${area.name}`"
+        :option-label="area => `${area?.areaCode} - ${area?.name}`"
         @filter="filterAreasFn"
         lazy-rules="ondemand"
         :rules="rules.area"
         class="col-12 col-md-3 col-sm-7"
-      />
+        :error="hasError('area_id')"
+      >
+      <template v-slot:error>
+        <span :key="index" v-for="(message, index) in errors?.area_id">
+          {{ message }}
+        </span>
+      </template>
+      </q-select>
 
       <div class="col-12" v-if="loginStore.isAdmin">
         <q-btn unelevated label="Guardar" type="submit" color="primary"/>
-        <q-btn unelevated label="Reset" type="reset" color="primary" flat class="q-ml-sm"/>
       </div>
     </q-form>
   </div>
@@ -58,8 +78,11 @@ import { useRoute } from "vue-router"
 import areasAPI from 'src/services/fetches/areas'
 import { useLoginStore } from 'src/stores/login'
 import { Loading } from 'quasar'
-const loginStore = useLoginStore()
+import { useErrorHandling } from 'src/composables/useErrorHandling'
+import notify from 'src/composables/notify'
 
+const { errors, hasError, isValid, checkResponseErrors } = useErrorHandling()
+const loginStore = useLoginStore()
 
 const data = ref(defaultValues())
 const areas = ref([])
@@ -82,7 +105,8 @@ onMounted(async () => {
       Loading.hide()
     }
   } catch (error) {
-    console.error(error)
+    notify.serverError()
+    Loading.hide()
   }
 })
 
@@ -93,10 +117,13 @@ watch(
 
 async function getCourse(id) {
   const output = await coursesAPI.show(id)
-  data.value.name = defaults.name = output.name
-  data.value.type = defaults.type = output.type
-  data.value.area = defaults.area = output.area
-  data.value.id = output.id
+  checkResponseErrors(output)
+  if (isValid.value) {
+    data.value.name = defaults.name = output.name
+    data.value.type = defaults.type = output.type
+    data.value.area = defaults.area = output.area
+    data.value.id = output.id
+  }
 }
 
 function defaultValues() {
@@ -118,19 +145,22 @@ function filterAreasFn(val, update, abort) {
       name: val,
       area_code: val
     })
-    areas.value = response.data
+    checkResponseErrors(response)
+    if (isValid.value) areas.value = response.data
     loading.value.areas = false
   })
 }
 
 async function onSubmit() {
   Loading.show()
-
   const output = props.edit ?
   await coursesAPI.update(data.value) :
   await coursesAPI.store(data.value)
-
+  checkResponseErrors(output)
   Loading.hide()
-  emit('valuecreated', output)
+  if (isValid.value) {
+    props.edit ? notify.update() : notify.store()
+    emit('valuecreated', output)
+  }
 }
 </script>

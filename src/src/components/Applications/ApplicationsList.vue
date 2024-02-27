@@ -32,7 +32,7 @@
 
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
-          <q-btn unelevated text-color="secondary" :to="`/applications/edit/${props.row.id}`">
+          <q-btn unelevated text-color="secondary" :to="`/applications/edit/${props.row?.id}`">
             <q-icon name="edit" />
           </q-btn>
         </q-td>

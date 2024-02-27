@@ -10,11 +10,9 @@
 <script setup>
 import CoursesForm from 'src/components/courses/CoursesForm.vue'
 import { useRouter } from 'vue-router'
-import notify from 'src/composables/notify'
 const router = useRouter()
 
 function postSubmit(value) {
-
   router.push('/courses')
 }
 

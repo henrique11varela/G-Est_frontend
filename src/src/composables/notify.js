@@ -1,9 +1,17 @@
 import { Notify } from 'quasar'
 
-export default { store, update, destroy, imported, serverError }
+export default { store, update, destroy, imported, serverError, unauthorized, notFound }
 
 function serverError() {
-  notify('Erro no processamento do pedido', 'negative')
+  notifyError('Erro no processamento do pedido')
+}
+
+function unauthorized() {
+  notifyError('Não tem autorização para realizar a operação')
+}
+
+function notFound() {
+  notifyError('Recurso não encontrado')
 }
 
 function imported() {
@@ -19,14 +27,18 @@ function update() {
 }
 
 function destroy() {
-  notify('Apagado', 'negative')
+  notify('Apagado')
 }
 
-function notify(message, color = 'positive') {
+function notifyError(message) {
+  notify(message, 'negative', 'error')
+}
+
+function notify(message, color = 'positive', icon = 'cloud_done') {
   Notify.create({
     color,
     textColor: 'white',
-    icon: 'cloud_done',
+    icon,
     message
   })
 }

@@ -14,11 +14,13 @@ import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import notify from 'src/composables/notify'
 import { Loading } from 'quasar'
+import { useErrorHandling } from 'src/composables/useErrorHandling'
 
 const classInfo = ref({})
 const loading = ref(false)
 const route = useRoute()
 const router = useRouter()
+const { isValid, checkResponseErrors } = useErrorHandling()
 
 watch(
   () => route.params.id,
@@ -35,7 +37,8 @@ async function getClass(id) {
   loading.value = true
   Loading.show()
   const response = await classesAPI.show(id)
-  classInfo.value = response
+  checkResponseErrors(response)
+  if (isValid.value) classInfo.value = response
   Loading.hide()
   loading.value = false
 }
@@ -44,9 +47,11 @@ async function submitStudents(editedList) {
   classInfo.value.students = editedList
   Loading.show()
   const response = await classesAPI.update(classInfo.value)
-  //validations go here
-  notify.update()
+  checkResponseErrors(response)
   Loading.hide()
-  router.push(`/classes/show/${route.params.id}`)
+  if (isValid.value) {
+    notify.update()
+    router.push(`/classes/show/${route.params.id}`)
+  }
 }
 </script>
