@@ -32,8 +32,9 @@
 
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
-          <q-btn unelevated text-color="secondary" :to="`/applications/edit/${props.row.id}`">
-            <q-icon name="edit" />
+          <q-btn unelevated :to="`/applications/edit/${props.row.id}`">
+            <q-icon v-if="LoginStore.isAdmin" name="edit" color="secondary"/>
+            <q-icon v-else name="visibility" color="primary"/>
           </q-btn>
         </q-td>
       </template>
@@ -44,6 +45,10 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import applicationsAPI from 'src/services/fetches/applications'
+import { useLoginStore } from 'src/stores/login';
+import { LocalStorage } from 'quasar';
+
+const LoginStore = useLoginStore()
 
 const columns = [
 {
