@@ -8,7 +8,9 @@ import Router from 'src/router'
 import { useRoute } from 'vue-router';
 import companyPearsonDTO from "src/dto/CompanyPeopleDTO"
 import companyPeopleAPI from "src/services/fetches/companyPeople.js";
+import { useErrorHandling } from 'src/composables/useErrorHandling';
 import notify from 'src/composables/notify';
+const { errors, hasError, isValid, checkResponseErrors } = useErrorHandling();
 const router = Router()
 const route = useRoute();
 const props = defineProps({
@@ -22,36 +24,19 @@ const props = defineProps({
 
 // const CompanyId = ref(props.propid ? props.propid : route.params.id)
 const submitting = ref(false)
-const errors = ref({
-
-})
 const personData = ref({
 })
 const $q = useQuasar()
 async function onSubmit() {
-  submitting.value = true
-  let data = {};
-  if (!props.edit) {
-    data = await companyPeopleAPI.store(personData.value)
-  }
-  else {
-    data = await companyPeopleAPI.update(personData.value)
-  }
-
+  Loading.show()
+  submitting.value = true;
+  const output = props.edit ? await companyPeopleAPI.update(personData.value) : await companyPeopleAPI.store(personData.value);
+  checkResponseErrors(output)
+  Loading.hide()
   submitting.value = false
-  if (data.requestStatus == 200) {
-    if (!props.edit) {
-      notify.store()
-    } else {
-      notify.update()
-    }
-    emit('valuecreated', data)
-    return
-  }
-  if (data.requestStatus == 422) {
-    errors.value.name = data.errors.name
-    errors.value.email = data.errors.email
-    errors.value.phoneNumber = data.errors.phoneNumber
+  if (isValid.value) {
+    props.edit ? notify.update() : notify.store()
+    emit('valuecreated', output)
     return
   }
 }
@@ -90,7 +75,7 @@ function showDeleteModal() {
     <div class="row">
       <div class="col-md-6">
         <q-input outlined class="q-mb-md q-mr-md" v-model="personData.name" label="Name *" lazy-rules
-          :rules="companyPearsonDTO.rules().name" :error="errors?.hasOwnProperty('name')" :disable="submitting">
+          :rules="companyPearsonDTO.rules().name" :error="hasError('name')" :disable="submitting">
           <template v-slot:error>
             <span :key="index" v-for="(title, index) in errors.name">
               {{ title }}
@@ -100,7 +85,7 @@ function showDeleteModal() {
       </div>
       <div class="col-md-6">
         <q-input outlined class="q-mb-md q-ml-md" v-model="personData.email" label="Email*" lazy-rules
-          :rules="companyPearsonDTO.rules().email" :error="errors?.hasOwnProperty('email')" :disable="submitting">
+          :rules="companyPearsonDTO.rules().email" :error="hasError('email')" :disable="submitting">
           <template v-slot:error>
             <span :key="index" v-for="(title, index) in errors.email">
               {{ title }}
@@ -110,7 +95,7 @@ function showDeleteModal() {
       </div>
       <div class="col-md-6">
         <q-input outlined class="q-mb-md q-mr-md" v-model="personData.phoneNumber" label="Phone *" lazy-rules
-          :rules="companyPearsonDTO.rules().phoneNumber" :error="errors?.hasOwnProperty('phoneNumber')"
+          :rules="companyPearsonDTO.rules().phoneNumber" :error="hasError('phoneNumber')"
           :disable="submitting">
           <template v-slot:error>
             <span :key="index" v-for="(title, index) in errors.phoneNumber">
