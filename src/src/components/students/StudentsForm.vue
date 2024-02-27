@@ -12,7 +12,7 @@
           label="Nome"
           lazy-rules="ondemand"
           :rules="rules.name"
-          class="col-12 col-lg-8 col-md-6"
+          class="col-12"
           :error="hasError('name')"
         >
         <template v-slot:error>
@@ -30,7 +30,7 @@
           label="Hard skills"
           lazy-rules="ondemand"
           :rules="rules.skills('hard')"
-          class="col-12 col-sm"
+          class="col"
           :error="hasError('hard_skills')"
         >
         <template v-slot:error>
@@ -48,7 +48,7 @@
           label="Soft skills"
           lazy-rules="ondemand"
           :rules="rules.skills('soft')"
-          class="col-12 col-sm"
+          class="col"
           :error="hasError('soft_skills')"
         >
         <template v-slot:error>
@@ -67,7 +67,7 @@
           label="Morada"
           lazy-rules="ondemand"
           :rules="rules.address"
-          class="col-12 col-lg-8 col-md-6"
+          class="col-12"
           :error="hasError('address')"
         >
         <template v-slot:error>
@@ -85,7 +85,7 @@
           mask="####-###"
           lazy-rules="ondemand"
           :rules="rules.postalCode"
-          class="col-12 col-sm"
+          class="col"
           :error="hasError('postal_code')"
         >
         <template v-slot:error>
@@ -101,11 +101,27 @@
           label="Localidade"
           lazy-rules="ondemand"
           :rules="rules.locality"
-          class="col-12 col-sm"
+          class="col-5"
           :error="hasError('locality')"
         >
         <template v-slot:error>
           <span :key="index" v-for="(message, index) in errors.locality">
+            {{ message }}
+          </span>
+        </template>
+        </q-input>
+        <q-input
+          :readonly="!loginStore.isAdmin"
+          outlined
+          v-model="data.phoneNumber"
+          label="Telefone"
+          lazy-rules="ondemand"
+          :rules="rules.phoneNumber"
+          class="col"
+          :error="hasError('phone_number')"
+        >
+        <template v-slot:error>
+          <span :key="index" v-for="(message, index) in errors.phone_number">
             {{ message }}
           </span>
         </template>
@@ -120,7 +136,7 @@
           label="Email institucional"
           lazy-rules="ondemand"
           :rules="rules.email"
-          class="col-12 col-md col-sm-6"
+          class="col-6"
           :error="hasError('atec_email')"
         >
         <template v-slot:error>
@@ -137,7 +153,7 @@
           label="Email pessoal"
           lazy-rules="ondemand"
           :rules="rules.email"
-          class="col-12 col-md col-sm-6"
+          class="col-6"
           :error="hasError('personal_email')"
         >
         <template v-slot:error>
@@ -147,22 +163,7 @@
         </template>
         </q-input>
 
-        <q-input
-          :readonly="!loginStore.isAdmin"
-          outlined
-          v-model="data.phoneNumber"
-          label="Telefone"
-          lazy-rules="ondemand"
-          :rules="rules.phoneNumber"
-          class="col-12 col-sm"
-          :error="hasError('phone_number')"
-        >
-        <template v-slot:error>
-          <span :key="index" v-for="(message, index) in errors.phone_number">
-            {{ message }}
-          </span>
-        </template>
-        </q-input>
+
       </div>
 
       <div class="col-12" v-if="loginStore.isAdmin">

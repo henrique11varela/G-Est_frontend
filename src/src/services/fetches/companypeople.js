@@ -35,7 +35,7 @@ async function store(payload) {
   try {
     const { data } = await api.post('api/v1/companypeople', CompanyPeopleDTO.output(payload))
     return {
-      ...data,
+      ...CompanyPeopleDTO.input(data),
       requestStatus: 200
     }
   } catch (error) {
@@ -65,7 +65,7 @@ async function update(payload) {
   try {
     const { data } = await api.put(`api/v1/companypeople/${payload.id}`, CompanyPeopleDTO.output(payload))
     return {
-      ...data,
+      ...CompanyPeopleDTO.input(data),
       requestStatus: 200
     }
   } catch (error) {

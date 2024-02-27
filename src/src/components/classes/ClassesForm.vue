@@ -3,7 +3,7 @@
     <q-form
       @submit="onSubmit"
       @reset="onReset"
-      class="q-gutter-md row"
+      class="q-col-gutter-md row"
     >
       <q-input
         :readonly="!loginStore.isAdmin"
