@@ -16,7 +16,7 @@
         :error="hasError('name')"
       >
       <template v-slot:error>
-        <span :key="index" v-for="(message, index) in errors.name">
+        <span :key="index" v-for="(message, index) in errors?.name">
           {{ message }}
         </span>
       </template>
@@ -34,7 +34,7 @@
         :error="hasError('type')"
       >
       <template v-slot:error>
-        <span :key="index" v-for="(message, index) in errors.type">
+        <span :key="index" v-for="(message, index) in errors?.type">
           {{ message }}
         </span>
       </template>
@@ -49,7 +49,7 @@
         input-debounce="500"
         :readonly="!loginStore.isAdmin"
         :loading="loading.areas"
-        :option-label="area => `${area.areaCode} - ${area.name}`"
+        :option-label="area => `${area?.areaCode} - ${area?.name}`"
         @filter="filterAreasFn"
         lazy-rules="ondemand"
         :rules="rules.area"
@@ -57,7 +57,7 @@
         :error="hasError('area_id')"
       >
       <template v-slot:error>
-        <span :key="index" v-for="(message, index) in errors.area_id">
+        <span :key="index" v-for="(message, index) in errors?.area_id">
           {{ message }}
         </span>
       </template>

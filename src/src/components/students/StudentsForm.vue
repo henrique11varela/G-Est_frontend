@@ -16,7 +16,7 @@
           :error="hasError('name')"
         >
         <template v-slot:error>
-          <span :key="index" v-for="(message, index) in errors.name">
+          <span :key="index" v-for="(message, index) in errors?.name">
             {{ message }}
           </span>
         </template>
@@ -34,7 +34,7 @@
           :error="hasError('hard_skills')"
         >
         <template v-slot:error>
-          <span :key="index" v-for="(message, index) in errors.hard_skills">
+          <span :key="index" v-for="(message, index) in errors?.hard_skills">
             {{ message }}
           </span>
         </template>
@@ -52,7 +52,7 @@
           :error="hasError('soft_skills')"
         >
         <template v-slot:error>
-          <span :key="index" v-for="(message, index) in errors.soft_skills">
+          <span :key="index" v-for="(message, index) in errors?.soft_skills">
             {{ message }}
           </span>
         </template>
@@ -71,7 +71,7 @@
           :error="hasError('address')"
         >
         <template v-slot:error>
-          <span :key="index" v-for="(message, index) in errors.address">
+          <span :key="index" v-for="(message, index) in errors?.address">
             {{ message }}
           </span>
         </template>
@@ -89,7 +89,7 @@
           :error="hasError('postal_code')"
         >
         <template v-slot:error>
-          <span :key="index" v-for="(message, index) in errors.postal_code">
+          <span :key="index" v-for="(message, index) in errors?.postal_code">
             {{ message }}
           </span>
         </template>
@@ -105,7 +105,7 @@
           :error="hasError('locality')"
         >
         <template v-slot:error>
-          <span :key="index" v-for="(message, index) in errors.locality">
+          <span :key="index" v-for="(message, index) in errors?.locality">
             {{ message }}
           </span>
         </template>
@@ -121,7 +121,7 @@
           :error="hasError('phone_number')"
         >
         <template v-slot:error>
-          <span :key="index" v-for="(message, index) in errors.phone_number">
+          <span :key="index" v-for="(message, index) in errors?.phone_number">
             {{ message }}
           </span>
         </template>
@@ -140,7 +140,7 @@
           :error="hasError('atec_email')"
         >
         <template v-slot:error>
-          <span :key="index" v-for="(message, index) in errors.atec_email">
+          <span :key="index" v-for="(message, index) in errors?.atec_email">
             {{ message }}
           </span>
         </template>
@@ -157,7 +157,7 @@
           :error="hasError('personal_email')"
         >
         <template v-slot:error>
-          <span :key="index" v-for="(message, index) in errors.personal_email">
+          <span :key="index" v-for="(message, index) in errors?.personal_email">
             {{ message }}
           </span>
         </template>

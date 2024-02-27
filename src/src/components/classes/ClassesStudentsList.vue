@@ -3,7 +3,7 @@
     <q-table
       card-class="bg-grey-1"
       flat bordered
-      :rows="props.students"
+      :rows="props?.students"
       :columns="columns"
       row-key="id"
       hide-no-data
@@ -16,10 +16,10 @@
           <q-th auto-width></q-th>
           <q-th
             v-for="col in props.cols"
-            :key="col.name"
+            :key="col?.name"
             :props="props"
           >
-            {{ col.label }}
+            {{ col?.label }}
           </q-th>
           <q-th class="text-left">Situação Atual</q-th>
           <q-th auto-width></q-th>
@@ -32,23 +32,23 @@
             <q-btn size="sm" color="info" unelevated round dense @click="props.expand = !props.expand" :icon="props.expand ? 'remove' : 'add'" />
           </q-td>
           <q-td
-            v-for="col in props.cols"
-            :key="col.name"
+            v-for="col in props?.cols"
+            :key="col?.name"
             :props="props"
           >
-            {{ col.value }}
+            {{ col?.value }}
           </q-td>
-          <CurrentInternship :internships="props.row.internships"></CurrentInternship>
+          <CurrentInternship :internships="props?.row?.internships"></CurrentInternship>
           <q-td>
             <div v-if="loginStore.isAdmin">
-              <q-btn unelevated text-color="negative" @click="$emit('removeStudent', props.row.id)" v-if="edit">
+              <q-btn unelevated text-color="negative" @click="$emit('removeStudent', props?.row?.id)" v-if="edit">
                 <q-icon name="remove"></q-icon>
               </q-btn>
               <div v-else>
-                <q-btn unelevated text-color="secondary" :to="`/students/edit/${props.row.id}`">
+                <q-btn unelevated text-color="secondary" :to="`/students/edit/${props?.row?.id}`">
                   <q-icon name="edit"></q-icon>
                 </q-btn>
-                <q-btn unelevated text-color="accent" :to="`/internships/${classId}/${props.row.id}`">
+                <q-btn unelevated text-color="accent" :to="`/internships/${classId}/${props?.row?.id}`">
                   <q-icon name="work"></q-icon>
                 </q-btn>
               </div>
@@ -58,7 +58,7 @@
         <q-tr no-hover v-show="props.expand" :props="props">
           <q-td colspan="100%">
             <StudentsContacts
-            :contacts="studentContacts(props.row)"></StudentsContacts>
+            :contacts="studentContacts(props?.row)"></StudentsContacts>
           </q-td>
         </q-tr>
       </template>

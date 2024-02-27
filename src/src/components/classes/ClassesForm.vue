@@ -15,7 +15,7 @@
         :error="hasError('name')"
         class="col-12 col-sm-4">
         <template v-slot:error>
-          <span :key="index" v-for="(message, index) in errors.name">
+          <span :key="index" v-for="(message, index) in errors?.name">
             {{ message }}
           </span>
         </template>
@@ -30,7 +30,7 @@
         :options="courses"
         :readonly="!loginStore.isAdmin"
         :loading="loading.courses"
-        :option-label="course => `${course.name} - ${course.type}`"
+        :option-label="course => `${course?.name} - ${course?.type}`"
         :error="hasError('course_id')"
         @filter="filterCoursesFn"
         lazy-rules="ondemand"
@@ -44,7 +44,7 @@
           </q-item>
         </template>
         <template v-slot:error>
-          <span :key="index" v-for="(message, index) in errors.course_id">
+          <span :key="index" v-for="(message, index) in errors?.course_id">
             {{ message }}
           </span>
         </template>
@@ -59,7 +59,7 @@
         :options="coordinators"
         :readonly="!loginStore.isAdmin"
         :loading="loading.coordinators"
-        :option-label="coordinator => coordinator.name"
+        :option-label="coordinator => coordinator?.name"
         :error="hasError('coordinator_id')"
         @filter="filterCoordinatorsFn"
         lazy-rules="ondemand"
@@ -73,7 +73,7 @@
           </q-item>
         </template>
         <template v-slot:error>
-          <span :key="index" v-for="(message, index) in errors.coordinator_id">
+          <span :key="index" v-for="(message, index) in errors?.coordinator_id">
             {{ message }}
           </span>
         </template>
