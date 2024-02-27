@@ -5,11 +5,11 @@
         <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
 
         <q-toolbar-title>
-          G-est
+          G-Est
         </q-toolbar-title>
 
-        <q-btn :to="`/users/${store.userInfo.id}`">{{ store.userInfo.name }}</q-btn>
-        <q-btn @click="logout">Logout</q-btn>
+        <q-btn :to="`/users/${store.userInfo.id}`" color="white" text-color="primary">{{ store.userInfo.name }}</q-btn>
+        <q-btn @click="logout" class="q-ml-md" color="white" text-color="primary">Logout</q-btn>
       </q-toolbar>
     </q-header>
 
@@ -29,7 +29,7 @@
 </template>
 
 <script setup>
-import { defineComponent, ref } from 'vue'
+import { ref } from 'vue'
 import EssentialLink from 'components/EssentialLink.vue'
 import tokenAPI from "../services/fetches/token.js";
 import Router from '../router'
