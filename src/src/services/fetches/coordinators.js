@@ -34,7 +34,7 @@ async function store(payload) {
   try {
     const { data } = await api.post('api/v1/coordinators', coordinatorDTO.output(payload))
     return {
-      ...data,
+      ...coordinatorDTO.input(data),
       requestStatus: 200
     }
   } catch (error) {
@@ -64,7 +64,7 @@ async function update(payload) {
   try {
     const { data } = await api.put(`api/v1/coordinators/${payload.id}`, coordinatorDTO.output(payload))
     return {
-      ...data,
+      ...coordinatorDTO.input(data),
       requestStatus: 200
     }
   } catch (error) {
