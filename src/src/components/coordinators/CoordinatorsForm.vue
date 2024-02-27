@@ -58,14 +58,6 @@
           type="submit"
           color="primary"
         />
-        <q-btn
-          unelevated
-          label="Reset"
-          type="reset"
-          color="primary"
-          flat
-          class="q-ml-sm"
-        />
       </div>
       <div class="col-12">
         <hr />

@@ -81,7 +81,6 @@
 
       <div class="col-12" v-if="loginStore.isAdmin">
         <q-btn unelevated label="Guardar" type="submit" color="primary"/>
-        <q-btn unelevated label="Reset" type="reset" color="primary" flat class="q-ml-sm"/>
       </div>
     </q-form>
   </div>
