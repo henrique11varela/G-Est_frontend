@@ -69,9 +69,6 @@ function showDeleteModal() {
   <!-- content -->
   <q-form class="q-ma-lg" action="companies" @submit.prevent="onSubmit">
 
-    <div v-if="edit">
-      <q-btn class="q-mb-md" @click="showDeleteModal" color="red" :icon="matDelete" label="Delete" />
-    </div>
     <div class="row">
       <div class="col-md-6">
         <q-input outlined class="q-mb-md q-mr-md" v-model="personData.name" label="Name *" lazy-rules

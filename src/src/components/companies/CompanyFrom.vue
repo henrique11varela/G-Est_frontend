@@ -1,6 +1,5 @@
 <script setup>
 import { defineProps, ref, defineEmits, reactive, onMounted } from 'vue'
-import { matEdit, matDelete } from '@quasar/extras/material-icons';
 import { Loading, QSpinnerGears } from 'quasar';
 import { useRoute } from 'vue-router';
 import CompanyDTO from "src/dto/CompanyDTO"
@@ -62,10 +61,6 @@ function showDeleteModal() {
   <div>
     <q-form class="q-ma-lg" action="companies" @submit.prevent="onSubmit">
 
-      <!-- content -->
-      <div v-if="props.edit">
-        <q-btn class="q-mb-md" @click="showDeleteModal" color="red" :icon="matDelete" label="Delete" />
-      </div>
       <div class="row">
         <div class="col-md-6">
           <q-input outlined class="q-mr-md  q-mb-md" v-model="CompanyData.name" label="Name" lazy-rules

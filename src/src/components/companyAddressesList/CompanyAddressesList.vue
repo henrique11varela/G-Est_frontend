@@ -87,7 +87,7 @@ function onRequest(props) {
     pagination.value.rowsNumber = returnedData.length
     // ...and turn of loading indicator
     loading.value = false;
-  }, 1500)
+  }, 0)
 }
 
 onMounted(() => {
@@ -141,7 +141,7 @@ onMounted(() => {
       </q-td>
     </template>
     <template v-slot:body-cell-Action="props">
-      <q-td>
+      <q-td class="text-center">
         <q-btn :to="`/companies/show/${companyid}/companiesaddress/edit/${props?.row?.id}`" unelevated text-color="secondary">
           <q-icon name="edit"></q-icon>
         </q-btn>

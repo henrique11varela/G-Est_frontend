@@ -6,6 +6,7 @@ import deleteModel from 'src/composables/delete'
 import { useLoginStore } from 'src/stores/login';
 import companyPeopleAPI from "src/services/fetches/companyPeople.js";
 const router = Router();
+const route = useRoute();
 const valueCreated = async function (data) {
 
   await router.back()
@@ -13,7 +14,7 @@ const valueCreated = async function (data) {
 const loginStore = useLoginStore()
 
 function showDeleteModal() {
-  deleteModel(companyPeopleAPI.destroy, route.params.personId, router, 'do contacto da empresa', '/companies');
+  deleteModel(companyPeopleAPI.destroy, route.params.personId, router, 'do contacto da empresa', `/companies/show/${route.params.id}`);
 }
 </script>
 <template>

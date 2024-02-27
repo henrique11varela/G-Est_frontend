@@ -1,12 +1,13 @@
 <script setup>
 import CompanyFrom from '../../components/companies/CompanyFrom.vue'
-import Router from 'src/router';
 import notify from 'src/composables/notify'
-const router = Router();
+import { matEdit, matDelete } from '@quasar/extras/material-icons';
 import CompanyAPI from "src/services/fetches/companies.js";
 import { useLoginStore } from 'src/stores/login';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
+import deleteModel from 'src/composables/delete';
 const route = useRoute();
+const router = useRouter();
 const valueCreated = async function (data) {
   if (data.status == 200) {
 

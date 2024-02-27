@@ -29,11 +29,9 @@ const addressData = ref({
 })
 async function onSubmit() {
   Loading.show()
-  submitting.value = true;
   const output = props.edit ? await companyAddressAPI.update(addressData.value) : await companyAddressAPI.store(addressData.value);
   checkResponseErrors(output)
   Loading.hide()
-  submitting.value = false
   if (isValid.value) {
     props.edit ? notify.update() : notify.store()
     emit('valuecreated', output)

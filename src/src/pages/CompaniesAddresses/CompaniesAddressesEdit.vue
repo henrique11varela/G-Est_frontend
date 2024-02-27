@@ -1,13 +1,12 @@
 <script setup>
-import CompanyAddressesFrom from 'src/components/companyAddressesList/CompanyAddressesFrom.vue'
-import Router from 'src/router';
-import { matDelete } from '@quasar/extras/material-icons'
-import deleteModel from 'src/composables/delete'
-import { useLoginStore } from 'src/stores/login'
+import CompanyAddressesFrom from 'src/components/companyAddressesList/CompanyAddressesFrom.vue';
+import { matDelete } from '@quasar/extras/material-icons';
+import deleteModel from 'src/composables/delete';
+import { useLoginStore } from 'src/stores/login';
 import companyAddressAPI from "src/services/fetches/companyaddress.js";
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 const route = useRoute();
-const router = Router();
+const router = useRouter();
 
 const loginStore = useLoginStore()
 
@@ -15,7 +14,7 @@ const valueCreated = function (data) {
   router.back()
 }
 function showDeleteModal() {
-  deleteModel(companyAddressAPI.destroy, route.params.addressId, router, 'do endereço', '/companies');
+  deleteModel(companyAddressAPI.destroy, route.params.addressId, router, 'do endereço', `/companies/show/${route.params.id}`);
 }
 </script>
 <template>
