@@ -38,7 +38,9 @@ onMounted(async () => {
   CompanyData.value = CompanyDTO.input({})
   if (props.edit) {
     Loading.show();
-    CompanyData.value = await CompanyAPI.show(route.params.id)
+    const output = await CompanyAPI.show(route.params.id);
+    checkResponseErrors(output)
+    CompanyData.value = output
     Loading.hide()
   }
 })
