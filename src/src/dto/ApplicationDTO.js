@@ -45,7 +45,6 @@ function output(data) {
 function rules() {
   return {
     name: [ val => !!val || 'Campo Obrigatório' ],
-    startDate: [ (val, rules) => rules.date(val)  || 'Introduza uma data válida' ],
-    course: [ val => val || 'Selecione um curso'],
+    
   }
 }
