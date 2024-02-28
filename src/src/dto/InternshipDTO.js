@@ -92,7 +92,7 @@ function output(data) {
       started_internship = {
         meal_allowance: data.startedInternship.mealAllowance ? 1 : 0,
         hourly_load: data.startedInternship.hourlyLoad,
-        hq_shipping_address: data.startedInternship.hqShippingAddress,
+        hq_shipping_address: data.startedInternship.hqShippingAddress ? 1 : 0,
         start_date: data.startedInternship.startDate,
         end_date: data.startedInternship.endDate,
         company_address_id: data.startedInternship.address?.id || null,

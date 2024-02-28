@@ -113,15 +113,6 @@
           color="primary"
           :disabled="submitting"
         />
-        <q-btn
-          unelevated
-          label="Reset"
-          type="reset"
-          color="primary"
-          flat
-          class="q-ml-sm"
-          :disabled="submitting"
-        />
 
         <q-spinner
           color="primary"

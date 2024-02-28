@@ -16,7 +16,6 @@
 import StudentsForm from 'src/components/students/StudentsForm.vue'
 import studentsAPI from 'src/services/fetches/students'
 import { useRoute, useRouter } from 'vue-router'
-import notify from 'src/composables/notify'
 import deleteModel from 'src/composables/delete'
 import { useLoginStore } from 'src/stores/login'
 const loginStore = useLoginStore()
@@ -24,14 +23,11 @@ const loginStore = useLoginStore()
 const router = useRouter()
 const route = useRoute()
 
-const isAdmin = true
-
-function postSubmit() {
-  notify.update()
+function postSubmit(value) {
   router.back()
 }
 
 function deleteStudent() {
-  deleteModel(studentsAPI.destroy, route.params.id, 'o formando')
+  deleteModel(studentsAPI.destroy, route.params.id, router, 'o formando', '/students')
 }
 </script>

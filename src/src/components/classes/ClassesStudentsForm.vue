@@ -1,23 +1,26 @@
 <template>
   <div class="q-py-md">
-    <div>
-      <q-input
-        style="max-width: 400px;"
-        type="search"
-        outlined
-        bg-color="white"
-        borderless dense
-        debounce="500"
-        v-model="filter"
-        :loading="loading"
-        placeholder="Procurar formando"
-        @update:model-value="fetchStudent"
-        v-if="loginStore.isAdmin"
-      >
-        <template v-slot:append>
-          <q-icon name="search" />
-        </template>
-      </q-input>
+    <div v-if="loginStore.isAdmin">
+      <div class="row q-gutter-md">
+        <q-input
+          style="max-width: 400px;"
+          type="search"
+          outlined
+          bg-color="white"
+          borderless dense
+          debounce="500"
+          v-model="filter"
+          :loading="loading"
+          placeholder="Procurar formando"
+          @update:model-value="fetchStudent"
+          v-if="loginStore.isAdmin"
+        >
+          <template v-slot:append>
+            <q-icon name="search" />
+          </template>
+        </q-input>
+        <q-btn unelevated label="Criar formando" color="primary" @click.stop="openStudentForm"></q-btn>
+      </div>
 
       <div class="q-py-md" v-if="filteredStudents.length > 0">
         <AssociateStudentsInfo
@@ -25,7 +28,6 @@
           :key="index"
           :student="student"
           :associate="!isStudentDuplicate(student)"
-          :submitting="submitting"
           @studentPicked="addStudent"
         >
         </AssociateStudentsInfo>
@@ -33,9 +35,7 @@
     </div>
     <ClassesStudentsList @remove-student="removeStudent" edit :students="editList"></ClassesStudentsList>
     <div v-if="loginStore.isAdmin">
-      <q-btn unelevated label="Guardar" color="primary" @click="$emit('submitStudents', editList)" :disabled="submitting"/>
-      <q-btn unelevated label="Reset" color="primary" flat class="q-ml-sm" @click="setDefaultList()" :disabled="submitting"/>
-      <q-spinner color="primary" size="2.5em" :thickness="2" v-if="submitting"/>
+      <q-btn unelevated label="Guardar" color="primary" @click="$emit('submitStudents', editList)"/>
     </div>
   </div>
 </template>
@@ -46,7 +46,13 @@ import ClassesStudentsList from './ClassesStudentsList.vue'
 import studentsAPI from 'src/services/fetches/students'
 import { ref, onMounted } from 'vue'
 import { useLoginStore } from 'src/stores/login'
+import { useErrorHandling } from 'src/composables/useErrorHandling'
+import StudentsForm from 'src/components/students/StudentsForm.vue'
+import { useInnerFormStore } from 'src/stores/innerForm'
+
+const { isValid, checkResponseErrors } = useErrorHandling()
 const loginStore = useLoginStore()
+const innerFormStore = useInnerFormStore();
 
 const editList = ref([])
 const filter = ref("")
@@ -55,10 +61,12 @@ const loading = ref(false)
 
 const props = defineProps({
   students: {
-    type: Object,
-    required: true
-  },
-  submitting: Boolean
+    type: Array,
+    required: true,
+    default() {
+      return []
+    },
+  }
 })
 
 onMounted(async () => {
@@ -88,7 +96,15 @@ async function fetchStudent(value) {
   loading.value = true
   const args = { name: value, atec_email: value }
   const response = await studentsAPI.index(args)
-  filteredStudents.value = response.data
+  checkResponseErrors(response)
+  if (isValid) filteredStudents.value = response.data
   loading.value = false
+}
+
+async function openStudentForm() {
+  const createdStudent = await innerFormStore.openInnerForm(StudentsForm)
+  if (!createdStudent) return
+  createdStudent.internships = []
+  filteredStudents.value.unshift(createdStudent)
 }
 </script>

@@ -32,7 +32,7 @@
 
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
-          <q-btn unelevated :to="`/applications/edit/${props.row.id}`">
+          <q-btn unelevated :to="`/applications/edit/${props.row?.id}`">
             <q-icon v-if="LoginStore.isAdmin" name="edit" color="secondary"/>
             <q-icon v-else name="visibility" color="primary"/>
           </q-btn>

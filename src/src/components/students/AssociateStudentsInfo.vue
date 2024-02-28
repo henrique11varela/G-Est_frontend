@@ -3,22 +3,22 @@
     <q-item class="col-12 col-sm">
       <q-item-section>
         <q-item-label overline>Nome</q-item-label>
-        <q-item-label >{{ student.name }}</q-item-label>
+        <q-item-label >{{ student?.name }}</q-item-label>
       </q-item-section>
     </q-item>
 
     <q-item class="col-12 col-sm">
       <q-item-section>
         <q-item-label overline>Email institucional</q-item-label>
-        <q-item-label>{{ student.atecEmail }}</q-item-label>
+        <q-item-label>{{ student?.atecEmail }}</q-item-label>
       </q-item-section>
     </q-item>
 
     <q-item class="col-12 col-sm">
       <q-item-section>
         <div>
-          <q-btn unelevated label="Associar" color="accent" @click="$emit('studentPicked', student)" v-if="associate" :disabled="submitting"/>
-          <q-item-label class="text-negative" v-else>Formando incluído</q-item-label>
+          <q-btn unelevated label="Associar" color="accent" @click="$emit('studentPicked', student)" v-if="associate"/>
+          <q-item-label class="text-positive" v-else>Formando associado</q-item-label>
         </div>
       </q-item-section>
     </q-item>
@@ -35,6 +35,5 @@ defineProps({
     type: Boolean,
     required: true
   },
-  submitting: Boolean
 })
 </script>

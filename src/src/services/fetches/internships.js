@@ -19,10 +19,14 @@ async function index(params = null) {
     });
     return {
       data: internships,
-      pagination: PaginationDTO.input(data)
+      pagination: PaginationDTO.input(data),
+      requestStatus: 200
     }
   } catch (error) {
-    console.log(error);
+    return {
+      requestStatus: error.response.status,
+      errors: error.response.data.errors,
+    }
   }
 }
 
@@ -35,8 +39,8 @@ async function store(payload) {
     }
   } catch (error) {
     return {
-      status: error.response.status,
-      errors: error.response.data.errors
+      requestStatus: error.response.status,
+      errors: error.response.data.errors,
     }
   }
 }
@@ -44,9 +48,15 @@ async function store(payload) {
 async function show(id) {
   try {
     const { data } = await api.get(`api/v1/internships/${id}`)
-    return InternshipDTO.input(data)
+    return {
+      ...InternshipDTO.input(data),
+      requestStatus: 200
+    }
   } catch (error) {
-    console.log(error);
+    return {
+      requestStatus: error.response.status,
+      errors: error.response.data.errors,
+    }
   }
 }
 
@@ -59,8 +69,8 @@ async function update(payload) {
     }
   } catch (error) {
     return {
-      status: error.response.status,
-      errors: error.response.data.errors
+      requestStatus: error.response.status,
+      errors: error.response.data.errors,
     }
   }
 }
@@ -68,8 +78,14 @@ async function update(payload) {
 async function destroy(id) {
   try {
     const { data } = await api.delete(`api/v1/internships/${id}`)
-    return data
+    return {
+      ...data,
+      requestStatus: 200
+    }
   } catch (error) {
-    console.log(error);
+    return {
+      requestStatus: error.response.status,
+      errors: error.response.data.errors,
+    }
   }
 }

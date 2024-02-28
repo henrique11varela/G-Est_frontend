@@ -21,45 +21,73 @@ async function index(params = null) {
     }
     return {
       data: applications,
-      pagination: paginationDTO.input(data)
+      pagination: paginationDTO.input(data),
+      requestStatus: 200
     }
   } catch (error) {
-    console.log(error);
+    return {
+      requestStatus: error.response.status,
+      errors: error.response.data.errors
+    }
   }
 }
 
 async function store(payload) {
   try {
     const { data } = await api.post('api/v1/applications', applicationDTO.output(payload))
-    return data
+    return {
+      ...applicationDTO.input(data),
+      requestStatus: 200
+    }
   } catch (error) {
-    console.log(error);
+    return {
+      requestStatus: error.response.status,
+      errors: error.response.data.errors
+    }
   }
 }
 
 async function show(id) {
   try {
     const { data } = await api.get(`api/v1/applications/${id}`)
-    return applicationDTO.input(data)
+    return {
+      ...applicationDTO.input(data),
+      requestStatus: 200
+    }
   } catch (error) {
-    console.log(error);
+    return {
+      requestStatus: error.response.status,
+      errors: error.response.data.errors
+    }
   }
 }
 
 async function update(payload) {
   try {
     const { data } = await api.put(`api/v1/applications/${payload.id}`, applicationDTO.output(payload))
-    return data
+    return {
+      ...applicationDTO.input(data),
+      requestStatus: 200
+    }
   } catch (error) {
-    console.log(error);
+    return {
+      requestStatus: error.response.status,
+      errors: error.response.data.errors
+    }
   }
 }
 
 async function destroy(id) {
   try {
     const { data } = await api.delete(`api/v1/applications/${id}`)
-    return data
+    return {
+      ...data,
+      requestStatus: 200
+    }
   } catch (error) {
-    console.log(error);
+    return {
+      requestStatus: error.response.status,
+      errors: error.response.data.errors
+    }
   }
 }

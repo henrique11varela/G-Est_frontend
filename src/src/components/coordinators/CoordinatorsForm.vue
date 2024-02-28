@@ -1,7 +1,6 @@
 <template>
   <div class="q-py-md">
-    <q-spinner color="primary" size="3em" :thickness="2" v-if="loading" />
-    <q-form @submit="onSubmit" @reset="onReset" class="q-ma-lg row" v-else>
+    <q-form @submit="onSubmit" @reset="onReset" class="q-ma-lg row">
       <div class="col-12 row">
         <q-input class="col q-mr-sm"
           :readonly="!loginStore.isAdmin"
@@ -10,8 +9,15 @@
           label="Nome"
           lazy-rules="ondemand"
           :rules="rules.name"
+          :error="hasError('name')"
+        >
+        <template v-slot:error>
+          <span :key="index" v-for="(message, index) in errors?.name">
+            {{ message }}
+          </span>
+        </template>
+        </q-input>
 
-        />
         <q-input class="col q-mx-sm"
           :readonly="!loginStore.isAdmin"
           outlined
@@ -19,8 +25,15 @@
           label="Email"
           lazy-rules="ondemand"
           :rules="rules.email"
+          :error="hasError('email_atec')"
+        >
+        <template v-slot:error>
+          <span :key="index" v-for="(message, index) in errors?.email_atec">
+            {{ message }}
+          </span>
+        </template>
+        </q-input>
 
-        />
         <q-input class="col q-ml-sm"
           :readonly="!loginStore.isAdmin"
           outlined
@@ -28,8 +41,14 @@
           label="Telefone"
           lazy-rules="ondemand"
           :rules="rules.phoneNumber"
-
-        />
+          :error="hasError('phone_number')"
+        >
+        <template v-slot:error>
+          <span :key="index" v-for="(message, index) in errors?.phone_number">
+            {{ message }}
+          </span>
+        </template>
+        </q-input>
       </div>
 
       <div v-if="loginStore.isAdmin" class="col-12">
@@ -38,22 +57,6 @@
           label="Guardar"
           type="submit"
           color="primary"
-          :disabled="submitting"
-        />
-        <q-btn
-          unelevated
-          label="Reset"
-          type="reset"
-          color="primary"
-          flat
-          class="q-ml-sm"
-          :disabled="submitting"
-        />
-        <q-spinner
-          color="primary"
-          size="2.5em"
-          :thickness="2"
-          v-if="submitting"
         />
       </div>
       <div class="col-12">
@@ -75,14 +78,15 @@ import { ref, onMounted, watch } from "vue";
 import coordinatorsAPI from "../../services/fetches/coordinators";
 import { useRoute } from "vue-router";
 import { useLoginStore } from "../../stores/login.js";
+import { Loading } from "quasar";
+import { useErrorHandling } from 'src/composables/useErrorHandling'
 
 const data = ref(defaultValues());
 const defaults = defaultValues();
-const loading = ref(false);
-const submitting = ref(false);
 const rules = CoordinatorDTO.rules();
 const route = useRoute();
 const loginStore = useLoginStore();
+const { errors, hasError, isValid, checkResponseErrors } = useErrorHandling()
 
 const props = defineProps({
   edit: Boolean,
@@ -91,12 +95,13 @@ const props = defineProps({
 onMounted(async () => {
   try {
     if (props.edit) {
-      loading.value = true;
+      Loading.show()
       await getCoordinator(route.params.id);
-      loading.value = false;
+      Loading.hide()
     }
   } catch (error) {
-    console.error(error);
+    notify.serverError()
+    Loading.hide()
   }
 });
 
@@ -107,10 +112,13 @@ watch(
 
 async function getCoordinator(id) {
   const output = await coordinatorsAPI.show(id);
-  data.value.name = defaults.name = output.name;
-  data.value.emailAtec = defaults.emailAtec = output.emailAtec;
-  data.value.phoneNumber = defaults.phoneNumber = output.phoneNumber;
-  data.value.id = id;
+  checkResponseErrors(output)
+  if (isValid.value) {
+    data.value.name = defaults.name = output.name;
+    data.value.emailAtec = defaults.emailAtec = output.emailAtec;
+    data.value.phoneNumber = defaults.phoneNumber = output.phoneNumber;
+    data.value.id = id;
+  }
 }
 
 function defaultValues() {
@@ -126,13 +134,16 @@ function onReset() {
 const emit = defineEmits(["valuecreated"]);
 
 async function onSubmit() {
-  submitting.value = true;
+  Loading.show()
 
   const output = props.edit
     ? await coordinatorsAPI.update(data.value)
     : await coordinatorsAPI.store(data.value);
-
-  submitting.value = false;
-  emit("valuecreated", output);
+  checkResponseErrors(output)
+  Loading.hide()
+  if (isValid.value) {
+    props.edit ? notify.update() : notify.store()
+    emit('valuecreated', output)
+  }
 }
 </script>

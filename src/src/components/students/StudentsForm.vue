@@ -1,118 +1,173 @@
 <template>
   <div class="q-py-md">
-    <q-spinner
-      color="primary"
-      size="3em"
-      :thickness="2"
-      v-if="loading"
-    />
     <q-form
       @submit="onSubmit"
       @reset="onReset"
-      v-else
     >
       <div class="row q-col-gutter-md q-mb-md">
         <q-input
-          :readonly="submitting || !loginStore.isAdmin"
+          :readonly="!loginStore.isAdmin"
           outlined
           v-model="data.name"
           label="Nome"
           lazy-rules="ondemand"
           :rules="rules.name"
-          class="col-12 col-lg-8 col-md-6"
-        />
+          class="col-12"
+          :error="hasError('name')"
+        >
+        <template v-slot:error>
+          <span :key="index" v-for="(message, index) in errors?.name">
+            {{ message }}
+          </span>
+        </template>
+        </q-input>
 
         <q-select
-          :readonly="submitting || !loginStore.isAdmin"
+          :readonly="!loginStore.isAdmin"
           outlined
           v-model="data.hardSkills"
           :options="skillValues"
           label="Hard skills"
           lazy-rules="ondemand"
           :rules="rules.skills('hard')"
-          class="col-12 col-sm"
-        />
+          class="col"
+          :error="hasError('hard_skills')"
+        >
+        <template v-slot:error>
+          <span :key="index" v-for="(message, index) in errors?.hard_skills">
+            {{ message }}
+          </span>
+        </template>
+        </q-select>
 
         <q-select
-          :readonly="submitting || !loginStore.isAdmin"
+          :readonly="!loginStore.isAdmin"
           outlined
           v-model="data.softSkills"
           :options="skillValues"
           label="Soft skills"
           lazy-rules="ondemand"
           :rules="rules.skills('soft')"
-          class="col-12 col-sm"
-        />
+          class="col"
+          :error="hasError('soft_skills')"
+        >
+        <template v-slot:error>
+          <span :key="index" v-for="(message, index) in errors?.soft_skills">
+            {{ message }}
+          </span>
+        </template>
+        </q-select>
       </div>
 
       <div class="row q-col-gutter-md q-mb-md">
         <q-input
-          :readonly="submitting || !loginStore.isAdmin"
+          :readonly="!loginStore.isAdmin"
           outlined
           v-model="data.address"
           label="Morada"
           lazy-rules="ondemand"
           :rules="rules.address"
-          class="col-12 col-lg-8 col-md-6"
-        />
+          class="col-12"
+          :error="hasError('address')"
+        >
+        <template v-slot:error>
+          <span :key="index" v-for="(message, index) in errors?.address">
+            {{ message }}
+          </span>
+        </template>
+        </q-input>
 
         <q-input
-          :readonly="submitting || !loginStore.isAdmin"
+          :readonly="!loginStore.isAdmin"
           outlined
           v-model="data.postalCode"
           label="Código Postal"
           mask="####-###"
           lazy-rules="ondemand"
           :rules="rules.postalCode"
-          class="col-12 col-sm"
-        />
+          class="col"
+          :error="hasError('postal_code')"
+        >
+        <template v-slot:error>
+          <span :key="index" v-for="(message, index) in errors?.postal_code">
+            {{ message }}
+          </span>
+        </template>
+        </q-input>
         <q-input
-          :readonly="submitting || !loginStore.isAdmin"
+          :readonly="!loginStore.isAdmin"
           outlined
           v-model="data.locality"
           label="Localidade"
           lazy-rules="ondemand"
           :rules="rules.locality"
-          class="col-12 col-sm"
-        />
-      </div>
-
-      <div class="row q-col-gutter-md q-mb-md">
+          class="col-5"
+          :error="hasError('locality')"
+        >
+        <template v-slot:error>
+          <span :key="index" v-for="(message, index) in errors?.locality">
+            {{ message }}
+          </span>
+        </template>
+        </q-input>
         <q-input
-          :readonly="submitting || !loginStore.isAdmin"
-          outlined
-          v-model="data.atecEmail"
-          label="Email institucional"
-          lazy-rules="ondemand"
-          :rules="rules.email"
-          class="col-12 col-md col-sm-6"
-        />
-
-        <q-input
-          :readonly="submitting || !loginStore.isAdmin"
-          outlined
-          v-model="data.personalEmail"
-          label="Email pessoal"
-          lazy-rules="ondemand"
-          :rules="rules.email"
-          class="col-12 col-md col-sm-6"
-        />
-
-        <q-input
-          :readonly="submitting || !loginStore.isAdmin"
+          :readonly="!loginStore.isAdmin"
           outlined
           v-model="data.phoneNumber"
           label="Telefone"
           lazy-rules="ondemand"
           :rules="rules.phoneNumber"
-          class="col-12 col-sm"
-        />
+          class="col"
+          :error="hasError('phone_number')"
+        >
+        <template v-slot:error>
+          <span :key="index" v-for="(message, index) in errors?.phone_number">
+            {{ message }}
+          </span>
+        </template>
+        </q-input>
+      </div>
+
+      <div class="row q-col-gutter-md q-mb-md">
+        <q-input
+          :readonly="!loginStore.isAdmin"
+          outlined
+          v-model="data.atecEmail"
+          label="Email institucional"
+          lazy-rules="ondemand"
+          :rules="rules.email"
+          class="col-6"
+          :error="hasError('atec_email')"
+        >
+        <template v-slot:error>
+          <span :key="index" v-for="(message, index) in errors?.atec_email">
+            {{ message }}
+          </span>
+        </template>
+        </q-input>
+
+        <q-input
+          :readonly="!loginStore.isAdmin"
+          outlined
+          v-model="data.personalEmail"
+          label="Email pessoal"
+          lazy-rules="ondemand"
+          :rules="rules.email"
+          class="col-6"
+          :error="hasError('personal_email')"
+        >
+        <template v-slot:error>
+          <span :key="index" v-for="(message, index) in errors?.personal_email">
+            {{ message }}
+          </span>
+        </template>
+        </q-input>
+
+
       </div>
 
       <div class="col-12" v-if="loginStore.isAdmin">
-        <q-btn unelevated label="Guardar" type="submit" color="primary" :disabled="submitting"/>
-        <q-btn unelevated label="Reset" type="reset" color="primary" flat class="q-ml-sm" :disabled="submitting"/>
-        <q-spinner color="primary" size="2.5em" :thickness="2" v-if="submitting"/>
+        <q-btn unelevated label="Guardar" type="submit" color="primary"/>
       </div>
     </q-form>
   </div>
@@ -124,7 +179,9 @@ import studentsAPI from 'src/services/fetches/students'
 import { useRoute } from "vue-router"
 import { ref, onMounted, watch } from 'vue'
 import { useLoginStore } from 'src/stores/login'
-const loginStore = useLoginStore()
+import { Loading } from 'quasar'
+import { useErrorHandling } from 'src/composables/useErrorHandling'
+import notify from 'src/composables/notify'
 
 const props = defineProps({
   edit: Boolean,
@@ -133,10 +190,10 @@ const props = defineProps({
 const data = ref(defaultValues())
 const defaults = defaultValues()
 const skillValues = ['Muito Fraco', 'Fraco', 'Razoável', 'Bom', 'Muito Bom']
-const loading = ref(false)
-const submitting = ref(false)
 const rules = studentDTO.rules()
 const route = useRoute()
+const loginStore = useLoginStore()
+const { errors, hasError, isValid, checkResponseErrors } = useErrorHandling()
 
 watch(
   () => route.params.id,
@@ -146,27 +203,31 @@ watch(
 onMounted(async () => {
   try {
     if (props.edit) {
-      loading.value = true
+      Loading.show()
       await getStudent(route.params.id)
-      loading.value = false
+      Loading.hide()
     }
   } catch (error) {
-    console.error(error)
+    notify.serverError()
+    Loading.hide()
   }
 })
 
 async function getStudent(id) {
   const output = await studentsAPI.show(id)
-  data.value.name = defaults.name = output.name
-  data.value.personalEmail = defaults.personalEmail = output.personalEmail
-  data.value.atecEmail = defaults.atecEmail = output.atecEmail
-  data.value.phoneNumber = defaults.phoneNumber = output.phoneNumber
-  data.value.address = defaults.address = output.address
-  data.value.postalCode = defaults.postalCode = output.postalCode
-  data.value.locality = defaults.locality = output.locality
-  data.value.hardSkills = defaults.hardSkills = output.hardSkills
-  data.value.softSkills = defaults.softSkills = output.softSkills
-  data.value.id = output.id
+  checkResponseErrors(output)
+  if (isValid.value) {
+    data.value.name = defaults.name = output.name
+    data.value.personalEmail = defaults.personalEmail = output.personalEmail
+    data.value.atecEmail = defaults.atecEmail = output.atecEmail
+    data.value.phoneNumber = defaults.phoneNumber = output.phoneNumber
+    data.value.address = defaults.address = output.address
+    data.value.postalCode = defaults.postalCode = output.postalCode
+    data.value.locality = defaults.locality = output.locality
+    data.value.hardSkills = defaults.hardSkills = output.hardSkills
+    data.value.softSkills = defaults.softSkills = output.softSkills
+    data.value.id = output.id
+  }
 }
 
 function defaultValues() {
@@ -198,13 +259,16 @@ function onReset() {
 const emit = defineEmits(['valuecreated'])
 
 async function onSubmit() {
-  submitting.value = true
-
+  Loading.show()
   const output = props.edit ?
   await studentsAPI.update(data.value) :
   await studentsAPI.store(data.value)
+  checkResponseErrors(output)
+  Loading.hide()
 
-  submitting.value = false
-  emit('valuecreated', output)
+  if (isValid.value) {
+    props.edit ? notify.update() : notify.store()
+    emit('valuecreated', output)
+  }
 }
 </script>

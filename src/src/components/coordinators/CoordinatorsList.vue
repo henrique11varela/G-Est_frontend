@@ -32,7 +32,7 @@
 
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
-          <q-btn unelevated text-color="secondary" :to="`/coordinators/${props.row.id}`">
+          <q-btn unelevated text-color="secondary" :to="`/coordinators/${props?.row?.id}`">
             <q-icon name="edit" />
           </q-btn>
         </q-td>
@@ -45,7 +45,7 @@
 import { ref, onMounted } from 'vue'
 import coordinatorsAPI from 'src/services/fetches/coordinators'
 import { useLoginStore } from 'src/stores/login'
-const loginStore = useLoginStore()
+import { useErrorHandling } from 'src/composables/useErrorHandling'
 
 const columns = [
   {
@@ -53,21 +53,21 @@ const columns = [
     required: true,
     label: 'Coordenador',
     align: 'left',
-    field: row => row.name,
+    field: row => row?.name,
   },
   {
     name: 'email',
     required: true,
     label: 'Email',
     align: 'left',
-    field: row => row.emailAtec,
+    field: row => row?.emailAtec,
   },
   {
     name: 'phoneNumber',
     required: true,
     label: 'Telefone',
     align: 'left',
-    field: row => row.phoneNumber,
+    field: row => row?.phoneNumber,
   }
 ]
 
@@ -81,6 +81,9 @@ const pagination = ref({
   rowsNumber: 0
 })
 
+const loginStore = useLoginStore()
+const { isValid, checkResponseErrors } = useErrorHandling()
+
 async function onRequest (props) {
   const { page, rowsPerPage } = props.pagination
   const filter = props.filter
@@ -89,9 +92,11 @@ async function onRequest (props) {
 
   const params = { page, quantity: rowsPerPage, name: filter }
   const response = await coordinatorsAPI.index(params)
-  console.log(response)
-  rows.value = response.data
-  pagination.value = response.pagination
+  checkResponseErrors(response)
+  if (isValid.value) {
+    rows.value = response.data
+    pagination.value = response.pagination
+  }
 
   loading.value = false
 }

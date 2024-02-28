@@ -26,11 +26,9 @@ const columns = [
   },
 
 ];
-if (store.isAdmin) {
-  columns.push({
-    name: 'Action', label: '', field: 'action', align: 'center',
-  })
-}
+columns.push({
+  name: 'Action', label: '', field: 'action', align: 'center',
+})
 const tableRef = ref()
 const rows = ref([])
 const loading = ref(true)
@@ -69,8 +67,8 @@ onMounted(() => {
 <template>
   <div class="q-py-md">
     <q-table flat bordered ref="tableRef" title="Treats" :rows="rows" :columns="columns" row-key="id"
-      v-model:pagination="pagination" :loading="loading" :filter="filters" binary-state-sort @request="onRequest" :rows-per-page-options="[5, 10, 15, 20, 25, 30, 50, 100]"
-      rows-per-page-label="Registos por página">
+      v-model:pagination="pagination" :loading="loading" :filter="filters" binary-state-sort @request="onRequest"
+      :rows-per-page-options="[5, 10, 15, 20, 25, 30, 50, 100]" rows-per-page-label="Registos por página">
       <template v-slot:loading>
         <q-inner-loading showing color="primary" />
       </template>
@@ -88,30 +86,30 @@ onMounted(() => {
       <template v-slot:body-cell-NameContact="props">
         <q-td :props="props">
           <span v-if="props.row.contacts.length > 0">
-            {{ props.row.contacts[0].name }}
+            {{ props?.row?.contacts[0]?.name }}
           </span>
         </q-td>
       </template>
       <template v-slot:body-cell-EmailContact="props">
         <q-td :props="props">
           <span v-if="props.row.contacts.length > 0">
-            {{ props.row.contacts[0].email }}
+            {{ props?.row?.contacts[0]?.email }}
           </span>
         </q-td>
       </template>
       <template v-slot:body-cell-PhoneContact="props">
         <q-td :props="props">
           <span v-if="props.row.contacts.length > 0">
-            {{ props.row.contacts[0].phoneNumber }}
+            {{ props?.row?.contacts[0]?.phoneNumber }}
           </span>
         </q-td>
       </template>
       <template v-slot:body-cell-Action="props">
         <q-td :props="props">
-          <q-btn :to="`companies/show/${props.row.id}`" unelevated text-color="primary">
+          <q-btn :to="`companies/show/${props?.row?.id}`" unelevated text-color="primary">
             <q-icon name="visibility"></q-icon>
           </q-btn>
-          <q-btn v-if="store.isAdmin" :to="`companies/edit/${props.row.id}`" unelevated text-color="secondary">
+          <q-btn v-if="store.isAdmin" :to="`companies/edit/${props?.row?.id}`" unelevated text-color="secondary">
             <q-icon name="edit"></q-icon>
           </q-btn>
         </q-td>

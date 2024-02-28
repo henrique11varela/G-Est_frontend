@@ -35,7 +35,7 @@ async function onRequest(props) {
     quantity: rowsPerPage,
     page: page,
   });
-  rows.value.splice(0, rows.value.length, ...usersRequest.Data);
+  rows.value.splice(0, rows.value.length, ...usersRequest.data);
 
   pagination.value = usersRequest.pagination;
   loading.value = false
@@ -81,7 +81,7 @@ onMounted(() => {
 
         <template v-slot:body-cell-action="props">
           <q-td :props="props">
-            <q-btn :to="`users/${props.row.id}`" unelevated :icon="matEdit" text-color="secondary"></q-btn>
+            <q-btn :to="`users/${props?.row?.id}`" unelevated :icon="matEdit" text-color="secondary"></q-btn>
           </q-td>
         </template>
 

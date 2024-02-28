@@ -7,7 +7,7 @@
       ref="tableRef"
       :rows="rows"
       :columns="columns"
-      :row-key="row => row.id"
+      :row-key="row => row?.id"
       v-model:pagination="pagination"
       :loading="loading"
       :filter="filter"
@@ -17,14 +17,7 @@
       rows-per-page-label="Registos por página"
     >
       <template v-slot:loading>
-        <q-inner-loading showing>
-          <q-spinner
-            color="primary"
-            size="3em"
-            :thickness="2"
-            v-if="loading"
-          />
-        </q-inner-loading>
+        <q-inner-loading showing color="primary" />
       </template>
 
       <template v-slot:top-right>
@@ -50,7 +43,7 @@
 import { ref, onMounted } from 'vue'
 import coursesAPI from 'src/services/fetches/courses'
 import { useLoginStore } from 'src/stores/login'
-const loginStore = useLoginStore()
+import { useErrorHandling } from 'src/composables/useErrorHandling'
 
 const columns = [
   {
@@ -58,23 +51,26 @@ const columns = [
     required: true,
     label: 'Curso',
     align: 'left',
-    field: row => row.name,
+    field: row => row?.name,
   },
   {
     name: 'type',
     required: true,
     label: 'Tipo',
     align: 'left',
-    field: row => row.type,
+    field: row => row?.type,
   },
   {
     name: 'area',
     required: true,
     label: 'Área',
     align: 'left',
-    field: row => `${row.area.areaCode} - ${row.area.name}`,
+    field: row => `${row?.area?.areaCode} - ${row?.area?.name}`,
   },
 ]
+
+const { isValid, checkResponseErrors } = useErrorHandling()
+const loginStore = useLoginStore()
 
 const tableRef = ref()
 const rows = ref([])
@@ -93,11 +89,11 @@ async function onRequest (props) {
 
   loading.value = true
   const response = await coursesAPI.index(params)
-
-  //validations go here
-
-  rows.value = response.data
-  pagination.value = response.pagination
+  checkResponseErrors(response)
+  if (isValid.value) {
+    rows.value = response.data
+    pagination.value = response.pagination
+  }
   loading.value = false
 }
 

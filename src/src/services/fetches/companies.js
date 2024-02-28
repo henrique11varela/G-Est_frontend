@@ -17,10 +17,14 @@ async function index(params = null) {
     }
     return {
       data: companies,
-      pagination: PaginationDTO.input(data)
+      pagination: PaginationDTO.input(data),
+      requestStatus: 200
     }
   } catch (error) {
-    console.log(error);
+    return {
+      requestStatus: error.response.status,
+      errors: error.response.data.errors,
+    }
   }
 }
 
@@ -30,9 +34,13 @@ async function show(id) {
     const company = CompanyDTO.input(data);
     return {
       ...company,
+      requestStatus: 200
     }
   } catch (e) {
-    console.log(e)
+    return {
+      requestStatus: error.response.status,
+      errors: error.response.data.errors,
+    }
   }
 }
 
@@ -42,7 +50,7 @@ async function store(company) {
     const { data } = await api.post('api/v1/companies', payload)
 
     return {
-      ...data,
+      ...CompanyDTO.input(data),
       requestStatus: 200
     }
   } catch (error) {
@@ -59,7 +67,7 @@ async function update(company) {
     const { data } = await api.put('api/v1/companies/' + payload.id, payload);
 
     return {
-      ...data,
+      ...CompanyDTO.input(data),
       requestStatus: 200
     }
   } catch (error) {
@@ -73,8 +81,14 @@ async function update(company) {
 async function destroy(id) {
   try {
     const { data } = await api.delete('api/v1/companies/' + id)
-    return data
+    return {
+      ...data,
+      requestStatus: 200
+    }
   } catch (error) {
-    console.log(error);
+    return {
+      requestStatus: error.response.status,
+      errors: error.response.data.errors,
+    }
   }
 }

@@ -101,12 +101,14 @@ onMounted(() => {
     <div>
       <h1 class="text-h6">Lista de Contactos e Tutores</h1>
     </div>
-    <q-btn dense unelevated color="primary" icon="add" :to="`/companies/show/${companyid}/contactperson/add`" />
+    <q-btn dense unelevated color="primary" icon="add" :to="`/companies/show/${companyid}/companiesperson/add`" />
   </div>
   <q-table :loading="loading" @request="onRequest" flat bordered ref="tableRef" title="Treats" :rows="rows"
     :columns="columns" row-key="id" v-model:pagination="pagination" :filter="filters" binary-state-sort :rows-per-page-options="[5, 10, 15, 20, 25, 30, 50, 100]"
       rows-per-page-label="Registos por página">
-
+      <template v-slot:loading>
+        <q-inner-loading showing color="primary" />
+      </template>
 
     <template v-slot:top>
       <q-space />
@@ -122,7 +124,7 @@ onMounted(() => {
           <q-icon name="search" />
         </template>
       </q-input>
-      
+
       <q-input class="q-ml-md" outlined label="Email" borderless dense debounce="300" v-model="filters.email" placeholder="Procurar">
         <template v-slot:append>
           <q-icon name="search" />
@@ -134,19 +136,19 @@ onMounted(() => {
 
     <template v-slot:body-cell-isTutor="props">
       <q-td>
-        <q-icon v-if="props.row.isTutor" name="done" />
+        <q-icon v-if="props?.row?.isTutor" name="done" />
       </q-td>
     </template>
 
 
     <template v-slot:body-cell-isContact="props">
       <q-td>
-        <q-icon v-if="props.row.isContact" name="done" />
+        <q-icon v-if="props?.row?.isContact" name="done" />
       </q-td>
     </template>
     <template v-slot:body-cell-Action="props">
       <q-td>
-        <q-btn :to="`/companies/show/${companyid}/contactperson/edit/${props.row.id}`" unelevated text-color="secondary">
+        <q-btn :to="`/companies/show/${companyid}/companiesperson/edit/${props?.row?.id}`" unelevated text-color="secondary">
           <q-icon name="edit"></q-icon>
         </q-btn>
       </q-td>

@@ -10,11 +10,9 @@
 <script setup>
 import ClassesForm from 'src/components/classes/ClassesForm.vue'
 import { useRouter } from 'vue-router'
-import notify from 'src/composables/notify'
 const router = useRouter()
 
 function postSubmit(value) {
-  notify.store()
   router.push(`/classes/show/${value.id}`)
 }
 

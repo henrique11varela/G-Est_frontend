@@ -20,10 +20,14 @@ async function index(params = null) {
     }
     return {
       data: peoples,
-      pagination: PaginationDTO.input(data)
+      pagination: PaginationDTO.input(data),
+      requestStatus: 200
     }
   } catch (error) {
-    console.log(error);
+    return {
+      requestStatus: error.response.status,
+      errors: error.response.data.errors,
+    }
   }
 }
 
@@ -31,7 +35,7 @@ async function store(payload) {
   try {
     const { data } = await api.post('api/v1/companypeople', CompanyPeopleDTO.output(payload))
     return {
-      ...data,
+      ...CompanyPeopleDTO.input(data),
       requestStatus: 200
     }
   } catch (error) {
@@ -45,9 +49,15 @@ async function store(payload) {
 async function show(id) {
   try {
     const { data } = await api.get(`api/v1/companypeople/${id}`)
-    return CompanyPeopleDTO.input(data)
+    return {
+      ...CompanyPeopleDTO.input(data),
+      requestStatus: 200
+    }
   } catch (error) {
-    console.log(error);
+    return {
+      requestStatus: error.response.status,
+      errors: error.response.data.errors,
+    }
   }
 }
 
@@ -55,7 +65,7 @@ async function update(payload) {
   try {
     const { data } = await api.put(`api/v1/companypeople/${payload.id}`, CompanyPeopleDTO.output(payload))
     return {
-      ...data,
+      ...CompanyPeopleDTO.input(data),
       requestStatus: 200
     }
   } catch (error) {
@@ -69,8 +79,14 @@ async function update(payload) {
 async function destroy(id) {
   try {
     const { data } = await api.delee(`api/v1/companypeople/${id}`)
-    return data
+    return {
+      ...data,
+      requestStatus: 200
+    }
   } catch (error) {
-    console.log(error);
+    return {
+      requestStatus: error.response.status,
+      errors: error.response.data.errors,
+    }
   }
 }

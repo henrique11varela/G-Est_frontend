@@ -1,6 +1,7 @@
 import studentDTO from "./StudentDTO"
 import internshipDTO from "./InternshipDTO"
 import courseDTO from "./CourseDTO"
+import CoordinatorDTO from "./CoordinatorDTO"
 export default { input, output, rules }
 
 function input(data) {
@@ -22,11 +23,13 @@ function input(data) {
       }
     }
     const hasCourseKey = data.hasOwnProperty('course')
+    const hasCoordinatorKey = data.hasOwnProperty('coordinator')
     return {
       id: data.id,
       name: data.name,
       ...(hasStudentsKey && { students }),
       ...(hasCourseKey && { course: courseDTO.input(data.course) }),
+      ...(hasCoordinatorKey && { coordinator: CoordinatorDTO.input(data.coordinator) }),
       ...(hasIntershipsKey && { internships }),
     }
   } catch (error) {
@@ -46,8 +49,10 @@ function output(data) {
       }
     }
     return {
+      id: data.id,
       name: data.name,
-      course_id: data.course.id,
+      course_id: data.course?.id,
+      coordinator_id: data.coordinator?.id,
       ...(hasStudentsKey && { students }),
     }
   } catch (error) {
@@ -60,5 +65,6 @@ function rules() {
   return {
     name: [ val => val && val.length > 0 || 'Introduza um nome' ],
     course: [ val => val || 'Selecione um curso'],
+    coordinator: [ val => val || 'Selecione um coordenador'],
   }
 }

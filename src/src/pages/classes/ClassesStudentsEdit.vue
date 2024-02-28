@@ -1,15 +1,8 @@
 <template>
   <q-page padding>
-    <div v-if="loading">
-      <q-spinner
-        color="primary"
-        size="3em"
-        :thickness="2"
-      />
-    </div>
-    <div class="q-pa-md" v-else>
+    <div class="q-pa-md" v-if="!loading">
       <h1 class="text-h6">Associar/remover alunos de {{ classInfo.name }}</h1>
-      <ClassesStudentsForm :submitting="submitting" :students="classInfo.students" @submit-students="submitStudents"></ClassesStudentsForm>
+      <ClassesStudentsForm :students="classInfo.students" @submit-students="submitStudents"></ClassesStudentsForm>
     </div>
   </q-page>
 </template>
@@ -20,12 +13,14 @@ import classesAPI from 'src/services/fetches/classes'
 import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import notify from 'src/composables/notify'
+import { Loading } from 'quasar'
+import { useErrorHandling } from 'src/composables/useErrorHandling'
 
 const classInfo = ref({})
-const loading = ref(true)
-const submitting = ref(false)
+const loading = ref(false)
 const route = useRoute()
 const router = useRouter()
+const { isValid, checkResponseErrors } = useErrorHandling()
 
 watch(
   () => route.params.id,
@@ -40,18 +35,23 @@ onMounted(async () => {
 
 async function getClass(id) {
   loading.value = true
+  Loading.show()
   const response = await classesAPI.show(id)
-  classInfo.value = response
+  checkResponseErrors(response)
+  if (isValid.value) classInfo.value = response
+  Loading.hide()
   loading.value = false
 }
 
 async function submitStudents(editedList) {
   classInfo.value.students = editedList
-  submitting.value = true
+  Loading.show()
   const response = await classesAPI.update(classInfo.value)
-  submitting.value = false
-  //validations go here
-  notify.update()
-  router.push(`/classes/show/${route.params.id}`)
+  checkResponseErrors(response)
+  Loading.hide()
+  if (isValid.value) {
+    notify.update()
+    router.push(`/classes/show/${route.params.id}`)
+  }
 }
 </script>
