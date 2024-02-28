@@ -76,7 +76,7 @@ onMounted(async () => {
         </q-input>
       </div>
       <div class="col-md-6">
-        <q-input outlined class="q-mb-md q-mr-md" v-model="addressData.postalCode" label="Codigo Postal" lazy-rules
+        <q-input outlined class="q-mb-md q-mr-md" v-model="addressData.postalCode" label="Codigo Postal*" lazy-rules
           :rules="companyAddressesDTO.rules().postalCode"
           :error="hasError('postalCode')">
           <template v-slot:error>
