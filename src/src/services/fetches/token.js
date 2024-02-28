@@ -12,7 +12,6 @@ async function get() {
     const { data } = await api.get('sanctum/csrf-cookie')
     return data
   } catch (error) {
-    console.log(error);
   }
 }
 
@@ -25,7 +24,6 @@ async function login(email, password) {
     const { data } = await api.post('api/v1/login', payload)
     return data
   } catch (error) {
-    console.log(error);
   }
 }
 
@@ -34,7 +32,6 @@ async function logout() {
     const { data } = await api.post('api/v1/logout')
     return data
   } catch (error) {
-    console.log(error);
   }
 }
 
@@ -44,6 +41,5 @@ async function checkRole() {
     return data
   } catch (error) {
     return {}
-    // console.log(error);
   }
 }

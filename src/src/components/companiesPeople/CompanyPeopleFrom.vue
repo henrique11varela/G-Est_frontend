@@ -46,7 +46,10 @@ onMounted(async () => {
   personData.value.companyId = props.propid ? props.propid : route.params.id
   if (props.edit) {
     Loading.show();
-    personData.value = await companyPeopleAPI.show(route.params.personId);
+
+    const output = await companyPeopleAPI.show(route.params.personId);
+    checkResponseErrors(output)
+    personData.value = output;
     Loading.hide();
   }
 })

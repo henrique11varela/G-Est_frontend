@@ -44,7 +44,10 @@ onMounted(async () => {
   addressData.value.companyId = CompanyId.value;
   if (props.edit) {
     Loading.show();
-    addressData.value = await companyAddressAPI.show(route.params.addressId);
+
+    const output = await companyAddressAPI.show(route.params.addressId);
+    checkResponseErrors(output)
+    addressData.value = output;
     Loading.hide();
   }
 })

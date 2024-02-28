@@ -45,7 +45,9 @@ onMounted(async () => {
   UserData.value = UserDTO.input({});
   if (props.edit) {
     Loading.show();
-    UserData.value = await userAPI.show(id);
+    const output = await userAPI.show(id);
+    checkResponseErrors(output)
+    UserData.value = output;
     Loading.hide();
   }
 })
