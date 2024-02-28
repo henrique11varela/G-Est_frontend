@@ -6,7 +6,7 @@
           :readonly="!loginStore.isAdmin"
           outlined
           v-model="data.name"
-          label="Nome"
+          label="Nome*"
           lazy-rules="ondemand"
           :rules="rules.name"
           :error="hasError('name')"
@@ -22,7 +22,7 @@
           :readonly="!loginStore.isAdmin"
           outlined
           v-model="data.emailAtec"
-          label="Email"
+          label="Email*"
           lazy-rules="ondemand"
           :rules="rules.email"
           :error="hasError('email_atec')"
@@ -38,7 +38,7 @@
           :readonly="!loginStore.isAdmin"
           outlined
           v-model="data.phoneNumber"
-          label="Telefone"
+          label="Telefone*"
           lazy-rules="ondemand"
           :rules="rules.phoneNumber"
           :error="hasError('phone_number')"

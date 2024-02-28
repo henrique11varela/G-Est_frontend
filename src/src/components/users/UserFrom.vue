@@ -92,7 +92,7 @@ function showDeleteModal() {
       <div class="row">
         <div class="col-md-6">
           <q-input outlined :readonly="submitting || !store.isAdmin || store.userInfo.id == id" class="q-mr-md"
-            v-model="UserData.name" label="Name *" lazy-rules :rules="UserDTO.rules().name"
+            v-model="UserData.name" label="Nome*" lazy-rules :rules="UserDTO.rules().name"
             :error="errors?.hasOwnProperty('name')">
             <template v-slot:error>
               <span :key="index" v-for="(title, index) in errors.name">

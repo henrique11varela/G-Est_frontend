@@ -90,8 +90,7 @@ function showDeleteModal() {
     </div>
     <div class="row">
       <div class="col-md-6">
-        <q-input outlined class="q-mb-md q-mr-md" v-model="addressData.description" label="Descrição" lazy-rules
-          :rules="companyAddressesDTO.rules().description"
+        <q-input outlined class="q-mb-md q-mr-md" v-model="addressData.description" label="Descrição"
           :error="errors?.hasOwnProperty('description')">
           <template v-slot:error>
             <span :key="index" v-for="(title, index) in errors.description">
@@ -101,7 +100,7 @@ function showDeleteModal() {
         </q-input>
       </div>
       <div class="col-md-6">
-        <q-input outlined class="q-mb-md q-ml-md" v-model="addressData.address" label="Morada" lazy-rules
+        <q-input outlined class="q-mb-md q-ml-md" v-model="addressData.address" label="Morada*" lazy-rules
           :rules="companyAddressesDTO.rules().address" :error="errors?.hasOwnProperty('address')" >
           <template v-slot:error>
             <span :key="index" v-for="(title, index) in errors.address">
@@ -111,7 +110,7 @@ function showDeleteModal() {
         </q-input>
       </div>
       <div class="col-md-6">
-        <q-input outlined class="q-mb-md q-mr-md" v-model="addressData.postalCode" label="Codigo Postal" lazy-rules
+        <q-input outlined class="q-mb-md q-mr-md" v-model="addressData.postalCode" label="Codigo Postal*" lazy-rules
           :rules="companyAddressesDTO.rules().postalCode"
           :error="errors?.hasOwnProperty('postalCode')">
           <template v-slot:error>
@@ -122,7 +121,7 @@ function showDeleteModal() {
         </q-input>
       </div>
       <div class="col-md-6">
-        <q-input outlined class="q-mb-md q-ml-md" v-model="addressData.locality" label="Localidade" lazy-rules
+        <q-input outlined class="q-mb-md q-ml-md" v-model="addressData.locality" label="Localidade*" lazy-rules
           :rules="companyAddressesDTO.rules().locality"  :error="errors?.hasOwnProperty('locality')">
           <template v-slot:error>
             <span :key="index" v-for="(title, index) in errors.locality">

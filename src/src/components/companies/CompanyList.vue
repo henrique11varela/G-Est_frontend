@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref, defineEmits } from 'vue';
 
-
+import CompaniesImport from 'src/components/imports/CompaniesImport.vue'
 import companiesAPI from "src/services/fetches/companies.js";
 import { useLoginStore } from "src/stores/login.js";
 
@@ -57,18 +57,23 @@ async function onRequest(props) {
   loading.value = false
 }
 
-onMounted(() => {
+function updateTable() {
   tableRef.value.requestServerInteraction()
+}
+
+onMounted(() => {
+  updateTable()
 
 
 })
 </script>
 
 <template>
+  <CompaniesImport @imported="updateTable" v-if="store.isAdmin"></CompaniesImport>
   <div class="q-py-md">
     <q-table flat bordered ref="tableRef" title="Treats" :rows="rows" :columns="columns" row-key="id"
       v-model:pagination="pagination" :loading="loading" :filter="filters" binary-state-sort @request="onRequest"
-      :rows-per-page-options="[5, 10, 15, 20, 25, 30, 50, 100]" rows-per-page-label="Registos por página">
+      :rows-per-page-options="[5, 10, 15, 20, 25, 30, 50, 100]" rows-per-page-label="Registos por página" hide-no-data>
       <template v-slot:loading>
         <q-inner-loading showing color="primary" />
       </template>

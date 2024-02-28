@@ -9,7 +9,7 @@
         :readonly="!loginStore.isAdmin"
         outlined
         v-model="data.name"
-        label="Curso"
+        label="Curso*"
         lazy-rules="ondemand"
         :rules="rules.name"
         class="col-12 col-md-5"
@@ -26,7 +26,7 @@
         outlined
         v-model="data.type"
         :options="['APZ', 'EFA', 'CET']"
-        label="Tipo"
+        label="Tipo*"
         :readonly="!loginStore.isAdmin"
         lazy-rules="ondemand"
         :rules="rules.type"
@@ -44,7 +44,7 @@
         outlined
         v-model="data.area"
         :options="areas"
-        label="Área"
+        label="Área*"
         use-input hide-selected fill-input
         input-debounce="500"
         :readonly="!loginStore.isAdmin"
