@@ -1,8 +1,6 @@
 <script setup>
 import CompanyFrom from '../../components/companies/CompanyFrom.vue'
 import ReturnButton from 'src/components/ReturnButton.vue';
-import notify from 'src/composables/notify'
-import { matEdit, matDelete } from '@quasar/extras/material-icons';
 import CompanyAPI from "src/services/fetches/companies.js";
 import { useLoginStore } from 'src/stores/login';
 import { useRoute, useRouter } from 'vue-router';
@@ -10,9 +8,8 @@ import deleteModel from 'src/composables/delete';
 const route = useRoute();
 const router = useRouter();
 const valueCreated = async function (data) {
-  if (data.status == 200) {
-
-    await router.back()
+  if (data) {
+   router.back()
   }
 }
 const loginStore = useLoginStore()
@@ -24,8 +21,8 @@ function showDeleteModal() {
   <q-page padding>
     <div class="q-pa-md">
       <h1 class="text-h6">Editar Empresa</h1>
-      <div v-if="loginStore.isAdmin">
-        <q-btn @click="showDeleteModal" color="red" :icon="matDelete" label="Delete" />
+      <div class="q-my-md" v-if="loginStore.isAdmin">
+        <q-btn @click="showDeleteModal" color="red" label="Apagar" />
       </div>
       <CompanyFrom :edit="true" @valuecreated="valueCreated" />
       <ReturnButton></ReturnButton>

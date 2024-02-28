@@ -8,9 +8,8 @@ import { useLoginStore } from 'src/stores/login';
 import companyPeopleAPI from "src/services/fetches/companyPeople.js";
 const router = useRouter();
 const route = useRoute();
-const valueCreated = async function (data) {
-
-  await router.back()
+const valueCreated = function (data) {
+  router.back()
 }
 const loginStore = useLoginStore()
 
@@ -22,9 +21,9 @@ function showDeleteModal() {
   <q-page padding>
     <div class="q-pa-md">
       <h1 class="text-h6">Editar Contacto</h1>
-    
-      <div v-if="loginStore.isAdmin">
-        <q-btn @click="showDeleteModal" color="red" :icon="matDelete" label="Delete" />
+
+      <div class="q-my-md" v-if="loginStore.isAdmin">
+        <q-btn @click="showDeleteModal" color="red" label="Apagar" />
       </div>
     <CompanyPeopleFrom :edit="true" @valuecreated="valueCreated" />
     <ReturnButton></ReturnButton>

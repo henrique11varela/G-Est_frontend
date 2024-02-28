@@ -22,8 +22,8 @@ function showDeleteModal() {
   <q-page padding>
     <div class="q-pa-md">
       <h1 class="text-h6">Editar Morada</h1>
-      <div v-if="loginStore.isAdmin">
-        <q-btn @click="showDeleteModal" color="red" :icon="matDelete" label="Delete" />
+      <div class="q-my-md" v-if="loginStore.isAdmin">
+        <q-btn @click="showDeleteModal" color="red" label="Apagar" />
       </div>
     </div>
     <CompanyAddressesFrom :edit="true" @valuecreated="valueCreated" />
