@@ -1,11 +1,11 @@
 <script setup>
 import CompanyPeopleFrom from '../../components/companiesPeople/CompanyPeopleFrom.vue'
-import Router from 'src/router';
+import { useRoute, useRouter } from 'vue-router';
 import { matDelete } from '@quasar/extras/material-icons'
 import deleteModel from 'src/composables/delete'
 import { useLoginStore } from 'src/stores/login';
 import companyPeopleAPI from "src/services/fetches/companyPeople.js";
-const router = Router();
+const router = useRouter();
 const route = useRoute();
 const valueCreated = async function (data) {
 

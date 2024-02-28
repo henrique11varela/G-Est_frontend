@@ -1,16 +1,17 @@
 <script setup>
 import UserFrom from '../../components/users/UserFrom.vue'
-import Router from 'src/router';
+import { useRoute, useRouter } from 'vue-router';
 
 import userAPI from "src/services/fetches/users.js";
 import { matDelete } from '@quasar/extras/material-icons'
 import deleteModel from 'src/composables/delete'
 import { useLoginStore } from 'src/stores/login'
-const router = Router();
+const router = useRouter();
 const valueCreated = async function (data) {
   await router.back()
 }
 
+const route = useRoute();
 const loginStore = useLoginStore()
 
 function showDeleteModal() {
