@@ -28,7 +28,7 @@ function output(data) {
 function rules() {
   return {
     description: [
-      val => val && val.length > 0 || "Introduza uma descrição",
+      val => val && val.length > 0 || "Introduza uma Descrição",
     ],
     address: [
       val =>  val && val.length > 0 || "Introduza uma Morada",
@@ -37,7 +37,7 @@ function rules() {
       val =>  val && val.length > 0 || "Introduza um Codigo Postal",
     ],
     locality: [
-      val =>  val && val.length > 0 || "Introduza uma localidade",
+      val =>  val && val.length > 0 || "Introduza uma Localidade",
     ]
   }
 }
