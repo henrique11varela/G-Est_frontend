@@ -82,7 +82,7 @@ function showDeleteModal() {
 }
 </script>
 <template>
-  <q-form class="q-ma-lg" action="companies" @submit.prevent="onSubmit">
+  <q-form action="companies" @submit.prevent="onSubmit">
 
     <!-- content -->
     <div v-if="edit">
@@ -136,7 +136,7 @@ function showDeleteModal() {
         </div>
       </div>
       <div class="col-md-12">
-        <q-btn style="width: 100%;" label="Submit" type="submit" color="primary"  />
+        <q-btn style="width: 100%;" label="Guardar" type="submit" color="primary"  />
       </div>
     </div>
   </q-form>

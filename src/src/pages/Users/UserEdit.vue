@@ -1,4 +1,5 @@
 <script setup>
+import ReturnButton from 'src/components/ReturnButton.vue';
 import UserFrom from '../../components/users/UserFrom.vue'
 import Router from 'src/router';
 
@@ -12,7 +13,8 @@ const valueCreated = async function (data) {
   <q-page padding>
     <div class="q-pa-md">
       <h1 class="text-h6">Editar Utilizador</h1>
+      <UserFrom :edit="true" @valuecreated="valueCreated" />
+      <ReturnButton></ReturnButton>
     </div>
-    <UserFrom :edit="true" @valuecreated="valueCreated" />
   </q-page>
 </template>

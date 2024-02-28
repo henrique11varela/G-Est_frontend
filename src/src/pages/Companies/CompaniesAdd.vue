@@ -2,6 +2,7 @@
 import CompanyFrom from '../../components/companies/CompanyFrom.vue'
 import Router from 'src/router';
 import notify from 'src/composables/notify'
+import ReturnButton from 'src/components/ReturnButton.vue';
 const router = Router();
 const valueCreated = async function (data) {
   if (data.status == 200) {
@@ -12,12 +13,10 @@ const valueCreated = async function (data) {
 </script>
 <template>
   <q-page padding>
-
-
-    <div class="q-ma-lg">
+    <div class="q-pa-md">
       <h1 class="text-h6">Adicionar Empresa</h1>
+      <CompanyFrom :edit="false" @valuecreated="valueCreated" />
+      <ReturnButton></ReturnButton>
     </div>
-    <CompanyFrom :edit="false" @valuecreated="valueCreated" />
-
   </q-page>
 </template>

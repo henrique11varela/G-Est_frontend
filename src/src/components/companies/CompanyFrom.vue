@@ -77,7 +77,7 @@ function showDeleteModal() {
 </script>
 <template>
   <div>
-    <q-form class="q-ma-lg" action="companies" @submit.prevent="onSubmit">
+    <q-form action="companies" @submit.prevent="onSubmit">
 
       <!-- content -->
       <div v-if="props.edit">

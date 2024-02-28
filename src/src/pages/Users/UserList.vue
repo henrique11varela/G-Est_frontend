@@ -4,9 +4,9 @@ import userAPI from "src/services/fetches/users.js";
 
 import { matEdit, matDelete } from '@quasar/extras/material-icons'
 const columns = [
-  { name: 'name', label: 'Name', field: 'name', align: 'left', },
+  { name: 'name', label: 'Nome', field: 'name', align: 'left', },
   { name: 'email', label: 'Email', field: 'email', align: 'left', },
-  { name: 'role', label: 'Role', field: 'role', align: 'left', },
+  { name: 'role', label: 'Papel', field: 'role', align: 'left', },
   { name: 'action', label: '', field: 'action', align: 'center', }
 ];
 
@@ -57,7 +57,8 @@ onMounted(() => {
       </div>
 
       <q-table flat bordered ref="tableRef" title="Treats" :rows="rows" :columns="columns" row-key="id"
-        v-model:pagination="pagination" :loading="loading" :filter="filters" binary-state-sort @request="onRequest">
+        v-model:pagination="pagination" :loading="loading" :filter="filters" binary-state-sort @request="onRequest"
+        hide-no-data rows-per-page-label="Registos por página">
 
         <template v-slot:loading>
           <q-inner-loading showing color="primary" />

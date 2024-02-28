@@ -198,7 +198,7 @@
         v-model="internshipData.observations" label="Observações" type="textarea" />
 
       <div class="row" v-if="loginStore.isAdmin">
-        <q-btn color="primary" class="col-3" type="submit" :disable="pageState.isSubmitting">Salvar</q-btn>
+        <q-btn color="primary" class="col-3" type="submit" :disable="pageState.isSubmitting">Guardar</q-btn>
         <q-btn color="primary" class="col-3 offset-6" v-if="showIniciarButton" :disable="pageState.isSubmitting"
           @click="startInternship">Iniciar
           estágio</q-btn>
