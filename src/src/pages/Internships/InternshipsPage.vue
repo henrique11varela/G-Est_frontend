@@ -1,14 +1,16 @@
 <template>
   <q-page padding>
-    <div class="flex justify-between items-center">
-      <h1 class="text-h6">Estágio</h1>
-      <div>
-        <q-btn unelevated color="negative" label="Apagar" @click="deleteClass"
-          v-if="loginStore.isAdmin && !!route.params.id" />
+    <div class="q-pa-md">
+      <div class="flex justify-between items-center">
+        <h1 class="text-h6">Estágio</h1>
+        <div>
+          <q-btn unelevated color="negative" label="Apagar" @click="deleteClass"
+            v-if="loginStore.isAdmin && !!route.params.id" />
+        </div>
       </div>
+      <InternshipsForm />
+      <ReturnButton></ReturnButton>
     </div>
-    <InternshipsForm />
-    <ReturnButton></ReturnButton>
   </q-page>
 </template>
 

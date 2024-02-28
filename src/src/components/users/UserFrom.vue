@@ -55,9 +55,6 @@ onMounted(async () => {
 </script>
 <template>
   <div>
-    <div class="q-my-lg" v-if="edit">
-      <q-btn unelevated @click="showDeleteModal" color="red" label="Apagar" />
-    </div>
     <q-form action="companies" @submit.prevent="onSubmit">
       <div class="row">
         <div class="col-md-6">

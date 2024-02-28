@@ -1,6 +1,6 @@
 <template>
   <div>
-    <q-form class="q-ma-lg" @submit.prevent="onSubmit">
+    <q-form @submit.prevent="onSubmit">
       <div class="row q-mb-md">
         <!-- Class -->
         <div class="col q-pr-lg">
