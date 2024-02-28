@@ -9,7 +9,7 @@
         :readonly="!loginStore.isAdmin"
         outlined
         v-model="data.name"
-        label="Turma"
+        label="Turma*"
         lazy-rules="ondemand"
         :rules="rules.name"
         :error="hasError('name')"
@@ -23,7 +23,7 @@
 
       <q-select
         outlined
-        label="Curso"
+        label="Curso*"
         v-model="data.course"
         use-input hide-selected fill-input
         input-debounce="500"
@@ -52,7 +52,7 @@
 
       <q-select
         outlined
-        label="Coordenador"
+        label="Coordenador*"
         v-model="data.coordinator"
         use-input hide-selected fill-input
         input-debounce="500"

@@ -89,7 +89,7 @@ function showDeleteModal() {
     </div>
     <div class="row">
       <div class="col-md-6">
-        <q-input outlined class="q-mb-md q-mr-md" v-model="personData.name" label="Name *" lazy-rules
+        <q-input outlined class="q-mb-md q-mr-md" v-model="personData.name" label="Nome*" lazy-rules
           :rules="companyPearsonDTO.rules().name" :error="errors?.hasOwnProperty('name')" :disable="submitting">
           <template v-slot:error>
             <span :key="index" v-for="(title, index) in errors.name">
@@ -109,7 +109,7 @@ function showDeleteModal() {
         </q-input>
       </div>
       <div class="col-md-6">
-        <q-input outlined class="q-mb-md q-mr-md" v-model="personData.phoneNumber" label="Phone *" lazy-rules
+        <q-input outlined class="q-mb-md q-mr-md" v-model="personData.phoneNumber" label="Telefone*" lazy-rules
           :rules="companyPearsonDTO.rules().phoneNumber" :error="errors?.hasOwnProperty('phoneNumber')"
           :disable="submitting">
           <template v-slot:error>

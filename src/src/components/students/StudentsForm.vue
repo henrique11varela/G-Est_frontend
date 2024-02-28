@@ -9,7 +9,7 @@
           :readonly="!loginStore.isAdmin"
           outlined
           v-model="data.name"
-          label="Nome"
+          label="Nome*"
           lazy-rules="ondemand"
           :rules="rules.name"
           class="col-12"
@@ -28,8 +28,6 @@
           v-model="data.hardSkills"
           :options="skillValues"
           label="Hard skills"
-          lazy-rules="ondemand"
-          :rules="rules.skills('hard')"
           class="col"
           :error="hasError('hard_skills')"
         >
@@ -46,8 +44,6 @@
           v-model="data.softSkills"
           :options="skillValues"
           label="Soft skills"
-          lazy-rules="ondemand"
-          :rules="rules.skills('soft')"
           class="col"
           :error="hasError('soft_skills')"
         >
@@ -64,7 +60,7 @@
           :readonly="!loginStore.isAdmin"
           outlined
           v-model="data.address"
-          label="Morada"
+          label="Morada*"
           lazy-rules="ondemand"
           :rules="rules.address"
           class="col-12"
@@ -81,7 +77,7 @@
           :readonly="!loginStore.isAdmin"
           outlined
           v-model="data.postalCode"
-          label="Código Postal"
+          label="Código Postal*"
           mask="####-###"
           lazy-rules="ondemand"
           :rules="rules.postalCode"
@@ -98,7 +94,7 @@
           :readonly="!loginStore.isAdmin"
           outlined
           v-model="data.locality"
-          label="Localidade"
+          label="Localidade*"
           lazy-rules="ondemand"
           :rules="rules.locality"
           class="col-5"
@@ -114,7 +110,7 @@
           :readonly="!loginStore.isAdmin"
           outlined
           v-model="data.phoneNumber"
-          label="Telefone"
+          label="Telefone*"
           lazy-rules="ondemand"
           :rules="rules.phoneNumber"
           class="col"
@@ -133,7 +129,7 @@
           :readonly="!loginStore.isAdmin"
           outlined
           v-model="data.atecEmail"
-          label="Email institucional"
+          label="Email institucional*"
           lazy-rules="ondemand"
           :rules="rules.email"
           class="col-6"
@@ -150,7 +146,7 @@
           :readonly="!loginStore.isAdmin"
           outlined
           v-model="data.personalEmail"
-          label="Email pessoal"
+          label="Email pessoal*"
           lazy-rules="ondemand"
           :rules="rules.email"
           class="col-6"
@@ -162,8 +158,6 @@
           </span>
         </template>
         </q-input>
-
-
       </div>
 
       <div class="col-12" v-if="loginStore.isAdmin">

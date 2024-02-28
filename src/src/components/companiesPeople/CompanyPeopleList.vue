@@ -105,7 +105,7 @@ onMounted(() => {
   </div>
   <q-table :loading="loading" @request="onRequest" flat bordered ref="tableRef" title="Treats" :rows="rows"
     :columns="columns" row-key="id" v-model:pagination="pagination" :filter="filters" binary-state-sort :rows-per-page-options="[5, 10, 15, 20, 25, 30, 50, 100]"
-      rows-per-page-label="Registos por página">
+      rows-per-page-label="Registos por página" hide-no-data>
       <template v-slot:loading>
         <q-inner-loading showing color="primary" />
       </template>

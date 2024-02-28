@@ -1,12 +1,21 @@
 import { api } from "src/boot/axios"
 
 export default {
-  classes
+  classes,
+  companies
 }
 
 async function classes(payload) {
+  return await importFile('api/v1/import/studentcollections', payload)
+}
+
+async function companies(payload) {
+  return await importFile('api/v1/import/companies', payload)
+}
+
+async function importFile(url, payload ) {
   try {
-    const { data } = await api.post('api/v1/import/studentcollections', payload, {
+    const { data } = await api.post(url, payload, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
