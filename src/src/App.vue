@@ -1,11 +1,8 @@
 <template>
   <router-view />
+  <PopupDialog />
 </template>
 
-<script>
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-  name: 'App'
-})
+<script setup>
+import PopupDialog from "./components/PopupDialog.vue";
 </script>

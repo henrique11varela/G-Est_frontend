@@ -1,22 +1,14 @@
 <template>
-  <q-item
-    clickable
-    tag="a"
-    target="_blank"
-    :href="link"
-  >
-    <q-item-section
-      v-if="icon"
-      avatar
-    >
+  <q-btn :to="link" flat class="full-width" >
+    <q-item-section v-if="icon" avatar>
       <q-icon :name="icon" />
     </q-item-section>
 
     <q-item-section>
       <q-item-label>{{ title }}</q-item-label>
-      <q-item-label caption>{{ caption }}</q-item-label>
+      <!-- <q-item-label caption>{{ caption }}</q-item-label> -->
     </q-item-section>
-  </q-item>
+  </q-btn>
 </template>
 
 <script>
@@ -30,14 +22,14 @@ export default defineComponent({
       required: true
     },
 
-    caption: {
-      type: String,
-      default: ''
-    },
+    // caption: {
+    //   type: String,
+    //   default: ''
+    // },
 
     link: {
       type: String,
-      default: '#'
+      default: 'Home'
     },
 
     icon: {

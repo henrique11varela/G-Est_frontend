@@ -10,14 +10,14 @@ services:
       context: dockerfiles
       target: 'develop-stage'
     ports:
-    - '9000:9000'
+    - '80:80'
     volumes:
     - './src:/app'
     command: /bin/sh -c "npm i && npm run dev"
     networks:
       - laravel
       
-  npm:
+  npmfrontend:
     image: node:current-alpine
     volumes:
       - ./src:/app

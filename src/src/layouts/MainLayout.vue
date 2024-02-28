@@ -1,41 +1,24 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout view="hHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
+        <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
 
         <q-toolbar-title>
-          Quasar App
+          G-Est
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <q-btn :to="`/users/${store.userInfo.id}`" color="white" text-color="primary">{{ store.userInfo.name }}</q-btn>
+        <q-btn @click="logout" class="q-ml-md" color="white" text-color="primary">Logout</q-btn>
       </q-toolbar>
     </q-header>
 
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-    >
+    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
       <q-list>
-        <q-item-label
-          header
-        >
-          Essential Links
+        <q-item-label header>
         </q-item-label>
 
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
+        <EssentialLink v-for="link in essentialLinks" :key="link.title" v-bind="link" />
       </q-list>
     </q-drawer>
 
@@ -45,72 +28,61 @@
   </q-layout>
 </template>
 
-<script>
-import { defineComponent, ref } from 'vue'
+<script setup>
+import { ref } from 'vue'
 import EssentialLink from 'components/EssentialLink.vue'
+import tokenAPI from "../services/fetches/token.js";
+import Router from '../router'
+import { useLoginStore } from "src/stores/login.js";
 
-const linksList = [
+const store = useLoginStore()
+const essentialLinks = [
   {
-    title: 'Docs',
-    caption: 'quasar.dev',
+    title: 'Solicitações',
+    icon: 'mail',
+    link: '/applications'
+  },
+  {
+    title: 'Turmas',
+    icon: 'groups',
+    link: '/classes'
+  },
+  {
+    title: 'Empresas',
+    icon: 'apartment',
+    link: '/companies'
+  },
+  {
+    title: 'Cursos',
     icon: 'school',
-    link: 'https://quasar.dev'
+    link: '/courses'
   },
   {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
+    title: 'Coordenadores',
+    icon: 'person',
+    link: '/coordinators'
   },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
 ]
+if(store.isAdmin){
+  essentialLinks.push({
+    title: 'Utilizadores',
+    icon: 'people',
+    link: '/users'
+  })
+}
 
-export default defineComponent({
-  name: 'MainLayout',
 
-  components: {
-    EssentialLink
-  },
+const leftDrawerOpen = ref(false)
+const router = Router()
 
-  setup () {
-    const leftDrawerOpen = ref(false)
+async function logout() {
+  await tokenAPI.logout()
+  await router.push({path: 'login'})
+  router.go()
+}
 
-    return {
-      essentialLinks: linksList,
-      leftDrawerOpen,
-      toggleLeftDrawer () {
-        leftDrawerOpen.value = !leftDrawerOpen.value
-      }
-    }
-  }
-})
+function toggleLeftDrawer() {
+  leftDrawerOpen.value = !leftDrawerOpen.value
+}
+
 </script>
