@@ -111,7 +111,7 @@ function showDeleteModal() {
             <q-checkbox v-model="personData.isTutor" label="Tutor" :disable="submitting" />
           </div>
           <div>
-            <q-checkbox v-model="personData.isContact" label="Contact" :disable="submitting" />
+            <q-checkbox v-model="personData.isContact" label="Contacto" :disable="submitting" />
           </div>
         </div>
       </div>
