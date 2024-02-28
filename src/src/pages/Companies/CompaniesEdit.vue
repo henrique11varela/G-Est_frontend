@@ -1,5 +1,6 @@
 <script setup>
 import CompanyFrom from '../../components/companies/CompanyFrom.vue'
+import ReturnButton from 'src/components/ReturnButton.vue';
 import notify from 'src/composables/notify'
 import { matEdit, matDelete } from '@quasar/extras/material-icons';
 import CompanyAPI from "src/services/fetches/companies.js";
@@ -21,14 +22,13 @@ function showDeleteModal() {
 </script>
 <template>
   <q-page padding>
-
-    <div class="q-ma-lg">
+    <div class="q-pa-md">
       <h1 class="text-h6">Editar Empresa</h1>
       <div v-if="loginStore.isAdmin">
         <q-btn @click="showDeleteModal" color="red" :icon="matDelete" label="Delete" />
       </div>
+      <CompanyFrom :edit="true" @valuecreated="valueCreated" />
+      <ReturnButton></ReturnButton>
     </div>
-    <CompanyFrom :edit="true" @valuecreated="valueCreated" />
-
   </q-page>
 </template>

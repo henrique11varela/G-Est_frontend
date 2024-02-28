@@ -1,4 +1,5 @@
 <script setup>
+import ReturnButton from 'src/components/ReturnButton.vue';
 import CompanyPeopleFrom from '../../components/companiesPeople/CompanyPeopleFrom.vue'
 import { useRoute, useRouter } from 'vue-router';
 import { matDelete } from '@quasar/extras/material-icons'
@@ -19,13 +20,14 @@ function showDeleteModal() {
 </script>
 <template>
   <q-page padding>
-    <div class="q-ma-lg">
+    <div class="q-pa-md">
       <h1 class="text-h6">Editar Contacto</h1>
+    
       <div v-if="loginStore.isAdmin">
         <q-btn @click="showDeleteModal" color="red" :icon="matDelete" label="Delete" />
       </div>
-    </div>
     <CompanyPeopleFrom :edit="true" @valuecreated="valueCreated" />
-
+    <ReturnButton></ReturnButton>
+    </div>
   </q-page>
 </template>

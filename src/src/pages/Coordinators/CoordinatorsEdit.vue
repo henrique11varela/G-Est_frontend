@@ -8,6 +8,7 @@
         </div>
       </div>
       <CoordinatorsForm edit @valuecreated="postSubmit"></CoordinatorsForm>
+      <ReturnButton></ReturnButton>
     </div>
   </q-page>
 </template>
@@ -18,6 +19,7 @@ import coordinatorsAPI from 'src/services/fetches/coordinators'
 import { useRoute, useRouter } from 'vue-router'
 import deleteModel from 'src/composables/delete'
 import { useLoginStore } from '../../stores/login.js'
+import ReturnButton from 'src/components/ReturnButton.vue'
 
 const router = useRouter()
 const route = useRoute()

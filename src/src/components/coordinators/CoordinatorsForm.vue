@@ -1,6 +1,6 @@
 <template>
   <div class="q-py-md">
-    <q-form @submit="onSubmit" @reset="onReset" class="q-ma-lg row">
+    <q-form @submit="onSubmit" @reset="onReset">
       <div class="col-12 row">
         <q-input class="col q-mr-sm"
           :readonly="!loginStore.isAdmin"
@@ -57,15 +57,6 @@
           label="Guardar"
           type="submit"
           color="primary"
-        />
-      </div>
-      <div class="col-12">
-        <hr />
-        <q-btn
-          type="submit"
-          label="Voltar"
-          color="primary"
-          to="/coordinators"
         />
       </div>
     </q-form>

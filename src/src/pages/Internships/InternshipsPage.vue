@@ -8,10 +8,12 @@
       </div>
     </div>
     <InternshipsForm />
+    <ReturnButton></ReturnButton>
   </q-page>
 </template>
 
 <script setup>
+import ReturnButton from "src/components/ReturnButton.vue";
 import InternshipsForm from "../../components/internships/internshipsForm.vue";
 import internshipsAPI from "../../services/fetches/internships.js";
 import { useRoute, useRouter } from 'vue-router'

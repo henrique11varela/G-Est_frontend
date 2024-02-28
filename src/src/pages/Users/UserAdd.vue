@@ -2,6 +2,8 @@
 import UserFrom from '../../components/users/UserFrom.vue'
 
 import Router from 'src/router';
+import userAPI from "src/services/fetches/users.js";
+import ReturnButton from 'src/components/ReturnButton.vue';
 const router = Router();
 
 const valueCreated = async function (data) {
@@ -11,10 +13,10 @@ const valueCreated = async function (data) {
 </script>
 <template>
   <q-page padding>
-    <div class="q-ma-lg">
+    <div class="q-pa-md">
       <h1 class="text-h6">Adicionar Utilizador</h1>
-
+      <UserFrom @valuecreated="valueCreated" :edit="false" />
+      <ReturnButton></ReturnButton>
     </div>
-    <UserFrom @valuecreated="valueCreated" :edit="false" />
   </q-page>
 </template>

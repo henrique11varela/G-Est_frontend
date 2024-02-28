@@ -1,14 +1,14 @@
 <template>
   <div class="q-py-md">
     <q-spinner color="primary" size="3em" :thickness="2" v-if="loading" />
-    <q-form @submit="onSubmit" @reset="onReset" class="q-ma-lg" v-else>
+    <q-form @submit="onSubmit" @reset="onReset" v-else>
       <div class="col-12 row">
         <q-input
           class="col q-mr-sm"
           :readonly="!LoginStore.isAdmin"
           outlined
           v-model="data.companyName"
-          label="Nome da Empresa"
+          label="Nome da Empresa*"
           lazy-rules="ondemand"
           :rules="rules.name"
         ></q-input>
@@ -18,7 +18,7 @@
           :readonly="!LoginStore.isAdmin"
           outlined
           v-model="data.numberStudents"
-          label="Número de Estagiários"
+          label="Número de Estagiários*"
           lazy-rules="ondemand"
           :rules="rules.name"
           mask="##"
@@ -29,7 +29,7 @@
           :readonly="!LoginStore.isAdmin"
           outlined
           v-model="data.activitySector"
-          label="Setor de Atividade"
+          label="Setor de Atividade*"
           lazy-rules="ondemand"
           :rules="rules.name"
         ></q-input>
@@ -49,7 +49,7 @@
           :readonly="!LoginStore.isAdmin"
           outlined
           v-model="data.contactName"
-          label="Nome de Contacto"
+          label="Nome de Contacto*"
           lazy-rules="ondemand"
           :rules="rules.name"
         ></q-input>
@@ -58,7 +58,7 @@
           :readonly="!LoginStore.isAdmin"
           outlined
           v-model="data.contactTelephone"
-          label="Telefone"
+          label="Telefone*"
           lazy-rules="ondemand"
           :rules="rules.name"
         ></q-input>
@@ -67,7 +67,7 @@
           :readonly="!LoginStore.isAdmin"
           outlined
           v-model="data.contactEmail"
-          label="Email"
+          label="Email*"
           lazy-rules="ondemand"
           :rules="rules.name"
           type="email"
@@ -79,7 +79,7 @@
           :readonly="!LoginStore.isAdmin"
           outlined
           v-model="data.website"
-          label="Website"
+          label="Website*"
           lazy-rules="ondemand"
           :rules="rules.name"
         ></q-input>
@@ -88,7 +88,7 @@
           :readonly="!LoginStore.isAdmin"
           outlined
           v-model="data.locality"
-          label="Localidade"
+          label="Localidade*"
           lazy-rules="ondemand"
           :rules="rules.name"
         ></q-input>
@@ -99,7 +99,7 @@
           :readonly="!LoginStore.isAdmin"
           outlined
           v-model="data.studentTasks"
-          label="Tarefas a desempenhar"
+          label="Tarefas a desempenhar*"
           lazy-rules="ondemand"
           :rules="rules.name"
         ></q-input>
@@ -119,15 +119,6 @@
           size="2.5em"
           :thickness="2"
           v-if="submitting"
-        />
-      </div>
-      <div class="col-12">
-        <hr />
-        <q-btn
-          type="submit"
-          label="Voltar"
-          color="primary"
-          to="/applications"
         />
       </div>
     </q-form>

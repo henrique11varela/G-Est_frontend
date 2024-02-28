@@ -8,6 +8,7 @@
         </div>
       </div>
       <ApplicationsForm edit @valuecreated="postSubmit"/>
+      <ReturnButton></ReturnButton>
     </div>
   </q-page>
 </template>
@@ -19,6 +20,7 @@ import { useRoute, useRouter } from 'vue-router'
 import notify from 'src/composables/notify'
 import deleteModel from 'src/composables/delete'
 import { useLoginStore } from '../../stores/login.js'
+import ReturnButton from 'src/components/ReturnButton.vue'
 
 const router = useRouter()
 const route = useRoute()

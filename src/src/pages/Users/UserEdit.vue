@@ -1,4 +1,5 @@
 <script setup>
+import ReturnButton from 'src/components/ReturnButton.vue';
 import UserFrom from '../../components/users/UserFrom.vue'
 import { useRoute, useRouter } from 'vue-router';
 
@@ -25,7 +26,8 @@ function showDeleteModal() {
       <div v-if="loginStore.isAdmin">
         <q-btn @click="showDeleteModal" color="red" :icon="matDelete" label="Delete" />
       </div>
+      <UserFrom :edit="true" @valuecreated="valueCreated" />
+      <ReturnButton></ReturnButton>
     </div>
-    <UserFrom :edit="true" @valuecreated="valueCreated" />
   </q-page>
 </template>

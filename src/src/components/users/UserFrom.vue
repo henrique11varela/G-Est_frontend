@@ -55,7 +55,10 @@ onMounted(async () => {
 </script>
 <template>
   <div>
-    <q-form class="q-ma-lg" action="companies" @submit.prevent="onSubmit">
+    <div class="q-my-lg" v-if="edit">
+      <q-btn unelevated @click="showDeleteModal" color="red" label="Apagar" />
+    </div>
+    <q-form action="companies" @submit.prevent="onSubmit">
       <div class="row">
         <div class="col-md-6">
           <q-input outlined :readonly="submitting || !store.isAdmin || store.userInfo.id == id" class="q-mr-md"
@@ -99,7 +102,7 @@ onMounted(async () => {
           </q-select>
         </div>
         <div class="col-md-12">
-          <q-btn class="" style="width: 100%" label="Submit" type="submit" color="primary" v-if="reactiveEdit" />
+          <q-btn class="" style="width: 100%" label="Guardar" type="submit" color="primary" v-if="reactiveEdit" />
         </div>
       </div>
     </q-form>

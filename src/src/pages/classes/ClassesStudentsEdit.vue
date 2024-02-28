@@ -3,6 +3,7 @@
     <div class="q-pa-md" v-if="!loading">
       <h1 class="text-h6">Associar/remover alunos de {{ classInfo.name }}</h1>
       <ClassesStudentsForm :students="classInfo.students" @submit-students="submitStudents"></ClassesStudentsForm>
+      <ReturnButton></ReturnButton>
     </div>
   </q-page>
 </template>
@@ -15,6 +16,7 @@ import { useRoute, useRouter } from 'vue-router'
 import notify from 'src/composables/notify'
 import { Loading } from 'quasar'
 import { useErrorHandling } from 'src/composables/useErrorHandling'
+import ReturnButton from 'src/components/ReturnButton.vue'
 
 const classInfo = ref({})
 const loading = ref(false)

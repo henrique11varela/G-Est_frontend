@@ -8,6 +8,7 @@
         </div>
       </div>
       <ClassesForm edit @valuecreated="postSubmit"></ClassesForm>
+      <ReturnButton></ReturnButton>
     </div>
   </q-page>
 </template>
@@ -18,6 +19,7 @@ import classesAPI from 'src/services/fetches/classes'
 import { useRoute, useRouter } from 'vue-router'
 import deleteModel from 'src/composables/delete'
 import { useLoginStore } from 'src/stores/login'
+import ReturnButton from 'src/components/ReturnButton.vue'
 const loginStore = useLoginStore()
 
 const router = useRouter()

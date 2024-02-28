@@ -54,7 +54,7 @@ onMounted(async () => {
 
 </script>
 <template>
-  <q-form class="q-ma-lg" action="companies" @submit.prevent="onSubmit">
+  <q-form action="companies" @submit.prevent="onSubmit">
 
     <div class="row">
       <div class="col-md-6">
@@ -105,7 +105,7 @@ onMounted(async () => {
         </div>
       </div>
       <div class="col-md-12">
-        <q-btn style="width: 100%;" label="Submit" type="submit" color="primary"  />
+        <q-btn style="width: 100%;" label="Guardar" type="submit" color="primary"  />
       </div>
     </div>
   </q-form>
