@@ -7,7 +7,7 @@ import { useQuasar } from 'quasar'
 import Router from 'src/router'
 import { useRoute } from 'vue-router';
 import companyPearsonDTO from "src/dto/CompanyPeopleDTO"
-import companyPeopleAPI from "src/services/fetches/companyPeople.js";
+import companyPeopleAPI from "src/services/fetches/companypeople.js";
 import { useErrorHandling } from 'src/composables/useErrorHandling';
 import notify from 'src/composables/notify';
 const { errors, hasError, isValid, checkResponseErrors } = useErrorHandling();
