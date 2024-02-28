@@ -78,7 +78,7 @@ async function update(payload) {
 
 async function destroy(id) {
   try {
-    const { data } = await api.delee(`api/v1/companypeople/${id}`)
+    const { data } = await api.delete(`api/v1/companypeople/${id}`)
     return {
       ...data,
       requestStatus: 200

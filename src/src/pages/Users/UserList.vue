@@ -31,7 +31,7 @@ async function onRequest(props) {
   const { page, rowsPerPage, sortBy, descending } = props.pagination;
   loading.value = true
   const usersRequest = await userAPI.index({
-    ...filters,
+    ...filters.value,
     quantity: rowsPerPage,
     page: page,
   });
@@ -57,7 +57,8 @@ onMounted(() => {
       </div>
 
       <q-table flat bordered ref="tableRef" title="Treats" :rows="rows" :columns="columns" row-key="id"
-        v-model:pagination="pagination" :loading="loading" :filter="filters" binary-state-sort @request="onRequest">
+      v-model:pagination="pagination" :loading="loading" :filter="filters" binary-state-sort @request="onRequest"
+      :rows-per-page-options="[5, 10, 15, 20, 25, 30, 50, 100]" rows-per-page-label="Registos por página">
 
         <template v-slot:loading>
           <q-inner-loading showing color="primary" />

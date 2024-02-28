@@ -1,8 +1,7 @@
 <script setup>
+import { Loading } from 'quasar'
 import { defineProps, ref, onMounted } from 'vue'
-import { Loading } from 'quasar';
 import notify from 'src/composables/notify';
-import { matEdit, matDelete } from '@quasar/extras/material-icons'
 import userAPI from "src/services/fetches/users.js";
 const emit = defineEmits(['valuecreated'])
 import { useQuasar } from 'quasar'
@@ -10,16 +9,15 @@ import { useRoute } from 'vue-router';
 import Router from 'src/router'
 import UserDTO from 'src/dto/UserDTO';
 import { useLoginStore } from "src/stores/login.js";
+import { useErrorHandling } from 'src/composables/useErrorHandling';
 const store = useLoginStore()
 const router = Router()
 const route = useRoute();
+const { errors, hasError, isValid, checkResponseErrors } = useErrorHandling();
 const props = defineProps({
   edit: Boolean
 })
 
-const errors = ref({
-
-})
 const UserData = ref({})
 const submitting = ref(false)
 const $q = useQuasar()
@@ -30,30 +28,15 @@ const options = [
 ]
 async function onSubmit() {
 
-  submitting.value = true
-  let data = {};
-  if (!props.edit) {
-    data = await userAPI.store(UserData.value)
-  }
-  else {
-    data = await userAPI.update(UserData.value)
-  }
+  Loading.show()
+  submitting.value = true;
+  const output = props.edit ? await userAPI.update(UserData.value) : await userAPI.store(UserData.value);
+  checkResponseErrors(output)
+  Loading.hide()
   submitting.value = false
-  if (data.requestStatus == 200) {
-    if (!props.edit) {
-      notify.store()
-    } else {
-      notify.update()
-    }
-    emit('valuecreated', data)
-    return
-  }
-  if (data.requestStatus == 422) {
-    errors.value.name = data.errors.name
-    errors.value.email = data.errors.email
-    errors.value.password = data.errors.password
-    errors.value.role = data.errors.role
-
+  if (isValid.value) {
+    props.edit ? notify.update() : notify.store()
+    emit('valuecreated', output)
     return
   }
 }
@@ -67,33 +50,14 @@ onMounted(async () => {
   }
 })
 
-
-function showDeleteModal() {
-  $q.dialog({
-    title: 'Alert',
-    message: 'Deseja eliminar o utilizador?',
-    cancel: true,
-    persistent: true
-  }).onOk(async () => {
-    await userAPI.destroy(UserData.value.id)
-    await router.push({ path: 'users' });
-    await router.go();
-
-  })
-}
 </script>
 <template>
   <div>
-    <div class="q-ma-lg" v-if="edit">
-      <q-btn @click="showDeleteModal" color="red" :icon="matDelete" label="Delete" />
-    </div>
     <q-form class="q-ma-lg" action="companies" @submit.prevent="onSubmit">
-
       <div class="row">
         <div class="col-md-6">
           <q-input outlined :readonly="submitting || !store.isAdmin || store.userInfo.id == id" class="q-mr-md"
-            v-model="UserData.name" label="Nome*" lazy-rules :rules="UserDTO.rules().name"
-            :error="errors?.hasOwnProperty('name')">
+            v-model="UserData.name" label="Name *" lazy-rules :rules="UserDTO.rules().name" :error="hasError('name')">
             <template v-slot:error>
               <span :key="index" v-for="(title, index) in errors.name">
                 {{ title }}
@@ -104,7 +68,7 @@ function showDeleteModal() {
         <div class="col-md-6">
           <q-input outlined :readonly="submitting || !store.isAdmin || store.userInfo.id == id" class="q-ml-md"
             v-model="UserData.email" label="Email*" lazy-rules :rules="UserDTO.rules().email"
-            :error="errors?.hasOwnProperty('email')">
+            :error="hasError('email')">
             <template v-slot:error>
               <span :key="index" v-for="(title, index) in errors.email">
                 {{ title }}
@@ -113,7 +77,7 @@ function showDeleteModal() {
         </div>
         <div class="col-md-6">
           <q-input outlined :readonly="submitting" class="q-mr-md" type="password" v-model="UserData.password"
-            label="Password" lazy-rules :error="errors?.hasOwnProperty('password')">
+            label="Password" lazy-rules :error="hasError('password')">
             <template v-slot:error>
               <span :key="index" v-for="(title, index) in errors.password">
                 {{ title }}
@@ -124,7 +88,7 @@ function showDeleteModal() {
         <div class="col-md-6">
           <q-select outlined class="q-ml-md" :readonly="submitting || !store.isAdmin || store.userInfo.id == id"
             v-model="UserData.role" :options="options" label="Rule" :rules="UserDTO.rules().role"
-            :error="errors?.hasOwnProperty('role')">
+            :error="hasError('role')">
             <template v-slot:error>
               <span :key="index" v-for="(title, index) in errors.role">
                 {{ title }}
