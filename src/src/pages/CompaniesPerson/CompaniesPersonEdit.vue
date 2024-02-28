@@ -5,7 +5,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { matDelete } from '@quasar/extras/material-icons'
 import deleteModel from 'src/composables/delete'
 import { useLoginStore } from 'src/stores/login';
-import companyPeopleAPI from "src/services/fetches/companyPeople.js";
+import companyPeopleAPI from "src/services/fetches/companypeople.js";
 const router = useRouter();
 const route = useRoute();
 const valueCreated = function (data) {
