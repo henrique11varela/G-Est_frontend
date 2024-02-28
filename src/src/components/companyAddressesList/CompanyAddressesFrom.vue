@@ -1,7 +1,6 @@
 <script setup>
 import { defineProps, ref, defineEmits, onMounted } from 'vue'
 import { Loading, QSpinnerGears } from 'quasar';
-import { matEdit, matDelete } from '@quasar/extras/material-icons'
 import { useRoute } from 'vue-router';
 import Router from 'src/router';
 import companyAddressAPI from "src/services/fetches/companyaddress.js";
@@ -9,8 +8,9 @@ import { useQuasar } from 'quasar'
 import companyAddressesDTO from "src/dto/CompanyAddressDTO.js"
 import notify from 'src/composables/notify';
 import CompanyAddressDTO from 'src/dto/CompanyAddressDTO.js';
+import { useErrorHandling } from 'src/composables/useErrorHandling';
+const { errors, hasError, isValid, checkResponseErrors } = useErrorHandling();
 const emit = defineEmits(['valuecreated'])
-
 const route = useRoute();
 const router = Router()
 const props = defineProps({
@@ -25,34 +25,16 @@ const props = defineProps({
 const CompanyId = ref(props.propid ? props.propid : route.params.id)
 
 
-
-const errors = ref({
-
-})
-const $q = useQuasar()
 const addressData = ref({
 })
 async function onSubmit() {
-  let data = {};
-  if (!props.edit) {
-    data = await companyAddressAPI.store(addressData.value)
-  }
-  else {
-    data = await companyAddressAPI.update(addressData.value)
-  }
-  if (data.requestStatus == 200) {
-    if (!props.edit) {
-      notify.store()
-    } else {
-      notify.update()
-    }
-    emit('valuecreated', data)
-    return
-  }
-  if (data.requestStatus == 422) {
-    errors.value.description = data.errors.description
-    errors.value.address = data.errors.address
-    errors.value.postalCode = data.errors.postal_code
+  Loading.show()
+  const output = props.edit ? await companyAddressAPI.update(addressData.value) : await companyAddressAPI.store(addressData.value);
+  checkResponseErrors(output)
+  Loading.hide()
+  if (isValid.value) {
+    props.edit ? notify.update() : notify.store()
+    emit('valuecreated', output)
     return
   }
 }
@@ -62,36 +44,23 @@ onMounted(async () => {
   addressData.value.companyId = CompanyId.value;
   if (props.edit) {
     Loading.show();
-    addressData.value = await companyAddressAPI.show(route.params.addressId);
+
+    const output = await companyAddressAPI.show(route.params.addressId);
+    checkResponseErrors(output)
+    addressData.value = output;
     Loading.hide();
   }
 })
 
-function showDeleteModal() {
-  $q.dialog({
-    title: 'Apagar',
-    message: 'Deseja eliminar a morada da empresa?',
-    cancel: true,
-    persistent: true
-  }).onOk(async () => {
-    await companyAddressAPI.destroy(addressData.value.id)
-    await router.push({ path: 'companies' });
-    await router.go();
-
-  })
-}
 </script>
 <template>
   <q-form action="companies" @submit.prevent="onSubmit">
 
-    <!-- content -->
-    <div v-if="edit">
-      <q-btn class="q-mb-md" @click="showDeleteModal" color="red" :icon="matDelete" label="Delete" />
-    </div>
     <div class="row">
       <div class="col-md-6">
-        <q-input outlined class="q-mb-md q-mr-md" v-model="addressData.description" label="Descrição"
-          :error="errors?.hasOwnProperty('description')">
+        <q-input outlined class="q-mb-md q-mr-md" v-model="addressData.description" label="Descrição" lazy-rules
+          :rules="companyAddressesDTO.rules().description"
+          :error="hasError('description')">
           <template v-slot:error>
             <span :key="index" v-for="(title, index) in errors.description">
               {{ title }}
@@ -100,8 +69,8 @@ function showDeleteModal() {
         </q-input>
       </div>
       <div class="col-md-6">
-        <q-input outlined class="q-mb-md q-ml-md" v-model="addressData.address" label="Morada*" lazy-rules
-          :rules="companyAddressesDTO.rules().address" :error="errors?.hasOwnProperty('address')" >
+        <q-input outlined class="q-mb-md q-ml-md" v-model="addressData.address" label="Morada" lazy-rules
+          :rules="companyAddressesDTO.rules().address" :error="hasError('address')">
           <template v-slot:error>
             <span :key="index" v-for="(title, index) in errors.address">
               {{ title }}
@@ -112,7 +81,7 @@ function showDeleteModal() {
       <div class="col-md-6">
         <q-input outlined class="q-mb-md q-mr-md" v-model="addressData.postalCode" label="Codigo Postal*" lazy-rules
           :rules="companyAddressesDTO.rules().postalCode"
-          :error="errors?.hasOwnProperty('postalCode')">
+          :error="hasError('postalCode')">
           <template v-slot:error>
             <span :key="index" v-for="(title, index) in errors.postalCode">
               {{ title }}
@@ -121,8 +90,8 @@ function showDeleteModal() {
         </q-input>
       </div>
       <div class="col-md-6">
-        <q-input outlined class="q-mb-md q-ml-md" v-model="addressData.locality" label="Localidade*" lazy-rules
-          :rules="companyAddressesDTO.rules().locality"  :error="errors?.hasOwnProperty('locality')">
+        <q-input outlined class="q-mb-md q-ml-md" v-model="addressData.locality" label="Localidade" lazy-rules
+          :rules="companyAddressesDTO.rules().locality"  :error="hasError('locality')">
           <template v-slot:error>
             <span :key="index" v-for="(title, index) in errors.locality">
               {{ title }}

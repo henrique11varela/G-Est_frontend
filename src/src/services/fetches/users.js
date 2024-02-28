@@ -8,24 +8,16 @@ export default {
   update,
   destroy
 }
-async function index(
-  filter = {
-    name: "",
-    email: "",
-    quantity: 15,
-    page: 1,
-  },
-) {
+async function index(params = null) {
   try {
-    const { data } = await api.get(`/api/v1/users`, filter)
+    const { data } = await api.get(`/api/v1/users`, { params })
     const users = []
     for (const user of data.data) {
       users.push(new UserDTO.input(user));
     }
     return {
       data: users,
-      pagination: new PaginationDTO.input(data),
-      requestStatus: 200
+      pagination: new PaginationDTO.input(data)
     }
   } catch (error) {
     return {

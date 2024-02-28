@@ -397,7 +397,6 @@ async function onSubmit() {
     pageState.value.edit = true;
   }
   checkResponseErrors(response)
-  console.log(errors.value);
   if (response.requestStatus == 200) {
     if (!pageState.value.edit) {
       notify.store()

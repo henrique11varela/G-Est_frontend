@@ -33,7 +33,6 @@ function postSubmit(value) {
 }
 
 function deleteApplication() {
-  console.log(route.params.id)
   deleteModel(applicationsAPI.destroy, route.params.id, router, 'a solicitação', '/applications', )
 }
 </script>

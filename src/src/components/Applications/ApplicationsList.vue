@@ -97,7 +97,6 @@ async function onRequest (props) {
 
   const params = { page, quantity: rowsPerPage, company_name: filter }
   const response = await applicationsAPI.index(params)
-  console.log(response)
   rows.value = response.data
   pagination.value = response.pagination
 

@@ -36,7 +36,7 @@ async function show(id) {
       ...company,
       requestStatus: 200
     }
-  } catch (e) {
+  } catch (error) {
     return {
       requestStatus: error.response.status,
       errors: error.response.data.errors,
