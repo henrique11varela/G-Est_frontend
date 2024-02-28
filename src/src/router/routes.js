@@ -16,7 +16,8 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       {
-        path: '', component: () => import('pages/Classes/ClassesPage.vue') },
+        path: '', component: () => import('pages/classes/ClassesPage.vue')
+      },
       {
         path: 'applications',
         children: [
@@ -42,11 +43,11 @@ const routes = [
         children: [
           {
             path: '',
-            component: () => import('pages/Classes/ClassesPage.vue'),
+            component: () => import('pages/classes/ClassesPage.vue'),
           },
           {
             path: 'add',
-            component: () => import('pages/Classes/ClassesAdd.vue'),
+            component: () => import('pages/classes/ClassesAdd.vue'),
             meta: {
               adminOnly: true
             }
@@ -56,14 +57,14 @@ const routes = [
             children: [
               {
                 path: '',
-                component: () => import('pages/Classes/ClassesEdit.vue'),
+                component: () => import('pages/classes/ClassesEdit.vue'),
                 meta: {
                   adminOnly: true
                 }
               },
               {
                 path: 'students',
-                component: () => import('pages/Classes/ClassesStudentsEdit.vue'),
+                component: () => import('pages/classes/ClassesStudentsEdit.vue'),
                 meta: {
                   adminOnly: true
                 }
@@ -72,7 +73,7 @@ const routes = [
           },
           {
             path: 'show/:id',
-            component: () => import('pages/Classes/ClassesShow.vue'),
+            component: () => import('pages/classes/ClassesShow.vue'),
           },
         ]
       },
@@ -144,26 +145,11 @@ const routes = [
         path: 'students',
         children: [
           {
-            path: '',
-            component: () => import('pages/Students/StudentsPage.vue'),
-          },
-          {
-            path: 'add',
-            component: () => import('pages/Students/StudentsAdd.vue'),
-            meta: {
-              adminOnly: true
-            }
-          },
-          {
             path: 'edit/:id',
             component: () => import('pages/Students/StudentsEdit.vue'),
             meta: {
               adminOnly: true
             }
-          },
-          {
-            path: 'show/:id',
-            component: () => import('pages/Students/StudentsShow.vue'),
           },
         ]
       },
@@ -202,21 +188,21 @@ const routes = [
         ]
       },
       {
-        path:'coordinators',
-        children:[
+        path: 'coordinators',
+        children: [
           {
-            path:'',
+            path: '',
             component: () => import('pages/Coordinators/CoordinatorsPage.vue'),
           },
           {
-            path:'add',
+            path: 'add',
             component: () => import('pages/Coordinators/CoordinatorsAdd.vue'),
             meta: {
               adminOnly: true
             }
           },
           {
-            path:':id',
+            path: ':id',
             component: () => import('pages/Coordinators/CoordinatorsEdit.vue'),
             meta: {
               adminOnly: true
