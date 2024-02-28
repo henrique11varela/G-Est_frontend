@@ -28,13 +28,13 @@ function output(data) {
 function rules() {
   return {
     name: [
-      val => val && val.length > 0 || "Introduza um nome",
+      val => val && val.length > 0 || "Introduza um Nome",
     ],
     email: [
-      val => val && val.length > 0 || "Introduza um nome",
+      val => val && val.length > 0 || "Introduza um Email",
     ],
     phoneNumber: [
-      val => val && val.length > 0 || "Introduza um nome",
+      val => val && val.length > 0 || "Introduza um Número de telefone",
     ],
   }
 }

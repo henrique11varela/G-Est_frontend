@@ -94,7 +94,7 @@ function showDeleteModal() {
         </q-input>
       </div>
       <div class="col-md-6">
-        <q-input outlined class="q-mb-md q-mr-md" v-model="personData.phoneNumber" label="Phone *" lazy-rules
+        <q-input outlined class="q-mb-md q-mr-md" v-model="personData.phoneNumber" label="Telefone *" lazy-rules
           :rules="companyPearsonDTO.rules().phoneNumber" :error="hasError('phoneNumber')"
           :disable="submitting">
           <template v-slot:error>
